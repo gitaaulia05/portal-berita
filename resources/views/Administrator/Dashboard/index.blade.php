@@ -2,5 +2,5 @@
 
    @section('container-main')
 
-   {{$admin['nama']}}
+   {{$admin}}
    @endsection

@@ -1,4 +1,4 @@
-    @extends('Pengguna.Template.nav')
+    @extends('Template.nav')
 
     @section('container')
     <div class="wrapper vh-100">

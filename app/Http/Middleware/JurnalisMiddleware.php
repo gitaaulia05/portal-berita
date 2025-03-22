@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use App\Models\Administrator;
 use Symfony\Component\HttpFoundation\Response;
 
 class JurnalisMiddleware
@@ -23,7 +24,7 @@ class JurnalisMiddleware
             $request->headers->set('Authorization' , 'Bearer '.$token);
             return $next($request);
         } else {
-            return redirect('/login');
+            return redirect('/login-jurnalis');
         }
 
         

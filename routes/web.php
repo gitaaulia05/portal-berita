@@ -3,7 +3,9 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Middleware\LoginMiddleware;
+use App\Http\Middleware\JurnalisMiddleware;
 use App\Http\Middleware\PenggunaMiddleware;
+use App\Http\Controllers\JurnalisController;
 use App\Http\Middleware\AdministratorMiddleware;
 use App\Http\Controllers\AdministratorController;
 
@@ -11,19 +13,19 @@ use App\Http\Controllers\AdministratorController;
 // TestTest1&
 Route::get('/',[AuthController::class , 'index']);
 
-Route::middleware(LoginMiddleware::class)->group(function () {
-            // AUTH USER
-    Route::get('/login' , [AuthController::class , 'login']);    
-    Route::post('/authLogin' ,[AuthController::class , 'authLogin']);
+    Route::middleware(LoginMiddleware::class)->group(function () {
+                // AUTH USER
+        Route::get('/login' , [AuthController::class , 'login']);    
+        Route::post('/authLogin' ,[AuthController::class , 'authLogin']);
 
-            // AUTH ADMINISTRATOR 
-     Route::get('/login-administrator' , [AdministratorController::class , 'login']);
-     Route::post('/authAdmin' , [AdministratorController::class , 'authLogin']);
+                // AUTH ADMINISTRATOR 
+        Route::get('/login-administrator' , [AdministratorController::class , 'login']);
+        Route::post('/authAdmin' , [AdministratorController::class , 'authLogin']);
 
-     // AUTH JURNALIS
-
-    
-});
+        // AUTH JURNALIS
+        Route::get('/login-jurnalis' , [JurnalisController::class , 'login']);
+        Route::post('/authJurnalis' , [JurnalisController::class , 'authLogin']);
+    });
 
     Route::get('/register' , [AuthController::class , 'register']);
     Route::post('/simpan-akun', [AuthController::class , 'storeRegister']);
@@ -63,4 +65,13 @@ Route::middleware(LoginMiddleware::class)->group(function () {
         Route::get('/dashboard' , [AdministratorController::class , 'index']);
         Route::get('/profile' , [AdministratorController::class , 'profile']);
         Route::delete('/logout-admin' , [AdministratorController::class , 'logout']);
+    });
+
+
+    Route::middleware(JurnalisMiddleware::class)->group(function () {
+        Route::get('/dashboard-jurnalis' , [JurnalisController::class , 'index']);
+        Route::delete('/logout-jurnalis' , [JurnalisController::class, 'logout']);
+
+        Route::get('/tambah-berita',  [JurnalisController::class, 'tambahBerita']);
+        Route::post('/simpan-berita' ,  [JurnalisController::class, 'storeNews']);
     });

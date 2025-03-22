@@ -14,7 +14,7 @@ class AuthController extends Controller
     }
 
     public function index(){
-        return view('Pengguna.Main.main' , [
+        return view('Pengguna.Main.newsMain' , [
             'auth' => $this->authUser,
         ]);
     }

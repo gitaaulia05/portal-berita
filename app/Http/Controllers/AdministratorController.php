@@ -13,7 +13,6 @@ class AdministratorController extends Controller
     }
 
     public function index() {
-      
         return view('Administrator.Dashboard.index' , [
             'title' => 'Dashboard | Portal Berita WinniCode' , 
             'admin' => $this->currentPetugas,
@@ -21,6 +20,7 @@ class AdministratorController extends Controller
     }
 
     public function login(){
+      
         return view('Administrator.Auth.login' , [
             "title" => 'Login | Portal Berita WinniCode'
         ]);
