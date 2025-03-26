@@ -3,6 +3,7 @@
    @section('container-main')
 
        <div class="row">
+           <a class="dropdown-item" href="/ubah-berita/lala">Edit</a>
                 <div class="col-md-12">
                   <div class="card shadow mb-4">
                     <div class="card-header">
@@ -20,7 +21,7 @@
                             <input type="text" name="keterangan_gambar" class="form-control w-20" id="deks_gambar" required>
                           </div>
                                <div class="form-group col-md-6">
-                            <label for="deks_gamabar">Gambar Tambahan</label>
+                            <label for="deks_gambar">Gambar Tambahan</label>
                             <input type="file" name="gambar2" class="form-control" id="deks_gambar">
 
                             <label for="deks_gambar2" class="pt-3">Deksripsi Gambar Tambahan</label>

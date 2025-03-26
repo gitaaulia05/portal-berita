@@ -8,22 +8,25 @@
     <link rel="icon" href="favicon.ico">
     <title>{{$title}}</title>
     <!-- Simple bar CSS -->
-    <link rel="stylesheet" href="css/simplebar.css">
+  
+    <link rel="stylesheet" href="{{asset('css/simplebar.css')}}">
     <!-- Fonts CSS -->
     <link href="https://fonts.googleapis.com/css2?family=Overpass:ital,wght@0,100;0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     <!-- Icons CSS -->
-    <link rel="stylesheet" href="css/feather.css">
-    <link rel="stylesheet" href="css/select2.css">
-    <link rel="stylesheet" href="css/dropzone.css">
-    <link rel="stylesheet" href="css/uppy.min.css">
-    <link rel="stylesheet" href="css/jquery.steps.css">
-    <link rel="stylesheet" href="css/jquery.timepicker.css">
-    <link rel="stylesheet" href="css/quill.snow.css">
-    <!-- Date Range Picker CSS -->
-    <link rel="stylesheet" href="css/daterangepicker.css">
-    <!-- App CSS -->
-    <link rel="stylesheet" href="css/app-light.css" id="lightTheme">
-    <link rel="stylesheet" href="css/app-dark.css" id="darkTheme" disabled>
+   <link rel="stylesheet" href="{{ asset('css/feather.css') }}">
+<link rel="stylesheet" href="{{ asset('css/select2.css') }}">
+<link rel="stylesheet" href="{{ asset('css/dropzone.css') }}">
+<link rel="stylesheet" href="{{ asset('css/uppy.min.css') }}">
+<link rel="stylesheet" href="{{ asset('css/jquery.steps.css') }}">
+<link rel="stylesheet" href="{{ asset('css/jquery.timepicker.css') }}">
+<link rel="stylesheet" href="{{ asset('css/quill.snow.css') }}">
+<!-- Date Range Picker CSS -->
+<link rel="stylesheet" href="{{ asset('css/daterangepicker.css') }}">
+<!-- App CSS -->
+<link rel="stylesheet" href="{{ asset('css/app-light.css') }}" id="lightTheme">
+<link rel="stylesheet" href="{{ asset('css/app-dark.css') }}" id="darkTheme" disabled>
+
+    {{-- @livewireStyles --}}
   </head>
   <body class="vertical  light  ">
     <div class="wrapper">
@@ -235,6 +238,64 @@
         },
         placeholder: "___.___.___.___"
       });
+
+      
+    </script>
+
+        {{-- IMAGE UPLOAD BERITA --}}
+        <script>
+      var utamaTarget = document.getElementById('drag-drop-utama');
+      if (utamaTarget)
+      {
+        var uppyUtama = Uppy.Core().use(Uppy.Dashboard,
+        {
+          inline: true,
+          target: utamaTarget,
+          proudlyDisplayPoweredByUppy: false,
+          theme: 'dark',
+          width: 770,
+          height: 210,
+          plugins: ['Webcam']
+        }).use(Uppy.Tus,
+        {
+          endpoint: 'https://master.tus.io/files/'
+        });
+
+        var gambarUrl = "{{ $gambar ?? '' }} "
+       
+          if(gambarUrl) {
+               fetch(gambarUrl).then(res => res.blob()).then(blob => {
+                   uppyUtama.addFile({
+                    name : 'gambar_lama_utama.jpg',
+                    type: 'image/jpeg',
+                    data : blob,
+                    source : "database",
+                    isRemote: true,
+                  });
+               });
+          }else {
+            console.log('ahuhu');
+          }
+       
+        uppyUtama.on('complete', (result) =>
+        {
+          console.log('Upload complete! We’ve uploaded these files:', result.successful)
+        });
+      }
+    </script>
+
+    <script>
+      document.getElementById('uploadGambarUtama').addEventListener("change" , function(event) {
+        const file = event.target.files[0];
+          if(file) {
+             const url = URL.createObjectURL(file); // Buat URL sementara untuk preview
+        const imgPreview = document.getElementById("previewGambar");
+        imgPreview.src = url;
+        imgPreview.style.display = "block"; // Tampilkan gambar
+        imgPreview.style.display = "block"; // Tampilkan gambar
+          }
+      });
+    
     </script>
     <script src="{{ asset('js/apps.js') }}"></script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-56159088-1"></script>
@@ -248,6 +309,5 @@
       gtag('js', new Date());
       gtag('config', 'UA-56159088-1');
     </script>
-
   </body>
 </html>

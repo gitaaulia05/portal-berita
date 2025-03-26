@@ -32,11 +32,11 @@
           <button class="btn btn-lg btn-primary btn-block" type="submit">Masuk</button>
         </form>
 
- <div class>
+        <div class>
          <p class="text-center text-muted font-weight-normal pt-2">Belum Punya Akun ? <a href="/register" class="text-dark font-weight-bold text-decoration-none">DAFTAR AKUN</a></p>
             <a href="/lupa-password" class="text-danger font-weight-bold text-decoration-none">LUPA PASSWORD</a>
             <p class="mt-2 mb-3 text-muted">© 2025</p>
-      </div>
+        </div>
 
       </div>
 

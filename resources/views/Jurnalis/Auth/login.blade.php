@@ -17,7 +17,10 @@
           <h1 class="h6 mb-3">Sign in</h1>
           @if(session()->has('message-error')) 
            <div class="alert alert-danger" role="alert"> {{session('message-error')}} </div>
+           @elseif (session()->has('message-success'))
+           <div class="alert alert-success" role="alert"> {{session('message-success')}} </div>
           @endif  
+
 
         <form Action="/authJurnalis" Method="POST">
         @csrf
@@ -31,10 +34,15 @@
           </div>
           <button class="btn btn-lg btn-primary btn-block" type="submit">Masuk</button>
         </form>
+
+         <div class>
+         <p class="text-center text-muted font-weight-normal pt-2">Belum Punya Akun ? <a href="/register-jurnalis" class="text-dark font-weight-bold text-decoration-none">DAFTAR AKUN</a></p>
+            <a href="/lupa-password" class="text-danger font-weight-bold text-decoration-none">LUPA PASSWORD</a>
+            <p class="mt-2 mb-3 text-muted">© 2025</p>
+        </div>
+
       </div>
 
-           
-        
       </div>
     </div>
   @endsection

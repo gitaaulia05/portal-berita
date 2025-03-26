@@ -50,14 +50,14 @@
     <input type="password" class="form-control" name="password_confirmation" id="inputPassword6" required>
 </div>
             </div>
-            <div class="col-md-6">
-              <p class="mb-2">Password requirements</p>
-              <p class="small text-muted mb-2"> To create a new password, you have to meet all of the following requirements: </p>
+           <div class="col-md-6">
+              <p class="mb-2">Persyaratan Kata Sandi</p>
+              <p class="small text-muted mb-2"> Untuk membuat kata sandi baru, Anda harus memenuhi semua persyaratan berikut: </p>
               <ul class="small text-muted pl-4 mb-0">
-                <li> Minimum 8 character </li>
-                <li>At least one special character</li>
-                <li>At least one number</li>
-                <li>Can’t be the same as a previous password </li>
+                <li> Minimal 8 karakter </li>
+                <li>Minimal satu karakter khusus</li>
+                <li>Minimal satu angka</li>
+                <li>Minimal satu Huruf Besar</li>
               </ul>
             </div>
           </div>

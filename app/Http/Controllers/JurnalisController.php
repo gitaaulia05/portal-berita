@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use services;
 use Illuminate\Http\Request;
 use App\Services\JurnalisServices;
 
@@ -14,11 +15,18 @@ class JurnalisController extends Controller
     }
 
     public function index(){
+      
         return view('Jurnalis.Dashboard.index' , [
             'title' => "Dashboard Jurnalis | Portal berita" , 
             'jurnalis' => $this->currentPetugas,
         ]);
     }
+    
+    public function register() {
+        return view('Jurnalis.Auth.register' , [
+            'title' => 'Register | Portal Berita'
+        ]);
+ }
 
 
     public function login(){
@@ -27,6 +35,17 @@ class JurnalisController extends Controller
         ]);
     }
 
+    public function authRegister(Request $request){
+        // dd($request->all());
+         $response = $this->jurnalisService->register($request);
+   
+         if($response->successful()) {     
+                 return redirect('/login-jurnalis')->with('message-success' ,'Daftar Akun Berhasil !');;
+         } else {
+            $error = $response->json('errors') ?? [];
+             return redirect()->back()->withInput()->withErrors($error)->with('message-error', 'Daftar Akun Gagal !' );
+         }
+     }
     
     public function authLogin(Request $request){
         // dd($request->all());
@@ -45,9 +64,9 @@ class JurnalisController extends Controller
          }
      }
 
+
      Public function logout(Request $request){
         $response = $this->jurnalisService->logout($request);
-        
         if($response->status() == 200){
             return redirect('/login-jurnalis');
         } else {
@@ -62,6 +81,34 @@ class JurnalisController extends Controller
         ]);
     }
 
+    public function update($slugBerita) {
+        $response = $this->jurnalisService->showNews($slugBerita);
+        $url = config('services.api_url');
+        //dd($response);
+        if($response) {
+            return view('Jurnalis.Dashboard.changeNews' , [
+                'title' => "Tambah Berita | Portal berita" , 
+                'jurnalis' => $this->currentPetugas,
+                'data' => $response,
+                'gambar' => $url."/storage/" . $response['gambar'][0]['gambar_berita'],
+                'gambar2' =>!empty($response['gambar'][0]['gambar_berita']) ? $url."/storage/" .$response['gambar'][0]['gambar_berita'] : null
+            ]);
+        } else {
+            return redirect()->back()->with('message-error' , $response['message'][0]);
+        }
+
+    }
+
+    public function updateNews(Request $request, $slugBerita) {
+
+        $response = $this->jurnalisService->updateNews($request, $slugBerita);
+        if($response) {
+            return redirect('/dashboard-jurnalis')->with('message-success' , 'Data Berita Berhasil Di Update');
+        } else {
+            return redirect()->back()->withInput()->withErrors($response)->with('message-error' , 'Data Berita Gagal Di Update');
+        }
+    }
+
     public function storeNews(Request $request) {
         $response = $this->jurnalisService->storeNews($request);
      
@@ -70,5 +117,17 @@ class JurnalisController extends Controller
         } else {
             return redirect()->back()->with('message-error' , $response['message'][0]);
         }
+    }
+
+
+    public function softDelete($slugBerita){
+        //dd($slugBerita);
+      $response = $this->jurnalisService->softDelete($slugBerita);
+
+      if($response) {
+        return redirect('/dashboard-jurnalis')->withMessage('message-success' , 'Berita Berhasil Dihapus');
+    } else {
+        return redirect()->back()->with('message-error' , $response['message'][0]);
+    }
     }
 }

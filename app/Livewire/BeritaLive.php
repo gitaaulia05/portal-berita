@@ -1,0 +1,92 @@
+<?php
+
+namespace App\Livewire;
+
+use Livewire\Component;
+use App\Models\Administrator;
+use App\Services\JurnalisServices;
+
+class BeritaLive extends Component
+{
+    public $search;
+    public $is_tayang = 0;
+    public $is_trash = 0;
+
+    protected $id_admin;
+
+    protected $jurnalisService;
+    protected $dataBerita=[];
+    public $apiBaseUrl;
+    
+
+    public function __construct() {
+       $this->jurnalisService = app(JurnalisServices::class);
+        //$this->jurnalisService = $jurnalisService;
+        $this->apiBaseUrl = config('services.api_base_url');
+        $this->dataBerita = $this->jurnalisService->searchNews();
+
+        
+    }
+
+    public function toogleTayang() {
+        $this->is_tayang = !$this->is_tayang;
+        $this->updatedSearch(); 
+    }
+    // public function toogleTrash() {
+    //     $this->is_trash = $this->is_trash === 0 ? 2 : 0;
+    //     $this->updatedSearch(); 
+    // }
+
+    public function toogleSoftDelete() {
+        $this->is_trash = $this->is_trash === 0 ? 2 : 0;
+        $this->updatedSearch(); 
+    }
+
+    public function updatedSearch() {
+
+        $search = trim($this->search);
+        $is_tayangs = (int)$this->is_tayang;
+        $is_trash= (int)$this->is_trash;
+        $this->dataBerita = $this->jurnalisService->searchNews($search , $is_tayangs, $is_trash);
+        $this->id_admin = Administrator::where('id_administrator');
+      
+    }
+    public function render()
+    {
+      // dd($this->dataBerita);
+        return view('livewire.berita-live' , [
+            'title' => "Dashboard Jurnalis | Portal berita" , 
+            'jurnalis' => $this->jurnalisService->currentJurnalis(), 
+             'berita' => $this->dataBerita,
+        ]);
+    }
+
+    public function softDelete($slugBerita){
+        $response = $this->jurnalisService->softDelete($slugBerita);
+        if($response) {
+          return redirect('/dashboard-jurnalis')->with('message-success' , $response['message']);
+      } else {
+          return redirect()->back()->with('message-error' , $response['message'][0]);
+      }
+
+    }
+
+    public function delete($slugBerita) {
+        $response = $this->jurnalisService->delete($slugBerita);
+        if($response) {
+          return redirect('/dashboard-jurnalis')->with('message-success' , 'Berita Berhasil Dihapus');
+      } else {
+          return redirect()->back()->with('message-error' , $response['message'][0]);
+      }
+    }
+
+    public function restore($slugBerita) {
+        $response = $this->jurnalisService->restore($slugBerita);
+        if($response) {
+          return redirect('/dashboard-jurnalis')->with('message-success' , $response['message']);
+      } else {
+          return redirect()->back()->with('message-error' , $response['message'][0]);
+      }
+    }
+
+}

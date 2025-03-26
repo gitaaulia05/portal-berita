@@ -1,5 +1,6 @@
 <?php
 
+use App\Livewire\BeritaLive;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Middleware\LoginMiddleware;
@@ -8,6 +9,7 @@ use App\Http\Middleware\PenggunaMiddleware;
 use App\Http\Controllers\JurnalisController;
 use App\Http\Middleware\AdministratorMiddleware;
 use App\Http\Controllers\AdministratorController;
+use App\Http\Middleware\ActiveJurnalisMiddleware;
 
 
 // TestTest1&
@@ -67,11 +69,20 @@ Route::get('/',[AuthController::class , 'index']);
         Route::delete('/logout-admin' , [AdministratorController::class , 'logout']);
     });
 
+    Route::get('/register-jurnalis' , [JurnalisController::class, 'register']);
+    Route::post('/registerJurnalis' , [JurnalisController::class, 'Authregister']);
 
     Route::middleware(JurnalisMiddleware::class)->group(function () {
-        Route::get('/dashboard-jurnalis' , [JurnalisController::class , 'index']);
-        Route::delete('/logout-jurnalis' , [JurnalisController::class, 'logout']);
+        Route::get('/dashboard-jurnalis' , [JurnalisController::class , 'index'])->name('dashboard-jurnalis');;
+        Route::delete('/logout-jurnalis' , [JurnalisController::class, 'logout'])->name('lpgout-jurnalis');;
 
+        Route::middleware(ActiveJurnalisMiddleware::class)->group(function () {
         Route::get('/tambah-berita',  [JurnalisController::class, 'tambahBerita']);
         Route::post('/simpan-berita' ,  [JurnalisController::class, 'storeNews']);
+        Route::get('/berita/softHapus/{slugberita}' , [JurnalisController::class, 'softDelete'])->name('berita.softHapus');
+        Route::get('/berita/restore/{slugberita}' , [JurnalisController::class, 'restore']);
+        Route::get('/ubah-berita/{slugBerita}' , [JurnalisController::class, 'update']);
+        Route::post('/update-berita/{slugBerita}' , [JurnalisController::class, 'updateNews']);
+
+        });
     });
