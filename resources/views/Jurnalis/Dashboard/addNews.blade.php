@@ -12,6 +12,15 @@
                     <div class="card-body">
                       <form action="/simpan-berita" method="POST" enctype="multipart/form-data">
                       @csrf
+                          @if(session()->has('message-error')) 
+           <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>{{session('message-error')}}</strong> 
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+          @endif  
+          
                         <div class="form-row">
                           <div class="form-group col-md-6">
                             <label for="gambar_utama">Gambar Utama</label>
@@ -29,7 +38,6 @@
                           </div>
                         </div>
                         <div class="form-group">
-
                           <label for="inputAddress">Judul Berita</label>
                           <input type="text" name="judul_berita" class="form-control" id="inputAddress5" required>
                         </div>

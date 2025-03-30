@@ -1,8 +1,8 @@
 @extends($layout)
-    @section('container')
+    @section('container-main')
   <div class="wrapper vh-100">
       <div class="row align-items-center h-100">
-        <form class="col-lg-3 col-md-4 col-10 mx-auto text-center" Action="{{ isset($auth) ?  '/auth/lupa-password' :  '/lupa-password-email'}}" Method="POST" >
+        <form class="col-lg-3 col-md-4 col-10 mx-auto text-center" Action="{{ !empty($auth) ?  '/auth/lupa-password' :  '/lupa-password-email'}}" Method="POST" >
         @csrf
           <div class="mx-auto text-center my-4">
             <a class="navbar-brand mx-auto mt-2 flex-fill text-center" href="./index.html">

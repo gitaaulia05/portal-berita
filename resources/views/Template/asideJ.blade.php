@@ -40,11 +40,11 @@
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle text-muted pr-0" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               <span class="avatar avatar-sm mt-2">
-                <img src="./assets/avatars/face-1.jpg" alt="..." class="avatar-img rounded-circle">
+                <img src="{{asset('/assets/avatars/face-1.jpg')}}" alt="..." class="avatar-img rounded-circle">
               </span>
             </a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-              <a class="dropdown-item" href="#">Profile</a>
+              <a class="dropdown-item" href="/jurnalis/profile">Profile</a>
               <form action="/logout-jurnalis" method="POST">
                       @csrf
                       @method('DELETE')
@@ -96,7 +96,7 @@
             <span>Kelola Akun Personal</span>
              <ul class="navbar-nav flex-fill w-100 mb-2">
             <li class="nav-item w-100">
-              <a class="nav-link" href="/profile">
+              <a class="nav-link" href="/jurnalis/profile">
                 <i class="fe fe-user fe-16"></i>
                 <span class="ml-3 item-text">Profile</span>
               </a>
@@ -242,15 +242,15 @@
       
     </script>
 
-        {{-- IMAGE UPLOAD BERITA --}}
-        <script>
-      var utamaTarget = document.getElementById('drag-drop-utama');
-      if (utamaTarget)
+      
+       <script>
+      var uptarg = document.getElementById('drag-drop-area');
+      if (uptarg)
       {
-        var uppyUtama = Uppy.Core().use(Uppy.Dashboard,
+        var uppy = Uppy.Core().use(Uppy.Dashboard,
         {
           inline: true,
-          target: utamaTarget,
+          target: uptarg,
           proudlyDisplayPoweredByUppy: false,
           theme: 'dark',
           width: 770,
@@ -260,43 +260,32 @@
         {
           endpoint: 'https://master.tus.io/files/'
         });
-
-        var gambarUrl = "{{ $gambar ?? '' }} "
-       
-          if(gambarUrl) {
-               fetch(gambarUrl).then(res => res.blob()).then(blob => {
-                   uppyUtama.addFile({
-                    name : 'gambar_lama_utama.jpg',
-                    type: 'image/jpeg',
-                    data : blob,
-                    source : "database",
-                    isRemote: true,
-                  });
-               });
-          }else {
-            console.log('ahuhu');
-          }
-       
-        uppyUtama.on('complete', (result) =>
+        uppy.on('complete', (result) =>
         {
           console.log('Upload complete! We’ve uploaded these files:', result.successful)
         });
       }
     </script>
+    
+
 
     <script>
-      document.getElementById('uploadGambarUtama').addEventListener("change" , function(event) {
+    function previewImage(inputId, prevImg) {
+       document.getElementById(inputId).addEventListener("change" , function(event) {
         const file = event.target.files[0];
           if(file) {
              const url = URL.createObjectURL(file); // Buat URL sementara untuk preview
-        const imgPreview = document.getElementById("previewGambar");
-        imgPreview.src = url;
-        imgPreview.style.display = "block"; // Tampilkan gambar
-        imgPreview.style.display = "block"; // Tampilkan gambar
+            document.getElementById(prevImg).src = url;
           }
       });
-    
+    }
+
+    previewImage('uploadGambarJurnalis', 'previewGambarJurnalis');
+    previewImage('uploadGambarUtama', 'previewGambar');
+    previewImage('uploadGambarTambahan', 'previewGambar2');
     </script>
+
+  
     <script src="{{ asset('js/apps.js') }}"></script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-56159088-1"></script>
     <script>

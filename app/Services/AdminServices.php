@@ -14,7 +14,7 @@ class AdminServices
 
 
     public function __construct(){
-        $this->baseUrl = "http://127.0.0.1:8000/api";
+        $this->baseUrl = config('services.api_base_url');
         $this->token = session('Authorization');
     }
 
@@ -43,6 +43,42 @@ class AdminServices
         ])->delete($this->baseUrl.'/admin/logout');
 
        return $response;
+    }
+
+
+    // MAIN FEATURE
+    public function searchJurnalis($namaJurnalis = null) {
+        
+        $params = [];
+        if(!empty($namaJurnalis)) {
+            $params['nama'] = $namaJurnalis;
+        }
+
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer ' . $this->token
+        ])->get($this->baseUrl.'/admin/jurnalis/search' , $params);
+       
+        return $response->successful() ? $response->json('data') : null;
+
+    }
+
+    public function dataJurnalis($slugJurnalis) {
+        $response = Http::withHeaders([
+        'Authorization' => $this->token
+        ])->get($this->baseUrl . '/admin/jurnalis/'.$slugJurnalis);
+        
+        return $response->successful() ? $response->json('data') : null;
+    }
+
+
+    public function activeJurnalis( Request $request, $slugJurnalis) {
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer '.$this->token
+        ])->post($this->baseUrl.'/jurnalis/active/'.$slugJurnalis,[
+            'slug' => $slugJurnalis,
+            'active' => $request->activeAccount
+        ]);
+       return $response->successful() ? $response->json('data') : $response->json('errors');
     }
 
 }

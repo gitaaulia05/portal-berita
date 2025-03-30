@@ -28,6 +28,7 @@ class ActiveJurnalisMiddleware
             $allowedRoutes = [
                 'dashboard-jurnalis',
                 'logout-jurnalis',
+                'jurnalis-profile'
             ];
          
             if(!in_array($request->route()->getName(), $allowedRoutes)) {

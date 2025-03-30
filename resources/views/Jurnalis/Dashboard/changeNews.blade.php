@@ -12,23 +12,32 @@
                     <div class="card-body">
                       <form action="/update-berita/{{$data['slug']}}" method="POST" enctype="multipart/form-data">
                       @csrf 
+                          @if(session()->has('message-error')) 
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                  <strong>{{session('message-error')}}</strong> 
+                                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                  </button>
+                              </div>
+                            @endif  
+          
                         <div class="form-row">
                           <div class="form-group col-md-6">
                             <label for="deks_gambar">Gambar Utama</label>
-                              <input type="file" id="uploadGambarUtama" name="gambar"   class="form-control" accept="image/*">
+                              <input type="file" id="uploadGambarUtama" name="gambar" class="form-control" accept="image/*">
                               <img src="{{$gambar}}" id="previewGambar" class="w-25 pt-1">
                                              {{-- Input hidden untuk menyimpan gambar lama --}}
                        <input type="hidden" name="gambar_lama" value="{{ $gambar }}">
                               <br>
-                              <label for="keterangan_gambar" class="pt-3">Deksripsi Gambar Utama</label>
-                              <input type="text" name="keterangan_gambar" class="form-control w-20" id="deks_gambar" value="{{$data['gambar']['0']['keterangan_gambar']}}" required>
+                              <label for="keterangan_gambar"  class="pt-3">Deksripsi Gambar Utama</label>
+                              <input type="text" name="keterangan_gambar" class="form-control w-20"  value="{{$data['gambar']['0']['keterangan_gambar']}}" required>
                           </div>
 
                           @if (!empty($data['gambar'][1]))
                           <div class="form-group col-md-6 mt-md-0 mt-5">
                               <label for="deks_gambar">Gambar Tambahan</label>
                               <input type="file" id="uploadGambarTambahan" name="gambar2" class="form-control"  accept="image/*">
-                              <img src="{{$gambar2}}" id="previewGambarTambahan" class="w-25">
+                              <img src="{{$gambar2}}" id="previewGambar2" class="w-25">
                                <input type="hidden" name="gambar_lama2" value="{{ $gambar2 }}">
                               <br>
                              <label for="keterangan_gambar2" class="pt-3">Deksripsi Gambar Tambahan</label>

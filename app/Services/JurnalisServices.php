@@ -15,8 +15,9 @@ class JurnalisServices
 
 
     public function __construct(){
-        $this->baseUrl = "http://127.0.0.1:8000/api";
-        $this->urlMain = "http://127.0.0.1:8000/";
+        $this->baseUrl = config('services.api_base_url');;
+       # $this->urlMain = "http://127.0.0.1:8000/";
+        $this->urlMain =config('services.api_url');;
         $this->token = session('Authorization');
     }
 
@@ -26,7 +27,6 @@ class JurnalisServices
          'email' => $request->email ,
          'password' => $request->password
         ]);
-          
         return $response->successful() ? $response->json('data') : $response->json('errors');
      }
 
@@ -59,6 +59,29 @@ class JurnalisServices
        return $response;
     }
 
+    public function updateProfile(Request $request, $slugAdmin) {
+  
+        $httpRequest = Http::withHeaders([
+            'Authorization' => 'Bearer '.$this->token
+        ])->asMultipart();
+
+        if($request->hasFile('gambar')) {
+            $httpRequest->attach(
+                'gambar', 
+                file_get_contents($request->file('gambar')->getRealPath()), 
+                $request->file('gambar')->getClientOriginalName()
+              );
+        }
+        
+       $response=  $httpRequest->post($this->baseUrl.'/jurnalis/update/'.$slugAdmin , [
+            'nama' => $request->nama
+        ]);
+       return $response->successful() ? $response->json('data') : $response->json('errors');
+    }
+
+
+    // MAIN FEATURE
+
     public function storeNews(Request $request) {
         $response = Http::withHeaders([
             'Authorization' => 'Bearer ' . $this->token
@@ -82,7 +105,6 @@ class JurnalisServices
     public function updateNews(Request $request , $slugBerita)
     {
    
-
        $httpRequest = Http::withHeaders([
         'Authorization' => 'Bearer ' . $this->token
     ])->asMultipart();

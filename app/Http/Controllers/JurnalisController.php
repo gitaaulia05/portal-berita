@@ -12,16 +12,25 @@ class JurnalisController extends Controller
     public function __construct(JurnalisServices $jurnalisService) {
         $this->jurnalisService = $jurnalisService;
         $this->currentPetugas = $this->jurnalisService->currentjurnalis();
+        $this->url = config('services.api_url');
     }
 
-    public function index(){
-      
+    public function index(){ 
         return view('Jurnalis.Dashboard.index' , [
             'title' => "Dashboard Jurnalis | Portal berita" , 
             'jurnalis' => $this->currentPetugas,
         ]);
     }
     
+    public function profile(){
+       // dd($this->currentPetugas);
+        return view('Jurnalis.Dashboard.profile' , [
+            'title' => "Dashboard Jurnalis | Portal berita" , 
+            'jurnalis' => $this->currentPetugas,
+            'Url' => $this->url,
+        ]);
+    }
+
     public function register() {
         return view('Jurnalis.Auth.register' , [
             'title' => 'Register | Portal Berita'
@@ -74,6 +83,26 @@ class JurnalisController extends Controller
         }
     }
 
+    public function updateProfile() {
+        return view('Jurnalis.Dashboard.updateProfile' , [
+            'title' => "Update Profile | Portal berita" , 
+            'jurnalis' => $this->currentPetugas,
+            'gambar' => !empty($this->currentPetugas['gambar']) ? $this->currentPetugas['gambar'] : asset('assets/avatars/face-1.jpg') ,
+        ]);
+    }
+
+    public function storeProfile(Request $request, $slugAdmin) {
+        $response = $this->jurnalisService->updateProfile($request , $slugAdmin);
+        if($response){
+            return redirect('/jurnalis/profile')->with('message-success' , 'Data Profile Berhasil Di Update !');
+        } else {
+            return redirect()->back();
+        }
+    }
+
+
+
+    // MAIN FEATURE
     public function tambahBerita() {
         return view('Jurnalis.Dashboard.addNews' , [
             'title' => "Tambah Berita | Portal berita" , 

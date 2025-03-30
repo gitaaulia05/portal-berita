@@ -1,5 +1,5 @@
 @extends('Template.nav')
-    @section('container')
+    @section('container-main')
     <div class="wrapper vh-100">
   
       <div class="row align-items-center h-100">

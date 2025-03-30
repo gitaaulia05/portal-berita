@@ -1,7 +1,7 @@
    
    @extends($layout)
-   @section('container')
-       
+   @section('container-main')
+
     <div class="wrapper vh-100">
       <div class="row align-items-center h-100">
         <form class="col-lg-3 col-md-4 col-10 mx-auto text-center">

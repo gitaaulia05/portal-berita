@@ -7,6 +7,7 @@ use App\Http\Middleware\LoginMiddleware;
 use App\Http\Middleware\JurnalisMiddleware;
 use App\Http\Middleware\PenggunaMiddleware;
 use App\Http\Controllers\JurnalisController;
+use App\Http\Middleware\UniversalMiddleware;
 use App\Http\Middleware\AdministratorMiddleware;
 use App\Http\Controllers\AdministratorController;
 use App\Http\Middleware\ActiveJurnalisMiddleware;
@@ -43,19 +44,21 @@ Route::get('/',[AuthController::class , 'index']);
     // store new password to db 
     Route::patch('/simpan-password/{token}' ,  [AuthController::class , 'storePassword']);
 
-    Route::middleware(PenggunaMiddleware::class)->group(function () {
-        //View Password forget
-        Route::get('/lupa-passwordAuth' , [AuthController::class , 'forgetPassword']);
+    Route::middleware(UniversalMiddleware::class)->group(function () {
+            //View Password forget
+            Route::get('/lupa-passwordAuth' , [AuthController::class , 'forgetPassword']);
 
-        //sending email
-        Route::post('/auth/lupa-password' , [AuthController::class,'sendEmailAuth']);
-
-        // checking token before passing to view
-        Route::get('/auth/ganti-password/{token}' , [AuthController::class , 'changePassword']);
-
+            //sending email
+            Route::post('/auth/lupa-password' , [AuthController::class,'sendEmailAuth']);
+    
+            // checking token before passing to view
+            Route::get('/auth/ganti-password/{token}' , [AuthController::class , 'changePassword']);
+    
         // Passing new password to database
-        Route::patch('/auth/store-newPassword/{token}', [AuthController::class, 'updatePassword']);
+            Route::patch('/auth/store-newPassword/{token}', [AuthController::class, 'updatePassword']);
+    });
 
+    Route::middleware(PenggunaMiddleware::class)->group(function () {
         Route::get('/info' , function (){
             dd(phpinfo());
         });
@@ -67,15 +70,23 @@ Route::get('/',[AuthController::class , 'index']);
         Route::get('/dashboard' , [AdministratorController::class , 'index']);
         Route::get('/profile' , [AdministratorController::class , 'profile']);
         Route::delete('/logout-admin' , [AdministratorController::class , 'logout']);
+
+        // MAIN FEATURE
+        Route::get('/akun-jurnalis' , [AdministratorController::class , 'dataJurnalis']);
+        Route::get('/akun-jurnalis/{slugJurnalis}' , [AdministratorController::class , 'detailJurnalis']);
+        Route::post('/aktif-akun/{slugJurnalis}' , [AdministratorController::class , 'activeJurnalis']);
     });
 
     Route::get('/register-jurnalis' , [JurnalisController::class, 'register']);
     Route::post('/registerJurnalis' , [JurnalisController::class, 'Authregister']);
 
     Route::middleware(JurnalisMiddleware::class)->group(function () {
-        Route::get('/dashboard-jurnalis' , [JurnalisController::class , 'index'])->name('dashboard-jurnalis');;
-        Route::delete('/logout-jurnalis' , [JurnalisController::class, 'logout'])->name('lpgout-jurnalis');;
-
+        Route::get('/dashboard-jurnalis' , [JurnalisController::class , 'index'])->name('dashboard-jurnalis');
+        Route::delete('/logout-jurnalis' , [JurnalisController::class, 'logout'])->name('logout-jurnalis');
+        Route::get('/jurnalis/profile' , [JurnalisController::class, 'profile'])->name('jurnalis-profile');
+        Route::get('/jurnalis/update-profile/{slugAdmin}' , [JurnalisController::class, 'updateProfile'])->name('jurnalis-update');
+        Route::post('/jurnalis/simpan-update-profile/{slugAdmin}' , [JurnalisController::class, 'storeProfile'])->name('jurnalis-update');
+        
         Route::middleware(ActiveJurnalisMiddleware::class)->group(function () {
         Route::get('/tambah-berita',  [JurnalisController::class, 'tambahBerita']);
         Route::post('/simpan-berita' ,  [JurnalisController::class, 'storeNews']);

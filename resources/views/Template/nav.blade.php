@@ -26,7 +26,7 @@
     </div>
 
     <div class="container-main">
-        @yield('container')
+        @yield('container-main')
     </div>
 
   <script src="{{asset('js/jquery.min.js')}}"></script>

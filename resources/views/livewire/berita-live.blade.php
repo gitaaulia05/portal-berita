@@ -28,7 +28,7 @@
                             </div>
 
                             <div class="form-group col-auto">
-                                <div class="bg-primary text-white h-75 rounded-sm" wire:click="toogleTayang" style="cursor: pointer;">
+                                <div class="bg-primary opacity-50 text-white h-75 rounded-sm" wire:click="toogleTayang" style="cursor: pointer;">
                                   <p class="mx-2 pt-2">Berita Tayang</p>
                                 </div>
                             </div>

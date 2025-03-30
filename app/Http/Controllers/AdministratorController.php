@@ -10,6 +10,7 @@ class AdministratorController extends Controller
     public function __construct(AdminServices $adminService) {
         $this->adminService = $adminService;
         $this->currentPetugas = $this->adminService->currentAdmin();
+        $this->url = config('services.api_url');
     }
 
     public function index() {
@@ -20,7 +21,7 @@ class AdministratorController extends Controller
     }
 
     public function login(){
-      
+
         return view('Administrator.Auth.login' , [
             "title" => 'Login | Portal Berita WinniCode'
         ]);
@@ -74,5 +75,33 @@ class AdministratorController extends Controller
         } else {
             return redirect()->back();
         }
+    }
+
+
+    // MAIN FEATURE
+    public function dataJurnalis() {
+        return view('Administrator.Dashboard.tableJurnalis' , [
+            "title" => 'Data Jurnalis | Portal Berita WinniCode', 
+            "admin" => $this->currentPetugas,
+        ]);
+    }
+
+    public function detailJurnalis($slugJurnalis) {
+        return view('Administrator.Dashboard.dataJurnalis' , [
+            "title" => 'Data Jurnalis | Portal Berita WinniCode', 
+            "admin" => $this->currentPetugas,
+            "data" => $this->adminService->dataJurnalis($slugJurnalis),
+            "url" => $this->url,
+        ]);
+    }
+
+    Public function activeJurnalis(Request $request, $slugJurnalis){
+         // dd($request->all());
+         $response = $this->adminService->activeJurnalis($request , $slugJurnalis);
+         if($response) {
+            return redirect('/akun-jurnalis/'. $slugJurnalis)->with('message-success' , 'Aktivasi Akun Berhasil !');
+         } else {
+             return redirect()->back()->with('message-error' , $response['message'][0]);
+         }
     }
 }

@@ -21,34 +21,34 @@
         </div>
     @enderror
 </div>
-          <div class="form-row">
-           <div class="form-group">
-    <label for="firstname">Nama Lengkap</label>
-    <input type="text" id="firstname" name="nama" class="form-control @error('nama') is-invalid @enderror" value="{{ old('nama') }}" required>
-    @error('nama')
-        <div class="invalid-feedback">
-            {{ $message }}
-        </div>
-    @enderror
-</div>
+            <div class="form-row">
+            <div class="form-group">
+      <label for="firstname">Nama Lengkap</label>
+      <input type="text" id="firstname" name="nama" class="form-control @error('nama') is-invalid @enderror" value="{{ old('nama') }}" required>
+      @error('nama')
+          <div class="invalid-feedback">
+              {{ $message }}
+          </div>
+      @enderror
+  </div>
            
           </div>
           <hr class="my-4">
           <div class="row mb-4">
             <div class="col-md-6">
-      <div class="form-group">
-    <label for="inputPassword5">Password</label>
-    <input type="password" class="form-control @error('password') is-invalid @enderror" name="password" id="inputPassword5" required>
-    @error('password')
-        <div class="invalid-feedback">
-            {{ $message }}
+            <div class="form-group">
+                <label for="inputPassword5">Password</label>
+                <input type="password" class="form-control @error('password') is-invalid @enderror" name="password" id="inputPassword5" required>
+                @error('password')
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
+                @enderror
+          </div>
+          <div class="form-group">
+            <label for="inputPassword6">Ulangi Password</label>
+            <input type="password" class="form-control" name="password_confirmation" id="inputPassword6" required>
         </div>
-    @enderror
-</div>
-           <div class="form-group">
-    <label for="inputPassword6">Ulangi Password</label>
-    <input type="password" class="form-control" name="password_confirmation" id="inputPassword6" required>
-</div>
             </div>
            <div class="col-md-6">
               <p class="mb-2">Persyaratan Kata Sandi</p>

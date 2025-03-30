@@ -14,7 +14,7 @@ class PenggunaServices
 
 
     public function __construct(){
-        $this->baseUrl = "http://127.0.0.1:8000/api";
+        $this->baseUrl = config('services.api_base_url');;
         $this->token = session('Authorization');
     }
     
@@ -73,7 +73,11 @@ class PenggunaServices
             'password_confirmation' => $request->password_confirmation,
         ]);
                
-        return $response;
+        return [
+            'status' => $response->status(),
+            'data' => $response->json('data'),
+            'errors' => $response->json('errors'),
+        ];
     }
 
     public function updatePasswordAuth(Request $request , $token) 
@@ -96,8 +100,7 @@ class PenggunaServices
         ])->post($this->baseUrl.'/auth/gantiPasswordPengguna' , [
             'email' => $request->email
         ]);
-
-        // dd( $response->json('data'));
+        //dd($response->json());
         return $response;
     }
 
@@ -106,7 +109,11 @@ class PenggunaServices
             'Authorization' => 'Bearer '. $this->token
         ])->get($this->baseUrl.'/auth/token-ganti-password/' . $token);
             
-        return $response->successful() ? $response->json('data') : $response->json('errors');
+        return [
+            'status' => $response->status(),
+            'data' => $response->json('data'),
+            'errors' => $response->json('errors'),
+        ];
     }
 
     public function currentUser()
