@@ -3,6 +3,7 @@
 use App\Livewire\BeritaLive;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\NewsController;
 use App\Http\Middleware\LoginMiddleware;
 use App\Http\Middleware\JurnalisMiddleware;
 use App\Http\Middleware\PenggunaMiddleware;
@@ -14,7 +15,8 @@ use App\Http\Middleware\ActiveJurnalisMiddleware;
 
 
 // TestTest1&
-Route::get('/',[AuthController::class , 'index']);
+Route::get('/',[NewsController::class , 'index']);
+Route::get('/berita/{kategori}/{slugberita}',[NewsController::class , 'detailNews']);
 
     Route::middleware(LoginMiddleware::class)->group(function () {
                 // AUTH USER

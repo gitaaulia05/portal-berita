@@ -19,16 +19,9 @@ class AuthController extends Controller
      
     }
 
-    public function index(){
-      //  dd( $this->authUser);
-        return view('Pengguna.Main.newsMain' , [
-            'auth' => $this->authUser,
-        ]);
-    }
-
     //done
     public function login(){
-        return view('Pengguna.Auth.login' , [
+        return view('Pengguna.Auth.login', [
             "title" => 'Login | Portal Berita WinniCode'
         ]);
     }
