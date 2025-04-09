@@ -8,6 +8,7 @@ use App\Http\Middleware\LoginMiddleware;
 use App\Http\Middleware\JurnalisMiddleware;
 use App\Http\Middleware\PenggunaMiddleware;
 use App\Http\Controllers\JurnalisController;
+use App\Http\Controllers\PenggunaController;
 use App\Http\Middleware\UniversalMiddleware;
 use App\Http\Middleware\AdministratorMiddleware;
 use App\Http\Controllers\AdministratorController;
@@ -64,6 +65,12 @@ Route::get('/berita/{kategori}/{slugberita}',[NewsController::class , 'detailNew
         Route::get('/info' , function (){
             dd(phpinfo());
         });
+        Route::get('/profile/pengguna' , [PenggunaController::class, 'index']);
+        Route::get('/profile/ubah-data' ,[PenggunaController::class, 'update']);
+        Route::post('/profile/storeUpdate' ,[PenggunaController::class, 'updateStore']);
+
+        Route::get('/profile/ganti-password' , [PenggunaController::class, 'updatePassword']);
+
         Route::delete('/logout' , [AuthController::class, 'logout']);
 
     });

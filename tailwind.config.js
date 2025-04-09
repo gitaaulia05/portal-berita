@@ -14,12 +14,14 @@ export default {
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
                 lora : ["Lora"],
-                inter : ["Inter"],
+                Inter: ['Inter', 'sans-serif'],
+                roboto : ["Roboto"]
             },
             colors: {
                 red1:'#C95C66',
                 merah2:'#B03440',
                 gray:'#505050',
+                gray2:'#868686'
                 
             }
         },

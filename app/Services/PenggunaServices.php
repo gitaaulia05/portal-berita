@@ -72,7 +72,7 @@ class PenggunaServices
             'password' => $request->password,
             'password_confirmation' => $request->password_confirmation,
         ]);
-               
+          
         return [
             'status' => $response->status(),
             'data' => $response->json('data'),
@@ -100,16 +100,15 @@ class PenggunaServices
         ])->post($this->baseUrl.'/auth/gantiPasswordPengguna' , [
             'email' => $request->email
         ]);
-        //dd($response->json());
         return $response;
     }
 
     public function passAuthView($token) {
+       
         $response = Http::withHeaders([
             'Authorization' => 'Bearer '. $this->token
         ])->get($this->baseUrl.'/auth/token-ganti-password/' . $token);
-            
-        return [
+            return [
             'status' => $response->status(),
             'data' => $response->json('data'),
             'errors' => $response->json('errors'),

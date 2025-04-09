@@ -20,58 +20,86 @@ class NewsServices
         $this->token = session('Authorization');
     }
 
-    public function allNews($newest) {
-        // Mengambil nilai ETag dari cache
-        $etag = cache('etag_news');
-        // Memeriksa apakah ada ETag yang tersimpan dalam cache
-      //dd($etag);
+    protected  function fetchWithETag(string $cacheKey, string $url, string $keySuffix = null) {
+        $buildCache = $keySuffix ? $cacheKey. '_' . $keySuffix : $cacheKey; 
+    
+        $etag = cache($buildCache);
         $response = $etag 
-            ? Http::withHeaders(['If-None-Match' => $etag])->get($this->baseUrl.'/berita/pengguna?' . http_build_query(['newest' => $newest]))
-            : Http::get($this->baseUrl.'/berita/pengguna?' . http_build_query(['newest' => $newest]));
-
-         //   $response = Http::get($this->baseUrl.'/berita/pengguna?' . http_build_query(['newest' => $newest]));
-      
-        // Memeriksa apakah response berhasil
-      
+        ? Http::withHeaders(['If-None-Match' => $etag])->get($url)
+        : Http::get($url);
         if ($response->status() === 200 ) {
-            $response->json('data');
-          //  dd( $response->json('data'));
             // Ambil nilai ETag dari header response
             $etagHeader = $response->header('ETag');
             $newsData = $response->json('data');
+          
+                cache()->forget($buildCache);
+                cache()->forget($buildCache .'_data');
 
-            cache()->forget('etag_news');
-            cache()->forget('news_data');
-
-            // Simpan nilai ETag dalam cache
-            cache(['etag_news' => $etagHeader]);
-            cache(['news_data' => $newsData]);
-            return [
-                'data' => $newsData, 
+                cache([
+                    $buildCache => $etagHeader,
+                    $buildCache.'_data' => $newsData
+            ]);
+            cache([$buildCache => $etagHeader]);
+            cache([$buildCache.'_data'=> $newsData]);
+           
+            return[
+                'data' => $newsData,
                 'url' => $this->url,
-            ];
+                'etag_test' => $etagHeader
+            ];   
         }
-      
-
+        // dd($response->status());
         if($response->status() === 304) {
-            $cacheNews = cache('news_data');
-            if($cacheNews) {
+            $cacheData = cache($buildCache.'_data');
+            if($cacheData) {
                 return [
-                    'data' => $cacheNews,
+                    'data' => $cacheData, 
                     'url' => $this->url,
-                    'from_cache' => true
+                    'from_cache'=> true
                 ];
             }
-
         }
-        dd($response->status());
-        return $response->json('errors');
-        // Mengembalikan data jika response berhasil, atau errors jika gagal
-        // return $response->successful() ? [
-        //     'data' => $response->json('data'), 
-        //     'url' => $this->url,
-        // ] : $response->json('errors');
+    return $response->json('errors');
+ }
+
+    public function allNews($newest) {
+        $url = $this->baseUrl.'/berita/pengguna?' . http_build_query(['newest' => $newest]);
+      
+        return $this->fetchWithETag('etag_news' , $url);
+    }
+
+
+    public function selectedNews($newest) {
+        $url = $this->baseUrl.'/berita/pengguna?' . http_build_query(['selectedTopics' => 'true','newest' => $newest]);
+        return $this->fetchWithETag('etag_news' , $url);
+    }
+
+    
+    public function detailNews($kategori , $slugBerita){
+        $response = Http::withHeaders(['Accept' => 'application/json'])
+        ->get($this->baseUrl.'/berita/'.$kategori.'/' .$slugBerita);
+       
+           return $response->successful() ? $response->json('data') : $response->json('errors');
+    }
+
+    public function popularNews() {
+          $url = $this->baseUrl.'/berita/populer';
+          
+          $d =$this->fetchWithETag('etag_popular' , $url);
+          return($d);
     }
     
+    public function relatedNews($kategori) {
+
+        $url = $this->baseUrl.'/news/related/'.$kategori;
+        return $this->fetchWithETag('etag_related_' , $url,$kategori);
+
+    }
+
+    public function selectedTopics() {
+        $url = $this->baseUrl.'/berita/pengguna?' . http_build_query(['selectedTopics' => 'true']);
+        dd($url);
+       return $this->fetchWithETag('etag_topics ', $url);
+    }
 
 }
