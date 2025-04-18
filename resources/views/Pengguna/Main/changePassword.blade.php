@@ -30,26 +30,29 @@
         </div>
     @endif
 
-       <div class="header-change-password grid lg:grid-cols-3 grid-cols-1 gap-3 mb-3">
-            <div class="bg-amber-100">
-            <img src={{!empty($auth['gambar']) ? $url . '/storage/' . $auth['gambar'] : asset('assets/avatars/face-2.jpg')}}>
-            <p class="font-semibold capitalize">{{$auth['nama']}}</p>
+       <div class="header-change-password grid lg:grid-cols-2 grid-cols-1 lg:gap-0 gap-3 mb-3 px-12">
+            <div class="lg:block hidden">
+            <img src={{!empty($auth['gambar']) ? $url . '/storage/' . $auth['gambar'] : asset('assets/avatars/face-2.jpg')}} class="rounded-md w-1/2">
+            <p class="font-semibold capitalize pt-2">{{$auth['nama']}}</p>
             </div>
       
-            <div class="col-span-2 bg-amber-300">
-              <form method="POST" Action="/auth/lupa-password">
+            <div class=" ">
+              <form method="POST" Action="/auth/lupa-password" >
                 @csrf
-                <label for="email-password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">First name</label>
-                <input type="email" id="email-password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" name="email" required />
 
-                <div class="button-password m-3">
-                    <button type="submit" class="bg-[#0E7CC9] p-1 text-white">SIMPAN</button>
+                <h1 class="lg:text-3xl text-2xl lg:text-start text-center font-semibold pb-5">MASUKKAN EMAIL</h1>
+                <input type="email" id="email-password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 lg:w-1/2 w-full rounde-md" name="email" required />
+
+                <div class="button-password my-5">
+                    <button type="submit" class="bg-[#0E7CC9] py-1 px-3 text-white hover:scale-105 hover:opacity-90 transition duration-700 rounded-md">Kirim Reset Link</button>
                 </div>
              </form>
             </div>
   
 
        </div>
-
-
+       
+</div>
 @endsection
+
+

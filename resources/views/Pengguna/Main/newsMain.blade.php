@@ -105,73 +105,39 @@
     </div>
 
 
-   <div class="pt-8 mb-20" id="berita-pilihan">
-    @foreach ($topicSelected as $kategori => $beritaList)
-        <h2 class="text-2xl font-bold mb-4">{{ $kategori }}</h2>
-
-        <div class="grid lg:grid-cols-5 grid-cols-2 gap-3 mb-10">
-            @foreach ($beritaList as $berita)
-          {{-- <pre>{{ var_dump($beritaList) }}</pre> --}}
-
-                {{-- Beda tampilan tergantung kategori --}}
-                @switch($kategori)
-
-                    @case('Politik')
-                        <div class="max-w-sm bg-white border border-red-300 rounded-lg shadow">
+    <div class="pt-8 mb-20" id="berita-pilihan">
+        <h1 class="text-2xl font-semibold mb-7">TOPIK PILIHAN</h1>
+             <div class="grid lg:grid-cols-5 grid-cols-1 lg:gap-5 gap-3">
+                @foreach ($topicSelected as $kategori => $beritaList)
+                 @php
+                     $beritaUtama  = $beritaList[0] ?? null;
+                     $sisaBerita = array_slice($beritaList, 1);
+                 @endphp
+                    <div class="card-topik-pilihan">
+                        @if($beritaUtama)
+                            <figure class="relative max-w-sm cursor-pointer">
                             <a href="#">
-                                <img class="rounded-t-lg" src="{{ !empty($berita['gambar'][0]) ? $url. '/storage/' . $berita['gambar'][0]['gambar_berita'] : asset('assets/avatars/face-4.jpg') }}" alt="" />
+                                <img class="rounded-lg" src="{{$url . '/storage/' . $beritaUtama['gambar'][0]['gambar_berita'] }}" alt="image description">
                             </a>
-                            <div class="p-5">
-                                <h5 class="mb-2 text-xl font-bold">{{ $berita['judul_berita'] }}</h5>
-                                <p class="mb-3 text-sm text-gray-700">{{ $berita['deks_berita'] }}</p>
-                                <a href="#" class="text-sm text-red-600 hover:underline">Selengkapnya</a>
-                            </div>
-                        </div>
-                        @break
+                            <figcaption class="absolute px-4 text-lg text-white bottom-0 bg-black opacity-70">
+                                <p class="text-xs">{{$beritaUtama['judul_berita']}}</p>
+                            </figcaption>
+                            </figure>
 
-                    @case('Olahraga')
-                        <div class="max-w-sm bg-white border border-green-300 rounded-lg shadow">
-                            <a href="#">
-                                <img class="rounded-t-lg" src="{{ asset('assets/avatars/face-4.jpg') }}" alt="" />
-                            </a>
-                            <div class="p-5">
-                                <h5 class="mb-2 text-lg font-semibold text-green-700">{{ $berita['judul_berita'] }}</h5>
-                                <a href="#" class="text-sm text-green-500 hover:underline">Lihat detail</a>
-                            </div>
-                        </div>
-                        @break
+                        @endif
+                        <ul>
+                        @foreach ($sisaBerita as $sb)
+                            <li class="cursor-pointer"><a class="hover:text-slate-950 font-semibold">{{$sb['judul_berita']}}</a></li>
+                            <hr class="mb-3">
+                        @endforeach
+                        </ul>
+                    </div>
+                      
+                @endforeach
+             </div>
 
-                    @case('Ekonomi')
-                        <div class="max-w-sm bg-yellow-50 border border-yellow-300 rounded-lg shadow">
-                            <div class="p-5">
-                                <h5 class="mb-2 text-lg font-semibold">{{ $berita['judul_berita'] }}</h5>
-                                <p class="text-sm">{{ Str::limit($berita['deks_berita'], 100) }}</p>
-                            </div>
-                        </div>
-                        @break
+    </div>
 
-                    @default
-                        {{-- Default card --}}
-                        <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm">
-                            <a href="#">
-                                <img class="rounded-t-lg" src="{{ asset('assets/avatars/face-4.jpg') }}" alt="" />
-                            </a>
-                            <div class="p-5">
-                                <h5 class="mb-2 text-xl font-bold tracking-tight">{{ $berita['judul_berita'] }}</h5>
-                                <p class="mb-3 font-normal">{{ Str::limit($berita['deks_berita'], 100) }}</p>
-                                <a href="#" class="inline-flex items-center px-3 py-2 text-sm font-medium text-white bg-blue-700 rounded-lg hover:bg-blue-800">
-                                    Read more
-                                    <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
-                                    </svg>
-                                </a>
-                            </div>
-                        </div>
-                @endswitch
-            @endforeach
-        </div>
-    @endforeach
-</div>
 
 
     <div class=" pt-8 mb-20" id="berita-terpopuler-weeks">

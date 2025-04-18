@@ -19,7 +19,6 @@ class NewsController extends Controller
         $this->news = $newsResponse;
 
         $this->selectedTopics = collect($this->newsService->selectedNews($newest)['data']['data'])->groupBy('kategori_berita')->toArray();
-
      
     }
 

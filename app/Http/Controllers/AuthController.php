@@ -165,6 +165,7 @@ class AuthController extends Controller
                 'token' => $token,
                 'auth' => $authCheck,
                 'jurnalis' => $authCheck,
+                'url' => config('services.api_url'),
             ];
 
            if(isset($this->authAdmin)) {

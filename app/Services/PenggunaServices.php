@@ -45,6 +45,29 @@ class PenggunaServices
         return $response->successful() ? $response->json('data') : $response->json('errors');
     }
 
+
+    public function updateData(Request $request, $slugPengguna) {
+        $httpRequest = Http::withHeaders([
+            'Authorization' => 'Bearer ' . $this->token
+        ])->asMultipart();
+
+        if($request->hasFile('gambar')) {
+            $httpRequest->attach(
+                'gambar', file_get_contents($request->file('gambar')->getRealPath()),
+                $request->file('gambar')->getClientOriginalName()
+            );
+        }
+        
+        $response = $httpRequest->post($this->baseUrl.'/pengguna/'.$slugPengguna , [
+            'nama' => $request->nama,
+            'alamat' => $request->alamat,
+            'pendidikan_terakhir' => $request->pendidikan_terakhir,
+            'pekerjaan' => $request->pekerjaan,
+        ]);
+        dd($response->json());
+        return $response->successful() ? $response->json('data') : $response->json('errors');
+    }
+
     public function sendEmail(Request $request){
         $response = Http::withHeaders([
             'Authorization' => 'Beaerer ' . $this->token
@@ -121,7 +144,11 @@ class PenggunaServices
             'Authorization' => "Bearer ".$this->token
         ])->get($this->baseUrl.'/pengguna/saatIni');
         
-        return $response->successful() ? $response->json('data') : null;
+        return $response->successful() ? [
+           'data' =>$response->json('data'),
+           'url' => config('services.api_url'),
+
+        ] : null;
     }
    
 }

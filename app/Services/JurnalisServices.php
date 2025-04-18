@@ -104,7 +104,6 @@ class JurnalisServices
 
     public function updateNews(Request $request , $slugBerita)
     {
-   
        $httpRequest = Http::withHeaders([
         'Authorization' => 'Bearer ' . $this->token
     ])->asMultipart();

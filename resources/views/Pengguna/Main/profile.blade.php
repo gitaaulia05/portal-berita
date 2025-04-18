@@ -35,7 +35,7 @@
         <div class="col-span-2">
             <div class="profile-header" id="first-profile">
                 <img src={{asset('assets/avatars/face-2.jpg')}} class="rounded-md">
-                <h1 class="capitalize py-2">{{$auth['nama']}}</h1>
+                <h1 class="capitalize py-2">{{$auth['data']['nama']}}</h1>
                 <a href="/profile/ganti-password" class="bg-[#C95C66] opacity-75 rounded-md px-1 py-1 w-fit text-white cursor-pointer text-md hover:opacity-100 ">Ganti password</a>
             </div>
 
@@ -47,7 +47,7 @@
                     </svg>
                     </span>
                     <p class="text-md font-semibold">Detail Akun</p>
-                     <a href="/" class="text-sm ms-10 bg-blue-300 rounded-md px-2 hover:scale-95 transition duration-700">Update Informasi Akun</a>
+                     <a href="/profile/ubah-data/{{$auth['data']['slug']}}" class="text-sm ms-10 bg-blue-300 rounded-md px-2 hover:scale-95 transition duration-700">Update Informasi Akun</a>
                 </div>
 
                 <div class="info-akun" id="primary-info">
@@ -59,9 +59,9 @@
                         </div>
 
                         <div class="font-medium">
-                        <p class="text-[#8DADF2] ">{{$auth['email']}}</p>
-                        <p class="{{empty($auth['pekerjaan']) ? 'text-[#C95C66]' : 'text-[#8DADF2]'}} "> {{!empty($auth['pekerjaan']) ? $auth['pekerjaan'] : 'Lengkapi Pekerjaan Anda'}}</p>
-                        <p class="{{empty($auth['alamat']) ? 'text-[#C95C66]' : 'text-[#8DADF2]'}}">{{!empty($auth['alamat']) ? $auth['alamat'] : 'Lengkapi Alamat Anda'}}</p>
+                        <p class="text-[#8DADF2] ">{{$auth['data']['email']}}</p>
+                        <p class="{{empty($auth['data']['pekerjaan']) ? 'text-[#C95C66]' : 'text-[#8DADF2]'}} "> {{!empty($auth['data']['pekerjaan']) ? $auth['data']['pekerjaan'] : 'Lengkapi Pekerjaan Anda'}}</p>
+                        <p class="{{empty($auth['data']['alamat']) ? 'text-[#C95C66]' : 'text-[#8DADF2]'}}">{{!empty($auth['data']['alamat']) ? $auth['data']['alamat'] : 'Lengkapi Alamat Anda'}}</p>
                         </div>
                     </div>
                 </div>

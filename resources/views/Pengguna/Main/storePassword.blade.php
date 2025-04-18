@@ -30,25 +30,43 @@
         </div>
     @endif
 
-       <div class="header-change-password grid lg:grid-cols-3 grid-cols-1 gap-3 mb-3">
-            <div class="bg-amber-100">
-            <img src={{!empty($auth['gambar']) ? $url . '/storage/' . $auth['gambar'] : asset('assets/avatars/face-2.jpg')}}>
-            <p class="font-semibold capitalize">{{$auth['nama']}}</p>
+       <div class="header-change-password grid lg:grid-cols-3 grid-cols-1 gap-5 mb-3">
+          <div class="header-images lg:block hidden">
+            <img src={{!empty($auth['data']['gambar']) ? $auth['url'] . '/storage/' . $auth['data']['gambar'] : asset('assets/avatars/face-1.jpg')}} class="rounded-md w-md">
+            <p class="font-semibold capitalize pt-4">{{$auth['data']['nama']}}</p>
             </div>
       
-            <div class="col-span-2 bg-amber-300">
+            <div class="col-span-2 mx-auto">
               <form method="POST" Action="/auth/store-newPassword/{{$token}}">
                 @csrf
                 @method('PATCH')
-                <label for="password1" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password 1</label>
-                <input type="password" id="password1" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" name="password" required />
+                <div class="flex flex-row justify-between">
+                     <label for="password1" class="block my-3 text-sm font-medium text-gray-900">Password Baru</label>
+                       <span class="flex flex-row gap-2 pt-2 cursor-pointer " id="eyeslash1" onclick="toogleColor(this, 'password1' , 'showEyelash1')">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 0 0 1.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.451 10.451 0 0 1 12 4.5c4.756 0 8.773 3.162 10.065 7.498a10.522 10.522 0 0 1-4.293 5.774M6.228 6.228 3 3m3.228 3.228 3.65 3.65m7.894 7.894L21 21m-3.228-3.228-3.65-3.65m0 0a3 3 0 1 0-4.243-4.243m4.242 4.242L9.88 9.88" />
+                        </svg>
+                        <span id="showEyelash1">Show</span>
+                    </span>
+                </div>
 
-                <label for="password2" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password 1</label>
-                <input type="password" id="password2" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" name="password_confirmation" required />
+                <input type="password" id="password1" class="bg-white border border-gray-300 text-gray-900 text-sm rounded-2xl focus:ring-blue-500 focus:border-blue-500 block lg:w-xs w-full p-2.5" name="password" required />
+
+                                <div class="flex flex-row justify-between">
+                     <label for="password2" class="block my-3 text-sm font-medium text-gray-900">Konfirmasi Password Baru</label>
+                       <span class="flex flex-row gap-2 pt-2 cursor-pointer " id="eyeslash2" onclick="toogleColor(this, 'password2', 'showEyelash2')">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 0 0 1.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.451 10.451 0 0 1 12 4.5c4.756 0 8.773 3.162 10.065 7.498a10.522 10.522 0 0 1-4.293 5.774M6.228 6.228 3 3m3.228 3.228 3.65 3.65m7.894 7.894L21 21m-3.228-3.228-3.65-3.65m0 0a3 3 0 1 0-4.243-4.243m4.242 4.242L9.88 9.88" />
+                        </svg>
+                        <span id="showEyelash2">Show</span>
+                    </span>
+                </div>
+              
+                <input type="password" id="password2" class="bg-white border border-gray-300 text-gray-900 text-sm rounded-2xl focus:ring-blue-500 focus:border-blue-500 block lg:w-xs w-full p-2.5" name="password_confirmation" required />
 
 
-                <div class="button-password m-3">
-                    <button type="submit" class="bg-[#0E7CC9] p-1 text-white">SIMPAN</button>
+                <div class="button-password my-5">
+                    <button type="submit" class="bg-[#0E7CC9] py-1 px-3 text-white hover:scale-105 hover:opacity-90 transition duration-700 rounded-md lg:w-fit w-full">SIMPAN</button>
                 </div>
              </form>
             </div>
@@ -56,5 +74,21 @@
 
        </div>
 
-
+</div>
 @endsection
+
+
+    @section('scripts')
+    <script>
+        const eyelashState = {};
+            function toogleColor(element, idInput) {
+            eyelashState[idInput] = !eyelashState[idInput];
+
+             element.classList.toggle("text-[#0E7CC9]");
+             element.classList.toggle("fill-[#0E7CC9]");
+             console.log(idInput);
+             const pass1 = document.getElementById(idInput);
+                pass1.type =eyelashState[idInput] ? 'text' : 'password'
+            }
+    </script>
+    @endsection

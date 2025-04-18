@@ -66,9 +66,13 @@ Route::get('/berita/{kategori}/{slugberita}',[NewsController::class , 'detailNew
             dd(phpinfo());
         });
         Route::get('/profile/pengguna' , [PenggunaController::class, 'index']);
-        Route::get('/profile/ubah-data' ,[PenggunaController::class, 'update']);
-        Route::post('/profile/storeUpdate' ,[PenggunaController::class, 'updateStore']);
+        
+        // ubah data dasar pengguna
+        Route::get('/profile/ubah-data/{slugPengguna}' ,[PenggunaController::class, 'update']);
+        Route::post('/profile/storeUpdate/{slugPengguna}' ,[PenggunaController::class, 'updateStore']);
 
+
+        // ubah password
         Route::get('/profile/ganti-password' , [PenggunaController::class, 'updatePassword']);
 
         Route::delete('/logout' , [AuthController::class, 'logout']);
