@@ -18,6 +18,7 @@ use App\Http\Middleware\ActiveJurnalisMiddleware;
 // TestTest1&
 Route::get('/',[NewsController::class , 'index']);
 Route::get('/berita/{kategori}/{slugberita}',[NewsController::class , 'detailNews']);
+Route::get('/bagikanTautan' , [NewsController::class, 'shareNews']);
 
     Route::middleware(LoginMiddleware::class)->group(function () {
                 // AUTH USER
@@ -71,10 +72,13 @@ Route::get('/berita/{kategori}/{slugberita}',[NewsController::class , 'detailNew
         Route::get('/profile/ubah-data/{slugPengguna}' ,[PenggunaController::class, 'update']);
         Route::post('/profile/storeUpdate/{slugPengguna}' ,[PenggunaController::class, 'updateStore']);
 
-
-        // ubah password
+         // ubah password
         Route::get('/profile/ganti-password' , [PenggunaController::class, 'updatePassword']);
 
+        //simpan Berita
+        Route::post('/profile/saveNews/{kategori}/{slugBerita}',[PenggunaController::class, 'saveNews']);
+        Route::delete('/profile/deleteSaveNews/{kategori}/{slugBerita}',[PenggunaController::class, 'deleteNews']);
+    
         Route::delete('/logout' , [AuthController::class, 'logout']);
 
     });

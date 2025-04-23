@@ -45,4 +45,24 @@ class PenggunaController extends Controller
             'url' => config('services.api_url'),
         ]);
     }
+
+    public function saveNews(Request $request, $kategori, $slugBerita){
+        $response = $this->penggunaService->saveNews($request, $slugBerita);
+        if($response){
+            return redirect('/berita/'. $kategori.'/'.$slugBerita)->with('toast-sucess' , $response);
+        } else {
+            return redirect('/berita/'. $kategori.'/'.$slugBerita)->with('toast-erorr' , $response['message']);
+        }
+    }
+
+    public function deleteNews(Request $request, $kategori, $slugBerita){
+        $response = $this->penggunaService->deleteNews($request, $slugBerita);
+        if($response){
+            return redirect('/berita/'. $kategori.'/'.$slugBerita)->with('toast-sucess' , $response);
+        } else {
+            return redirect('/berita/'. $kategori.'/'.$slugBerita)->with('toast-erorr' , $response['message']);
+        }
+    }
+
+    
 }

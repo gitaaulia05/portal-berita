@@ -3,6 +3,8 @@ namespace App\Services;
 
 use Log;
 use GuzzleHttp\Client;
+use GuzzleHttp\Promise\Utils;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
@@ -71,6 +73,7 @@ class NewsServices
 
     public function selectedNews($newest) {
         $url = $this->baseUrl.'/berita/pengguna?' . http_build_query(['selectedTopics' => 'true','newest' => $newest]);
+        //dd($url);
         return $this->fetchWithETag('etag_news' , $url);
     }
 
@@ -98,8 +101,61 @@ class NewsServices
 
     public function selectedTopics() {
         $url = $this->baseUrl.'/berita/pengguna?' . http_build_query(['selectedTopics' => 'true']);
-        dd($url);
        return $this->fetchWithETag('etag_topics ', $url);
     }
 
+    public function allNewsPopularAndTopics($newest) {
+        $client = new Client();
+        $urlAll = $this->baseUrl.'/berita/pengguna?' . http_build_query(['newest' => $newest]);
+        $urlPopular = $this->baseUrl.'/berita/populer';
+        $urlSelected = $this->baseUrl.'/berita/pengguna?' . http_build_query(['selectedTopics' => 'true']);
+    
+        // Ambil ETag dari cache
+        $etagAll = cache('etag_news');
+        $etagPopular = cache('etag_popular');
+        $etagTopics = cache('etag_topics');
+
+        
+    $promises = [
+        'allNews' => $client->getAsync($urlAll, [
+            'headers' => $etagAll ? ['If-None-Match' => $etagAll] : []
+        ]),
+        'popularNews' => $client->getAsync($urlPopular, [
+            'headers' => $etagPopular ? ['If-None-Match' => $etagPopular] : []
+        ]),
+        'selectedTopics' => $client->getAsync($urlSelected, [
+            'headers' => $etagTopics ? ['If-None-Match' => $etagTopics] : []
+        ]),
+    ];
+
+    $responses = Utils::settle($promises)->wait();
+
+    $results = [];
+
+    foreach ($responses as $key => $response) {
+        $cacheKey = match($key) {
+            'allNews' => 'etag_news',
+            'popularNews' => 'etag_popular',
+            'selectedTopics' => 'etag_topics',
+        };
+
+        if ($response['state'] === 'fulfilled') {
+            $res = $response['value'];
+            $etag = $res->getHeaderLine('ETag');
+            $data = json_decode($res->getBody(), true)['data'] ?? [];
+
+            cache([
+                $cacheKey => $etag,
+                $cacheKey . '_data' => $data,
+            ]);
+
+            $results[$key] = $data;
+        } else {
+            $results[$key] = cache($cacheKey . '_data');
+        }
+    }
+
+    return $results;
+
+    }
 }

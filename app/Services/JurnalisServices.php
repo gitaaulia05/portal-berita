@@ -15,7 +15,7 @@ class JurnalisServices
 
 
     public function __construct(){
-        $this->baseUrl = config('services.api_base_url');;
+        $this->baseUrl = config('services.api_base_url');
        # $this->urlMain = "http://127.0.0.1:8000/";
         $this->urlMain =config('services.api_url');;
         $this->token = session('Authorization');

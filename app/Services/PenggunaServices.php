@@ -150,5 +150,38 @@ class PenggunaServices
 
         ] : null;
     }
+
+    public function searchSaveNews($judul_berita =null){
+            $params=[];
+
+            if(!empty($judul_berita)){
+                $params['judul_berita'] = $judul_berita;
+            }
+
+            $response = Http::withHeaders([
+                'Authorization' => 'Bearer ' . $this->token
+            ])->get($this->baseUrl.'/pengguna/simpanBerita', $params);
+
+            return $response->successful() ? $response->json('data') : null;
+    }
+
+
+    public function saveNews(Request $request, $slugBerita) 
+    {
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer ' . $this->token
+        ])->post($this->baseUrl.'/pengguna/simpanBerita/'. $slugBerita);
+       
+        return $response->successful() ? $response->json('data') : $response->json('errors');
+    }
+
+    public function deleteNews(Request $request, $slugBerita) 
+    {
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer ' . $this->token
+        ])->delete($this->baseUrl.'/pengguna/hapusSimpanBerita/'. $slugBerita);
+       
+        return $response->successful() ? $response->json('data') : $response->json('errors');
+    }
    
 }

@@ -34,12 +34,12 @@
     <div class="main-content grid lg:grid-cols-5 grid-cols-1 lg:gap-4 gap-3 pb-8" id="main-section">
         <div class="col-span-2">
             <div class="profile-header" id="first-profile">
-                <img src={{asset('assets/avatars/face-2.jpg')}} class="rounded-md">
+                <img src={{asset('assets/avatars/face-1.jpg')}} class="rounded-md">
                 <h1 class="capitalize py-2">{{$auth['data']['nama']}}</h1>
                 <a href="/profile/ganti-password" class="bg-[#C95C66] opacity-75 rounded-md px-1 py-1 w-fit text-white cursor-pointer text-md hover:opacity-100 ">Ganti password</a>
             </div>
 
-            <div class="detail-akun" id="account-detail">
+            <div class="detail-akun cursor-default" id="account-detail">
                 <div class="flex flex-row gap-2 pt-3" id="text-akun">
                     <span class="my-auto" id="logo">
                     <svg class="w-4 h-4 text-[#B7B7B7] border-2 rounded-full" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 8 14">
@@ -74,6 +74,7 @@
                     </span>
                     <p class="text-md font-semibold">Alamat</p>
                 </div>
+
                 <div class="info-akun" id="primary-info">
                                 <div class="flex flex-row gap-4 pt-2">
                                     <div class="text-[#9E9E9E]">
@@ -89,9 +90,11 @@
 
                     </div>
 
-                    <div class="berita-tersimpan col-span-3 bg-amber-800" id="save-news">
-                        <h1>hmm</h1>
+                    <div class="berita-tersimpan col-span-3 " id="save-news">
+                            @livewire('save-news')
+
                     </div>
+
                 </div>
    
 

@@ -2,6 +2,7 @@
 
 @section('container-main')
 
+{{-- @dd($headerNews) --}}
 
     <div class="lg:grid lg:grid-cols-3 gap-4 lg:max-h-fit overflow-auto" id="header-top">
 
@@ -13,7 +14,7 @@
                 <!-- Item 1 -->
                 <div class="hidden duration-700 ease-in-out" data-carousel-item>
 
-                    <img src="{{ $hn['gambar'][0]['gambar_berita'] ?$url.'/storage/'.$hn['gambar'][0]['gambar_berita'] : asset('assets/images/bpd.png')}}" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
+                    <img src="{{ $hn['gambar'][0]['gambar_berita'] ? $url.'/storage/'.$hn['gambar'][0]['gambar_berita'] : asset('assets/images/bpd.png')}}" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
                     <div class="caraousel-caption  relative mb-3">
                         <div class="lg:max-w-2xs max-w-[10rem] overflow-auto lg:max-h-[20rem] max-h-[10rem] p-6 absolute left-5 lg:top-15 top-4  bg-white border border-gray-200 rounded-lg shadow-sm">
                             <a href="#">
@@ -99,7 +100,6 @@
                 </div>
             </div> 
         @endforeach
-
         </div>
 
     </div>
@@ -117,7 +117,7 @@
                         @if($beritaUtama)
                             <figure class="relative max-w-sm cursor-pointer">
                             <a href="#">
-                                <img class="rounded-lg" src="{{$url . '/storage/' . $beritaUtama['gambar'][0]['gambar_berita'] }}" alt="image description">
+                                {{-- <img class="rounded-lg" src="{{$url . '/storage/' . $beritaUtama['gambar'][0]['gambar_berita'] }}" alt="image description"> --}}
                             </a>
                             <figcaption class="absolute px-4 text-lg text-white bottom-0 bg-black opacity-70">
                                 <p class="text-xs">{{$beritaUtama['judul_berita']}}</p>
