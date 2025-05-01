@@ -2,9 +2,9 @@
    <div class="col-md-12 my-4">
 
                   <h2 class="h4 mb-1">Tabel Berita</h2>
-                  @if(session()->has('message-success'))
-                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                      <strong class="text-center">{{session('message-success')}}</strong> 
+                  @if(session()->has('message-success') || session()->has('message-error'))
+                     <div class="alert {{ session()->has('message-success')? 'alert-success' : 'alert-danger '}} alert-dismissible fade show" role="alert">
+                      <strong class="text-center">{{session('message-success') ?? session('message-error') }}</strong> 
                       <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                       </button>
@@ -16,27 +16,16 @@
                       <div class="toolbar">
                         <form class="form">
                           <div class="form-row">
-                            <div class="form-group col-auto mr-auto">
-                              <label class="my-1 mr-2 sr-only" for="inlineFormCustomSelectPref1">Show</label>
-                              <select class="custom-select mr-sm-2" id="inlineFormCustomSelectPref1">
-                                <option value="">...</option>
-                                <option value="1">12</option>
-                                <option value="2" selected>32</option>
-                                <option value="3">64</option>
-                                <option value="3">128</option>
-                              </select>
-                            </div>
-
                             <div class="form-group col-auto">
-                                <div class="bg-primary opacity-50 text-white h-75 rounded-sm" wire:click="toogleTayang" style="cursor: pointer;">
+                                <div class="bg-primary opacity-50 text-white h-75 rounded-sm" wire:click="toogleTayang" style="cursor: pointer; background-color: {{ $is_trash === 1 ? '#3D7EFF' : '#1b68ff' }};">
                                   <p class="mx-2 pt-2">Berita Tayang</p>
                                 </div>
                             </div>
 
                                 <div class="form-group col-auto">
-                            <div class="bg-danger text-white h-75 rounded-sm" wire:click="toogleSoftDelete" style="cursor: pointer;">
-                               <p class="mx-2 pt-2">Berita Dihapus</p>
-                            </div>
+                                  <div class=" text-white h-75 rounded-sm" wire:click="toogleSoftDelete" style="cursor: pointer;    background-color: {{ $is_trash === 2 ? '#ED6370' : '#dc3545' }};">
+                                    <p class="mx-2 pt-2">Berita Dihapus</p>
+                                  </div>
                               </div>
 
                             <div class="form-group col-auto">
@@ -71,7 +60,7 @@
                              <small class="text-muted">{{$b['judul_berita']}}</small>
                             </td>
                             <td>
-                             <p>{{$b['kategori_berita'][0]['kategori']}}</p>
+                             <p>{{$b['kategori_berita']}}</p>
                             </td>
                             <td>  
 
@@ -85,12 +74,15 @@
                               <div class="dropdown-menu dropdown-menu-right">
                                 <a class="dropdown-item" href="/ubah-berita/{{$b['slug']}}" wire:navigate>Edit</a>
                                 @if ($b['is_tayang'] == 1)
-                                   <a class="dropdown-item" data-toggle="modal" data-target="#softDelete{{ $b['slug']}}">Hapus Dalam 30 Hari</a>
+                                   <a class="dropdown-item" data-toggle="modal" data-target="#softDelete{{ $b['slug']}}" style="cursor: auto;">Hapus Dalam 30 Hari</a>
                                 @endif
 
                                 @if ($b['is_tayang'] == 2)
-                                   <a class="dropdown-item" wire:click="restore('{{$b['slug']}}')">Restore Berita</a>
-                                   <a class="dropdown-item"  data-toggle="modal" data-target="#Delete{{ $b['slug']}}" href="#">Hapus Berita</a>
+                                    <form action="/berita/restore/{{ $b['slug'] }}" method="POST">
+                                      @csrf
+                                      <button type="submit" class="dropdown-item">Restore Berita</button>
+                                    </form>
+                                   <a class="dropdown-item" data-toggle="modal" data-target="#Delete{{ $b['slug']}}" href="#" style="cursor: auto;">Hapus Berita</a>
                                 @endif
                                
                               </div>
@@ -111,8 +103,22 @@
                                               <p>Item Akan dihapus dan dapat di <bold>RECOVERY</bold> Dalam 30 Hari</p>
                                             </div>
                                             <div class="modal-footer">
-                                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-                                              <a wire:click="softDelete('{{$b['slug']}}')" class="btn btn-primary">Ya Hapus {{ $b['slug'] }}</a>
+                                              <button type="button" class="btn btn-secondary"  data-dismiss="modal">Tutup</button>
+                                              <form action="/berita/softHapus/{{ $b['slug'] }}" method="POST">
+                                                @csrf
+                                                <button class="btn btn-primary text-white" type="submit"> 
+                                              {{-- Teks tombol normal, tersembunyi saat loading --}}
+                                              <span wire:loading.remove wire:target="delete('{{ $b['slug'] }}')">
+                                                  Ya, Hapus {{ $b['slug'] }}
+                                              </span>
+                                          
+                                              {{-- Spinner + teks loading, hanya tampil saat aksi delete dipanggil --}}
+                                              <span wire:loading wire:target="delete('{{ $b['slug'] }}')">
+                                                  <i class="spinner-border spinner-border-sm"></i>
+                                                  Menghapus...
+                                              </span>
+                                            </button>
+                                          </form>
                                             </div>
                                           </div>
                                         </div>
@@ -132,8 +138,11 @@
                                               <p>Item Akan dihapus dan <bold>Tidak Dapat di Recovery</bold></p>
                                             </div>
                                             <div class="modal-footer">
-                                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-                                              <a wire:click="delete('{{$b['slug']}}')" class="btn btn-primary">Ya Hapus {{ $b['slug'] }}</a>
+                                              <button type="button" class="btn btn-secondary text-white" data-dismiss="modal">Tutup</button>
+                                              <form action="/berita/delete/{{ $b['slug'] }}" method="POST">
+                                                @csrf
+                                               <button class="btn btn-primary text-white" type="submit">Ya, Hapus {{$b['judul_berita']}}</button>
+                                              </form>
                                             </div>
                                           </div>
                                         </div>

@@ -9,27 +9,28 @@
         <div id="controls-carousel col-span-2 z-[-999]" class="relative w-full col-span-2" data-carousel="static">
             <!-- Carousel wrapper -->
             <div class="relative h-56 overflow-hidden rounded-lg md:h-96">
-             @foreach ($headerNews as $hn)
+             @if (!empty($headerNews))
+                    @foreach ($headerNews as $hn)
+                        <!-- Item 1 -->
+                        <div class="hidden duration-700 ease-in-out" data-carousel-item>
 
-                <!-- Item 1 -->
-                <div class="hidden duration-700 ease-in-out" data-carousel-item>
-
-                    <img src="{{ $hn['gambar'][0]['gambar_berita'] ? $url.'/storage/'.$hn['gambar'][0]['gambar_berita'] : asset('assets/images/bpd.png')}}" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
-                    <div class="caraousel-caption  relative mb-3">
-                        <div class="lg:max-w-2xs max-w-[10rem] overflow-auto lg:max-h-[20rem] max-h-[10rem] p-6 absolute left-5 lg:top-15 top-4  bg-white border border-gray-200 rounded-lg shadow-sm">
-                            <a href="#">
-                                <h5 class="mb-2 lg:text-lg text-2xs font-bold tracking-tight text-gray-900 ">{{$hn['judul_berita']}}</h5>
-                            </a>
-                            <p class="mb-3 font-normal text-gray-700 lg:text-sm text-[0.50rem]"> {{ \Illuminate\Support\Str::words($hn['deks_berita'], 10) }} <span class="text-[#B03440]">{{$hn['updated_at']}}</span></p>
-                            <a href="/berita/{{$hn['kategori_berita']}}/{{$hn['slug']}}" class="inline-flex items-center px-3 py-2 lg:text-sm text-[0.60rem] font-medium text-center text-white bg-[#C95C66] rounded-lg hover:bg-opacity-25 focus:ring-4 focus:outline-none focus:ring-blue-30">
-                                Baca Selengkapnya
-                            </a>
+                            <img src="{{ $hn['gambar'][0]['gambar_berita'] ? $url.'/storage/'.$hn['gambar'][0]['gambar_berita'] : asset('assets/images/bpd.png')}}" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
+                            <div class="caraousel-caption  relative mb-3">
+                                <div class="lg:max-w-2xs max-w-[10rem] overflow-auto lg:max-h-[20rem] max-h-[10rem] p-6 absolute left-5 lg:top-15 top-4  bg-white border border-gray-200 rounded-lg shadow-sm">
+                                    <a href="#">
+                                        <h5 class="mb-2 lg:text-lg text-2xs font-bold tracking-tight text-gray-900 ">{{$hn['judul_berita']}}</h5>
+                                    </a>
+                                    <p class="mb-3 font-normal text-gray-700 lg:text-sm text-[0.50rem]"> {{ \Illuminate\Support\Str::words($hn['deks_berita'], 10) }} <span class="text-[#B03440]">{{$hn['updated_at']}}</span></p>
+                                    <a href="/berita/{{$hn['kategori_berita']}}/{{$hn['slug']}}" class="inline-flex items-center px-3 py-2 lg:text-sm text-[0.60rem] font-medium text-center text-white bg-[#C95C66] rounded-lg hover:bg-opacity-25 focus:ring-4 focus:outline-none focus:ring-blue-30">
+                                        Baca Selengkapnya
+                                    </a>
+                                </div>
+                            
+                            </div>
                         </div>
-                       
-                    </div>
-                </div>
 
-             @endforeach
+                    @endforeach
+                @endif
             </div>
             <!-- Slider controls -->
             <button type="button" class="absolute top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-prev>
@@ -51,6 +52,7 @@
         </div>
 
         <div class="card-news-top-news lg:mt-0 mt-3">
+            @if(!empty($sideNews))
                @foreach ($sideNews as $sn)
                  <div class="grid grid-cols-3 max-h-36  gap-1 pb-5">
         
@@ -77,7 +79,8 @@
                   
                 {{-- END COLS GRID --}}
                 </div>
-            @endforeach
+                 @endforeach
+            @endif
             {{-- END GRID NEWS --}}
             <div>
             </div>
@@ -91,15 +94,17 @@
         <h1 class="pb-3 font-medium text-3xl">Berita Terbaru</h1>
 
         <div class="card-new-news grid lg:grid-cols-4 grid-cols-2 lg:gap-5 gap-2 pt-2">
-        @foreach ($newNews as $nn)
-            <div class="header-card-content cursor-pointer">
-                <img src="{{$url . '/storage/' . $nn['gambar'][0]['gambar_berita']}}" class="rounded-lg hover:opacity-50 transition duration-700">
-                <p>{{$sn['judul_berita']}} <a href="/berita/{{$nn['kategori_berita']}}/{{$nn['slug']}}" class="text-[#C95C66] hover:text-[#B03440]">Baca Selengkapnya</a></p>
-                <div class="text-footer">
-                    <p class="font-semibold text-[#C95C66] pt-1">{{$sn['kategori_berita']}}</p>
-                </div>
-            </div> 
-        @endforeach
+        @if (!empty($newNews))
+            @foreach ($newNews as $nn)
+                <div class="header-card-content cursor-pointer">
+                    <img src="{{$url . '/storage/' . $nn['gambar'][0]['gambar_berita']}}" class="rounded-lg hover:opacity-50 transition duration-700">
+                    <p>{{$sn['judul_berita']}} <a href="/berita/{{$nn['kategori_berita']}}/{{$nn['slug']}}" class="text-[#C95C66] hover:text-[#B03440]">Baca Selengkapnya</a></p>
+                    <div class="text-footer">
+                        <p class="font-semibold text-[#C95C66] pt-1">{{$sn['kategori_berita']}}</p>
+                    </div>
+                </div> 
+            @endforeach
+        @endif
         </div>
 
     </div>
@@ -140,7 +145,7 @@
 
 
 
-    <div class=" pt-8 mb-20" id="berita-terpopuler-weeks">
+    {{-- <div class=" pt-8 mb-20" id="berita-terpopuler-weeks">
         <h1 class="pb-3 font-bold text-3xl">BERITA TERPOPLER MINGGU INI</h1>
 
             <div class="card-new-news grid lg:grid-cols-4 grid-cols-2 gap-2 pt-2">
@@ -157,5 +162,5 @@
                  @endforeach
             </div>
         
-    </div>
+    </div> --}}
 @endsection

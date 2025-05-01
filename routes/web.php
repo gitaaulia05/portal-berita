@@ -18,6 +18,7 @@ use App\Http\Middleware\ActiveJurnalisMiddleware;
 // TestTest1&
 Route::get('/',[NewsController::class , 'index']);
 Route::get('/berita/{kategori}/{slugberita}',[NewsController::class , 'detailNews']);
+Route::get('/berita/{kategori}',[NewsController::class , 'header']);
 Route::get('/bagikanTautan' , [NewsController::class, 'shareNews']);
 
     Route::middleware(LoginMiddleware::class)->group(function () {
@@ -92,6 +93,8 @@ Route::get('/bagikanTautan' , [NewsController::class, 'shareNews']);
         Route::get('/akun-jurnalis' , [AdministratorController::class , 'dataJurnalis']);
         Route::get('/akun-jurnalis/{slugJurnalis}' , [AdministratorController::class , 'detailJurnalis']);
         Route::post('/aktif-akun/{slugJurnalis}' , [AdministratorController::class , 'activeJurnalis']);
+        Route::get('/kelola-berita' , [AdministratorController::class , 'kelolaBerita']);
+
     });
 
     Route::get('/register-jurnalis' , [JurnalisController::class, 'register']);
@@ -103,14 +106,17 @@ Route::get('/bagikanTautan' , [NewsController::class, 'shareNews']);
         Route::get('/jurnalis/profile' , [JurnalisController::class, 'profile'])->name('jurnalis-profile');
         Route::get('/jurnalis/update-profile/{slugAdmin}' , [JurnalisController::class, 'updateProfile'])->name('jurnalis-update');
         Route::post('/jurnalis/simpan-update-profile/{slugAdmin}' , [JurnalisController::class, 'storeProfile'])->name('jurnalis-update');
-        
-        Route::middleware(ActiveJurnalisMiddleware::class)->group(function () {
+
+});
+
+    Route::middleware(ActiveJurnalisMiddleware::class)->group(function () {
         Route::get('/tambah-berita',  [JurnalisController::class, 'tambahBerita']);
         Route::post('/simpan-berita' ,  [JurnalisController::class, 'storeNews']);
-        Route::get('/berita/softHapus/{slugberita}' , [JurnalisController::class, 'softDelete'])->name('berita.softHapus');
-        Route::get('/berita/restore/{slugberita}' , [JurnalisController::class, 'restore']);
+        Route::post('/berita/softHapus/{slugberita}' , [JurnalisController::class, 'softDelete'])->name('berita.softHapus');
+        Route::post('/berita/restore/{slugberita}' , [JurnalisController::class, 'restore']);
+        Route::post('/berita/delete/{slugberita}' , [JurnalisController::class, 'delete']);
         Route::get('/ubah-berita/{slugBerita}' , [JurnalisController::class, 'update']);
         Route::post('/update-berita/{slugBerita}' , [JurnalisController::class, 'updateNews']);
+        Route::get('/beritaAdmin/{kategori}/{slugBerita}' , [AdministratorController::class, 'detailNews']);
 
         });
-    });

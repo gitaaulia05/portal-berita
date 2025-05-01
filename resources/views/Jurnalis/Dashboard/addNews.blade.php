@@ -21,41 +21,107 @@
         </div>
           @endif  
           
-                        <div class="form-row">
-                          <div class="form-group col-md-6">
-                            <label for="gambar_utama">Gambar Utama</label>
-                            <input type="file" name="gambar" class="form-control" id="gambar_utama">
-
-                             <label for="deks_gambar" class="pt-3">Deksripsi Gambar Utama</label>
-                            <input type="text" name="keterangan_gambar" class="form-control w-20" id="deks_gambar" required>
-                          </div>
-                               <div class="form-group col-md-6">
-                            <label for="deks_gambar">Gambar Tambahan</label>
-                            <input type="file" name="gambar2" class="form-control" id="deks_gambar">
-
-                            <label for="deks_gambar2" class="pt-3">Deksripsi Gambar Tambahan</label>
-                            <input type="text" name="keterangan_gambar2" class="form-control" id="deks_gambar2" required>
-                          </div>
-                        </div>
-                        <div class="form-group">
-                          <label for="inputAddress">Judul Berita</label>
-                          <input type="text" name="judul_berita" class="form-control" id="inputAddress5" required>
-                        </div>
-                        <div class="form-group">
-                          <label for="inputAddress2">Deksripsi Berita</label>
-                          <textarea  name="deks_berita" class="form-control" row="7" cols="50" id="inputAddress6" required></textarea>
-                        </div>
-
-                           <div class="form-group">
-                          <label for="inputState">Kategori Berita</label>
-                          <select id="inputState" name="kategori" class="form-control">
-                            <option value="Ekonomi" selected>Ekonomi</option>
-                            <option value="Politik">Politik</option>
-                            <option value="Teknologi">Teknologi</option>
-                            <option value="Olahraga">Olahraga</option>
-                            <option value="Hiburan">Hiburan</option>
-                          </select>
-                        </div>
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="gambar_utama">Gambar Utama</label>
+              <input
+                type="file"
+                name="gambar"
+                class="form-control @error('gambar') is-invalid @enderror"
+                id="gambar_utama"
+              >
+              @error('gambar')
+                <div class="invalid-feedback">{{ $message }}</div>
+              @enderror
+          
+              <label for="deks_gambar" class="pt-3">Deskripsi Gambar Utama</label>
+              <input
+                type="text"
+                name="keterangan_gambar"
+                class="form-control @error('keterangan_gambar') is-invalid @enderror"
+                id="deks_gambar"
+                value="{{ old('keterangan_gambar') }}"
+                required
+              >
+              @error('keterangan_gambar')
+                <div class="invalid-feedback">{{ $message }}</div>
+              @enderror
+            </div>
+          
+            <div class="form-group col-md-6">
+              <label for="gambar2">Gambar Tambahan</label>
+              <input
+                type="file"
+                name="gambar2"
+                class="form-control @error('gambar2') is-invalid @enderror"
+                id="gambar2"
+              >
+              @error('gambar2')
+                <div class="invalid-feedback">{{ $message }}</div>
+              @enderror
+          
+              <label for="deks_gambar2" class="pt-3">Deskripsi Gambar Tambahan</label>
+              <input
+                type="text"
+                name="keterangan_gambar2"
+                class="form-control @error('keterangan_gambar2') is-invalid @enderror"
+                id="deks_gambar2"
+                value="{{ old('keterangan_gambar2') }}"
+                required
+              >
+              @error('keterangan_gambar2')
+                <div class="invalid-feedback">{{ $message }}</div>
+              @enderror
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="inputAddress5">Judul Berita</label>
+            <input
+              type="text"
+              name="judul_berita"
+              class="form-control @error('judul_berita') is-invalid @enderror"
+              id="inputAddress5"
+              value="{{ old('judul_berita') }}"
+              required
+            >
+            @error('judul_berita')
+              <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+          </div>
+          
+          <div class="form-group">
+            <label for="inputAddress6">Deskripsi Berita</label>
+            <textarea
+              name="deks_berita"
+              class="form-control @error('deks_berita') is-invalid @enderror"
+              id="inputAddress6"
+              rows="7"
+              required
+            >{{ old('deks_berita') }}</textarea>
+            @error('deks_berita')
+              <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+          </div>
+          
+          <div class="form-group">
+            <label for="inputState">Kategori Berita</label>
+            <select
+              id="inputState"
+              name="kategori"
+              class="form-control @error('kategori') is-invalid @enderror"
+            >
+              @foreach(['Ekonomi','Politik','Teknologi','Olahraga','Hiburan'] as $kat)
+                <option value="{{ $kat }}" {{ old('kategori') === $kat ? 'selected' : '' }}>
+                  {{ $kat }}
+                </option>
+              @endforeach
+            </select>
+            @error('kategori')
+              <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+          </div>
+          
                         <button type="submit" class="btn btn-primary">Tambah Berita</button>
                       </form>
                     </div> <!-- /. card-body -->

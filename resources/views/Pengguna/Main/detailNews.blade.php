@@ -5,31 +5,36 @@
         <div class="grid lg:grid-cols-3 grid-cols-1 gap-5 pb-2">
             <div class="image-jumbotron col-span-2 flex justify-center">
             <div>
-              <img src={{$url . '/storage/' . $dataNews['gambar'][0]['gambar_berita']}} class="rounded-lg w-full h-4/5">
+              <img src="{{!empty($sn['gambar'][0]['gambar_berita']) ? $url . '/storage/' .$sn['gambar'][0]['gambar_berita'] : asset('assets/images/dummy.jpg') }}" class="rounded-lg w-full h-4/5">
+                @if(!empty($dataNews['gambar'][0]['keterangan_gambar']))
               <p class="text-slate-500 text-center">{{$dataNews['gambar'][0]['keterangan_gambar']}}</p>
+              @endif
               </div>
 
             </div>
                     <div class="card-news-top-news lg:mt-0 mt-3">
 
                 <div class="grid grid-cols-3 max-h-36 gap-5">
-                @foreach ($sideNews as $sn)
-                        <div class="image-news">
-                                <img src="{{$url . '/storage/' . $sn['gambar'][0]['gambar_berita']}}" class="rounded-sm">
-                            </div>
-                        <div class="header-top-news col-span-2">
-                            <div class="hot-judul-news">
-                                <h1 class="lg:text-md">{{$sn['judul_berita']}} <a href="#" class="text-[#C95C66] hover:text-[#B03440]">Baca Selengkapnya</a></h1>
-                            </div>
-                            <div class="footer-top-news pt-[0.20rem]">
-                                <div class="flex gap-3">
-                                <p class="text-[#C95C66]">{{$sn['kategori_berita']}}</p>
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"  class="w-3 pt-1"><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z" class=" fill-[#A5A5A5]"/></svg>
-                                <p class="text-sm pt-1">{{$sn['updated_at']}}</p>
+                    @if (!empty($sideNews))
+
+                            @foreach ($sideNews as $sn)
+                            <div class="image-news">
+                                    <img src="{{!empty($sn['gambar'][0]['gambar_berita']) ? $url . '/storage/' .$sn['gambar'][0]['gambar_berita'] : asset('assets/images/dummy.jpg') }}" class="rounded-sm">
+                                </div>
+                            <div class="header-top-news col-span-2">
+                                <div class="hot-judul-news">
+                                    <h1 class="lg:text-md">{{$sn['judul_berita']}} <a href="/berita/{{$sn['kategori_berita']}}/{{$sn['slug']}}" class="text-[#C95C66] hover:text-[#B03440]">Baca Selengkapnya</a></h1>
+                                </div>
+                                <div class="footer-top-news pt-[0.20rem]">
+                                    <div class="flex gap-3">
+                                    <p class="text-[#C95C66]">{{$sn['kategori_berita']}}</p>
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"  class="w-3 pt-1"><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z" class=" fill-[#A5A5A5]"/></svg>
+                                    <p class="text-sm pt-1">{{$sn['updated_at']}}</p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    @endforeach
+                        @endforeach
+                    @endif
                     {{-- END COLS GRID --}}
                     </div>
             
@@ -93,7 +98,7 @@
     </div>
 
 
-        <div class="Berita Terbaru pt-8 mb-20" id="berita-terbaru">
+    <div class="Berita Terbaru pt-8 mb-20" id="berita-terbaru">
         <h1 class="pb-3 font-bold text-3xl">BERITA TERPOPLER MINGGU INI</h1>
 
             <div class="card-new-news grid lg:grid-cols-4 grid-cols-2 gap-2 pt-2">

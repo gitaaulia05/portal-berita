@@ -19,7 +19,7 @@ class NewsController extends Controller
     
         $this->newsResult = $this->newsService->allNewsPopularAndTopics($newest);
      
-          $this->popularNews2 = $this->newsResult['popularNews'];
+        //  $this->popularNews2 = $this->newsResult['popularNews'];
         
         $this->news2 = [
             'data' => $this->newsResult['allNews']
@@ -33,15 +33,23 @@ class NewsController extends Controller
         ->toArray();    
     }
 
+    public function header($kategori){
+        $hasilLink =  $this->newsService->allNews($kategori)['data'];
+
+        return view('Pengguna.Main.kategori', [
+            'kategori' => $hasilLink,
+            'relatedNews' => collect($this->newsService->relatedNews($kategori)['data'])->take(8),
+             'url' => config('services.api_url'),
+        ]);
+    }
+
     public function index()
     {
-    
         return view('Pengguna.Main.newsMain', [
-          
                 'headerNews' => collect($this->news2['data'])->take(5),
                 'sideNews' => collect($this->news2['data'])->skip(5)->take(3),
                 'newNews' => collect($this->news2['data'])->skip(3)->take(4),
-                'popularNews' => collect($this->newsResult['popularNews']),
+               // 'popularNews' => collect($this->newsResult['popularNews']),
                 'topicSelected' => collect( $this->selectedTopics2),
                 'url' => config('services.api_url'),
         ]);
@@ -53,11 +61,10 @@ class NewsController extends Controller
                 , [
             'auth' => $this->authUser,
             'dataNews' => $this->newsService->detailNews($kategori , $slugBerita),
-            'sideNews' => collect($this->news['data'])->skip(5)->take(3),
-            'newNews' => collect($this->news['data'])->skip(3)->take(4),
+            'sideNews' => collect($this->news2['data'])->skip(5)->take(3),
+            'newNews' => collect($this->news2['data'])->skip(3)->take(4),
             'relatedNews' => collect($this->newsService->relatedNews($kategori)['data'])->take(8),
             'url' =>config('services.api_url'),
-            
         ]);
     }
 

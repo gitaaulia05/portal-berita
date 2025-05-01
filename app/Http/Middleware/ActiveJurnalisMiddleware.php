@@ -17,26 +17,14 @@ class ActiveJurnalisMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         $token = session('Authorization');
+      
         $jurnalis = Administrator::where('token' , $token)->first();
 
-        if(!$token) {
-            return redirect('/login-jurnalis');
+        if(!$token || !$jurnalis) {
+            return redirect()->back();
         }
-
-     
-        if($jurnalis->active == '0'){
-            $allowedRoutes = [
-                'dashboard-jurnalis',
-                'logout-jurnalis',
-                'jurnalis-profile'
-            ];
-         
-            if(!in_array($request->route()->getName(), $allowedRoutes)) {
-                return redirect()->back();
-            }
-          
-        } 
-            return $next($request);
+        $request->headers->set('Authorization' , 'Bearer '.$token);
+        return $next($request);
         
     }
 }

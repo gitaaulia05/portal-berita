@@ -32,10 +32,7 @@ class BeritaLive extends Component
         $this->is_tayang = !$this->is_tayang;
         $this->updatedSearch(); 
     }
-    // public function toogleTrash() {
-    //     $this->is_trash = $this->is_trash === 0 ? 2 : 0;
-    //     $this->updatedSearch(); 
-    // }
+   
 
     public function toogleSoftDelete() {
         $this->is_trash = $this->is_trash === 0 ? 2 : 0;
@@ -53,20 +50,19 @@ class BeritaLive extends Component
     }
     public function render()
     {
-      // dd($this->dataBerita);
-        return view('livewire.berita-live' , [
+         return view('livewire.berita-live' , [
             'title' => "Dashboard Jurnalis | Portal berita" , 
             'jurnalis' => $this->jurnalisService->currentJurnalis(), 
              'berita' => $this->dataBerita,
         ]);
     }
 
-    public function softDelete($slugBerita){
-        $response = $this->jurnalisService->softDelete($slugBerita);
+    public function softDelete(Request $request , $slugBerita){
+        $response = $this->jurnalisService->softDelete($request, $slugBerita);
         if($response) {
           return redirect('/dashboard-jurnalis')->with('message-success' , $response['message']);
       } else {
-          return redirect()->back()->with('message-error' , $response['message'][0]);
+          return redirect()->back()->with('message-error' , $response);
       }
 
     }
@@ -76,16 +72,16 @@ class BeritaLive extends Component
         if($response) {
           return redirect('/dashboard-jurnalis')->with('message-success' , 'Berita Berhasil Dihapus');
       } else {
-          return redirect()->back()->with('message-error' , $response['message'][0]);
+          return redirect()->back()->with('message-error' , $response);
       }
     }
 
     public function restore($slugBerita) {
         $response = $this->jurnalisService->restore($slugBerita);
         if($response) {
-          return redirect('/dashboard-jurnalis')->with('message-success' , $response['message']);
+          return redirect('/dashboard-jurnalis')->with('message-success' ,$response['message']);
       } else {
-          return redirect()->back()->with('message-error' , $response['message'][0]);
+          return redirect()->back()->with('message-error' , $response);
       }
     }
 

@@ -8,7 +8,7 @@
               <div class="row mt-5 align-items-center">
                 <div class="col-md-3 text-center mb-5">
                   <div class="avatar avatar-xl">
-                    <img src="{{$Url . '/storage/' . $jurnalis['gambar']}}" alt="..." class="avatar-img rounded-sm">
+                    <img src="{{ empty($jurnalis['gambar']) ? asset('assets/avatars/face-1.jpg') : $Url . '/storage/' . $jurnalis['gambar']}}" alt="..." class="avatar-img rounded-sm">
                   </div>
                 </div>
                 <div class="col">

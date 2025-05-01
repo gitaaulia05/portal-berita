@@ -31,7 +31,7 @@
     @endif
 
 
-    <div class="main-content grid lg:grid-cols-5 grid-cols-1 lg:gap-4 gap-3 pb-8" id="main-section">
+    <div class="main-content grid lg:grid-cols-5 md:grid-cols-5 grid-cols-1 lg:gap-4 gap-3 pb-8" id="main-section">
         <div class="col-span-2">
             <div class="profile-header" id="first-profile">
                 <img src={{asset('assets/avatars/face-1.jpg')}} class="rounded-md">

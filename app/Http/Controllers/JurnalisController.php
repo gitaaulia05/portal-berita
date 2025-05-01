@@ -113,7 +113,7 @@ class JurnalisController extends Controller
     public function update($slugBerita) {
         $response = $this->jurnalisService->showNews($slugBerita);
         $url = config('services.api_url');
-        //dd($response);
+        // dd($response);
         if($response) {
             return view('Jurnalis.Dashboard.changeNews' , [
                 'title' => "Tambah Berita | Portal berita" , 
@@ -140,23 +140,50 @@ class JurnalisController extends Controller
 
     public function storeNews(Request $request) {
         $response = $this->jurnalisService->storeNews($request);
-     
-        if($response) {
-            return redirect('/dashboard-jurnalis');
-        } else {
-            return redirect()->back()->with('message-error' , $response['message'][0]);
+       // dd(isset($response['errors']));
+        if (isset($response['errors'])) {
+            // gagal
+            return redirect()->back()
+                ->withInput()
+                ->withErrors($response['errors'])
+                ->with('message-error', 'Data Berita Gagal Ditambahkan!');
         }
+        
+            return redirect('/dashboard-jurnalis')->with('message-success' , 'Data Baru Berhasil Ditambahkan!');
+      
     }
 
 
-    public function softDelete($slugBerita){
-        //dd($slugBerita);
-      $response = $this->jurnalisService->softDelete($slugBerita);
+    public function softDelete(Request $request , $slugBerita){
+      $response = $this->jurnalisService->softDelete($request, $slugBerita);
 
       if($response) {
-        return redirect('/dashboard-jurnalis')->withMessage('message-success' , 'Berita Berhasil Dihapus');
+        $path = ($this->currentPetugas == 2 ? '/dashboard-jurnalis' : '/kelola-berita'); 
+        return redirect($path)->with('message-success' , 'Berita Berhasil Dihapus');
     } else {
         return redirect()->back()->with('message-error' , $response['message'][0]);
     }
     }
+
+    public function restore(Request $request, $slugBerita) {
+        $response = $this->jurnalisService->restore($request, $slugBerita);
+        if($response) {
+            $path = ($this->currentPetugas == 2 ? '/dashboard-jurnalis' : '/kelola-berita'); 
+          return redirect($path)->with('message-success' ,$response['message']);
+      } else {
+          return redirect()->back()->with('message-error' , $response);
+      }
+    }
+    public function delete($slugBerita) {
+        $response = $this->jurnalisService->delete($slugBerita);
+        if($response) {
+            $path = ($this->currentPetugas == 2 ? '/dashboard-jurnalis' : '/kelola-berita'); 
+          return redirect($path)->with('message-success' , 'Berita Berhasil Dihapus');
+      } else {
+          return redirect()->back()->with('message-error' , $response);
+      }
+    }
+
+   
+
 }

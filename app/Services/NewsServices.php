@@ -64,10 +64,9 @@ class NewsServices
     return $response->json('errors');
  }
 
-    public function allNews($newest) {
-        $url = $this->baseUrl.'/berita/pengguna?' . http_build_query(['newest' => $newest]);
-      
-        return $this->fetchWithETag('etag_news' , $url);
+    public function allNews($kategori) {
+        $url = $this->baseUrl.'/berita/pengguna?' . http_build_query(['kategori' => $kategori]);
+        return $this->fetchWithETag('etag_kategori' , $url);
     }
 
 
@@ -79,10 +78,19 @@ class NewsServices
 
     
     public function detailNews($kategori , $slugBerita){
-        $response = Http::withHeaders(['Accept' => 'application/json'])
-        ->get($this->baseUrl.'/berita/'.$kategori.'/' .$slugBerita);
-       
-           return $response->successful() ? $response->json('data') : $response->json('errors');
+        // $response = Http::withHeaders(['Accept' => 'application/json'])
+        // ->get($this->baseUrl.'/berita/'.$kategori.'/' .$slugBerita);
+        $client = new \GuzzleHttp\Client();
+        $response = $client->get($this->baseUrl.'/berita/'.$kategori.'/' .$slugBerita, [
+            'headers' => [
+                'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
+            ],
+        ]);
+        if ($response->getStatusCode() >= 200 && $response->getStatusCode() < 300) {
+            return json_decode($response->getBody(), true)['data'] ?? null;
+        } else {
+            return json_decode($response->getBody(), true)['errors'] ?? null;
+        }
     }
 
     public function popularNews() {
@@ -114,48 +122,102 @@ class NewsServices
         $etagAll = cache('etag_news');
         $etagPopular = cache('etag_popular');
         $etagTopics = cache('etag_topics');
-
+    
+        // Debug cache sebelum request
+        $cachedDataBefore = [
+            'etag_news' => $etagAll,
+            'etag_news_data' => cache('etag_news_data'),
+            'etag_popular' => $etagPopular,
+            'etag_popular_data' => cache('etag_popular_data'),
+            'etag_topics' => $etagTopics,
+            'etag_topics_data' => cache('etag_topics_data'),
+        ];
+    
+        $promises = [
+            'allNews' => $client->getAsync($urlAll, [
+                'headers' => $etagAll ? ['If-None-Match' => $etagAll] : []
+            ]),
+            'popularNews' => $client->getAsync($urlPopular, [
+                'headers' => $etagPopular ? ['If-None-Match' => $etagPopular] : []
+            ]),
+            'selectedTopics' => $client->getAsync($urlSelected, [
+                'headers' => $etagTopics ? ['If-None-Match' => $etagTopics] : []
+            ]),
+        ];
+    
+        $responses = Utils::settle($promises)->wait();
         
-    $promises = [
-        'allNews' => $client->getAsync($urlAll, [
-            'headers' => $etagAll ? ['If-None-Match' => $etagAll] : []
-        ]),
-        'popularNews' => $client->getAsync($urlPopular, [
-            'headers' => $etagPopular ? ['If-None-Match' => $etagPopular] : []
-        ]),
-        'selectedTopics' => $client->getAsync($urlSelected, [
-            'headers' => $etagTopics ? ['If-None-Match' => $etagTopics] : []
-        ]),
-    ];
-
-    $responses = Utils::settle($promises)->wait();
-
-    $results = [];
-
-    foreach ($responses as $key => $response) {
-        $cacheKey = match($key) {
-            'allNews' => 'etag_news',
-            'popularNews' => 'etag_popular',
-            'selectedTopics' => 'etag_topics',
-        };
-
-        if ($response['state'] === 'fulfilled') {
-            $res = $response['value'];
-            $etag = $res->getHeaderLine('ETag');
-            $data = json_decode($res->getBody(), true)['data'] ?? [];
-
-            cache([
-                $cacheKey => $etag,
-                $cacheKey . '_data' => $data,
-            ]);
-
-            $results[$key] = $data;
-        } else {
-            $results[$key] = cache($cacheKey . '_data');
+        $debugInfo = [];
+        foreach ($responses as $key => $response) {
+            $cacheKey = match($key) {
+                'allNews' => 'etag_news',
+                'popularNews' => 'etag_popular',
+                'selectedTopics' => 'etag_topics',
+            };
+            
+            if ($response['state'] === 'fulfilled') {
+                $res = $response['value'];
+                $statusCode = $res->getStatusCode();
+                $etag = $res->getHeaderLine('ETag');
+                
+                // Debug info
+                $debugInfo[$key] = [
+                    'statusCode' => $statusCode,
+                    'etag' => $etag,
+                    'is304' => $statusCode === 304,
+                    'cachedEtag' => $cacheKey ? cache($cacheKey) : null,
+                    'hasCachedData' => !empty(cache($cacheKey . '_data')),
+                    'cachedDataSampleCount' => is_array(cache($cacheKey . '_data')) ? count(cache($cacheKey . '_data')) : 'not array',
+                ];
+                
+                // Proses data berdasarkan status code
+                if ($statusCode !== 304) {
+                    $data = json_decode($res->getBody(), true)['data'] ?? [];
+                    // Simpan di cache dengan expiry lebih panjang (misal 1 jam)
+                    cache([$cacheKey => $etag], now()->addHour());
+                    cache([$cacheKey . '_data' => $data], now()->addHour());
+                }
+            } else {
+                // Debug info untuk failed request
+                $debugInfo[$key] = [
+                    'state' => $response['state'],
+                    'reason' => $response['reason'] ? $response['reason']->getMessage() : 'Unknown',
+                    'cachedEtag' => $cacheKey ? cache($cacheKey) : null,
+                    'hasCachedData' => !empty(cache($cacheKey . '_data')),
+                    'cachedDataSampleCount' => is_array(cache($cacheKey . '_data')) ? count(cache($cacheKey . '_data')) : 'not array',
+                ];
+            }
         }
+    
+        $results = [];
+        foreach ($responses as $key => $response) {
+            $cacheKey = match($key) {
+                'allNews' => 'etag_news',
+                'popularNews' => 'etag_popular',
+                'selectedTopics' => 'etag_topics',
+            };
+    
+            if ($response['state'] === 'fulfilled') {
+                $res = $response['value'];
+                $statusCode = $res->getStatusCode();
+                $etag = $res->getHeaderLine('ETag');
+                
+                if ($statusCode !== 304) {
+                    $data = json_decode($res->getBody(), true)['data'] ?? [];
+                    cache([
+                        $cacheKey => $etag,
+                        $cacheKey . '_data' => $data,
+                    ], now()->addHour());
+                    $results[$key] = $data;
+                } else {
+                    $results[$key] = cache($cacheKey . '_data') ?? [];
+                }
+            } else {
+                $results[$key] = cache($cacheKey . '_data') ?? [];
+            }
+        }
+        
+        return $results;
     }
-
-    return $results;
-
-    }
+    
 }

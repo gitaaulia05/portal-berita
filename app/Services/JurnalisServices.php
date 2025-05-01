@@ -89,21 +89,28 @@ class JurnalisServices
             'gambar', // Nama field di request
             file_get_contents($request->file('gambar')->getRealPath()), // Isi file
             $request->file('gambar')->getClientOriginalName() // Nama file
-        )->attach(
-            'gambar2', // Nama field di request
-            file_get_contents($request->file('gambar2')->getRealPath()), // Isi file
-            $request->file('gambar2')->getClientOriginalName())->post($this->baseUrl . '/jurnalis/addNews', [
+        );
+
+        if($request->hasFile('gambar2')){
+            $response->attach(
+                'gambar2', // Nama field di request
+                file_get_contents($request->file('gambar2')->getRealPath()), // Isi file
+                $request->file('gambar2')->getClientOriginalName());
+        }
+        
+        $response =$response->post($this->baseUrl . '/jurnalis/addNews', [
             'judul_berita' => $request->judul_berita,
             'deks_berita' => $request->deks_berita,
-            'kategori' => $request->kategori,
+            'id_kategori_berita' => $request->kategori,
             'keterangan_gambar' => $request->keterangan_gambar,
             'keterangan_gambar2' => $request->keterangan_gambar2,
         ]);
-       return $response->successful() ? $response->json('data') : $response->json('errors');
+       return $response->successful() ? $response->json('data') : $response->json();
     }
 
     public function updateNews(Request $request , $slugBerita)
     {
+     
        $httpRequest = Http::withHeaders([
         'Authorization' => 'Bearer ' . $this->token
     ])->asMultipart();
@@ -125,11 +132,11 @@ class JurnalisServices
         $response = $httpRequest->post($this->baseUrl . '/jurnalis/updateNews/'.$slugBerita, [
         'judul_berita' => $request->judul_berita,
         'deks_berita' => $request->deks_berita,
-        'kategori' => $request->kategori,
+        'kategori' => $request->kategori,     
         'keterangan_gambar' => $request->keterangan_gambar,
         'keterangan_gambar2' => $request->keterangan_gambar2,
     ]);
-   // dd($request->all());
+   // dd($response->json());
    return $response->successful() ? $response->json('data') : $response->json('errors');
       
     }
@@ -154,7 +161,6 @@ class JurnalisServices
             'Authorization' => 'Bearer ' . $this->token
         ])->get($this->baseUrl.'/berita' , $params);
        
-               
         return $response->successful() ? $response->json('data') : null;
     }
 
@@ -165,11 +171,12 @@ class JurnalisServices
        return $response->successful() ? $response->json('data') : $response->json('errors');
     }
 
-    public function softDelete($slugBerita)
+    public function softDelete(Request $request, $slugBerita)
     {
         $response = Http::withHeaders([
             'Authorization' => 'Bearer ' .$this->token
-        ])->get($this->baseUrl.'/berita/delete/'.$slugBerita);
+        ])->post($this->baseUrl.'/beritaJurnalis/delete/'.$slugBerita);
+    
         return $response->successful() ? $response->json('data') : $response->json('errors');
     }
 
@@ -178,15 +185,16 @@ class JurnalisServices
     {
         $response = Http::withHeaders([
             'Authorization' => 'Bearer ' .$this->token
-        ])->get($this->baseUrl.'/berita/deleteForce/'.$slugBerita);
+        ])->post($this->baseUrl.'/beritaJurnalis/deleteForce/'.$slugBerita);
+
         return $response->successful() ? $response->json('data') : $response->json('errors');
     }
 
-    public function restore($slugBerita)
+    public function restore(Request $request, $slugBerita)
     {
         $response = Http::withHeaders([
             'Authorization' => 'Bearer ' .$this->token
-        ])->get($this->baseUrl.'/berita/restore/'.$slugBerita);
+        ])->post($this->baseUrl.'/beritaJurnalis/restore/'.$slugBerita);
         return $response->successful() ? $response->json('data') : $response->json('errors');
     }
 

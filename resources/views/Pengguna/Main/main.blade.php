@@ -85,11 +85,11 @@
 
     <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-user">
       <ul class="flex flex-col text-white font-medium p-4 md:p-0 mt-4 border border-gray-700 rounded-lg bg-black md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-black">
-        <li><a href="#" class="block py-2 px-3 md:p-0 hover:text-[#FF66C4]">Politik</a></li>
-        <li><a href="#" class="block py-2 px-3 md:p-0 hover:text-[#FF66C4]">Teknologi</a></li>
-        <li><a href="#" class="block py-2 px-3 md:p-0 hover:text-[#FF66C4]">Ekonomi</a></li>
-        <li><a href="#" class="block py-2 px-3 md:p-0 hover:text-[#FF66C4]">Olahraga</a></li>
-        <li><a href="#" class="block py-2 px-3 md:p-0 hover:text-[#FF66C4]">Hiburan</a></li>
+        <li><a href="/berita/Politik" class="block py-2 px-3 md:p-0 hover:text-[#FF66C4]">Politik</a></li>
+        <li><a href="/berita/Teknologi" class="block py-2 px-3 md:p-0 hover:text-[#FF66C4]">Teknologi</a></li>
+        <li><a href="/berita/Ekonomi" class="block py-2 px-3 md:p-0 hover:text-[#FF66C4]">Ekonomi</a></li>
+        <li><a href="/berita/Olahraga" class="block py-2 px-3 md:p-0 hover:text-[#FF66C4]">Olahraga</a></li>
+        <li><a href="/berita/Hiburan" class="block py-2 px-3 md:p-0 hover:text-[#FF66C4]">Hiburan</a></li>
       </ul>
     </div>
   </div>
@@ -101,35 +101,66 @@
     @yield('container-main')
     </div>
 
-    <footer class="bg-black text-white pb-10 pt-5 px-20">
-        <div class="flex lg:flex-row flex-col-reverse lg:gap-36 gap-2" id="utama-grid">
+    <footer class="bg-black text-white pb-10 pt-5 px-20 text-base">
+        <div class="flex lg:flex-row flex-col-reverse lg:gap-36 gap-10 cursor-pointer" id="utama-grid">
 
           <div id="Tautan">
-              <ul>
-                <li>hm</li>
-                <li>hm</li>
+              <ul class="cursor-pointer">
+                <li>
+                  TAUTAN
+                </li>
+                <li>
+                  <a class="flex gap-1" href="http://www.winnicode.com/">
+                    <span>
+                      <i class="fa-solid fa-globe"></i>
+                    </span>
+                    www.winnicode.com
+                  </a>
+                </li>
+                <li class=" text-white">
+                  <a class="flex gap-1" href="https://www.instagram.com/winnicodeofficial/">
+                    <span>
+                      <i class="fa-brands fa-instagram"></i>
+                    </span>
+                    Instagram
+                  </a>
+                </li>
               </ul>
           </div>
 
           <div id="Sitemap">
-                <ul>
-                  <li>hm</li>
-                  <li>hm</li>
+                <ul class="cursor-pointer ">
+                  <li>SITEMAP</li>
+                  <li><a href="https://winnicode.com/">Beranda</a></li>
+                  <li><a href="https://winnicode.com/explore/berita">Berita</a></li>
+                  <li><a href="https://winnicode.com/kontak-kami">Kontak Kami</a></li>
+                  <li><a href="https://winnicode.com/privasi-policy">Privasi & Policy</a></li>
+                  <li><a href="https://winnicode.com/tentang">Tentang</a></li>
               </ul>
           </div>
 
           <div id="Kontak">
-                <ul>
-                  <li>hm</li>
-                  <li>hm</li>
-              </ul>
-          </div>
+            <ul>
+              <li>KONTAK KAMI</li>
+              <li><span class="font-semibold">E-Mail:</span> winnicodegarudaofficial@gmail.com</li>
+              <li><span class="font-semibold">Call Center</span> 6285159932501 (24 Jam)</li>
+              <li><span class="font-semibold">Alamat (Cabang Bandung):</span> Jl. Asia Afrika No.158, Kb. Pisang, Kec. Sumur Bandung,
+                Kota Bandung, Jawa Barat 40261</li>
+              <li><span class="font-semibold">Alamat (Cabang Yogyakarta):</span> Bantul, Yogyakarta</li>
+              <li><span class="font-semibold">Alamat (Cabang Jakarta):</span> Bekasi, Jawa Barat</li>
+              <li><span class="font-semibold">Administrasi Berkas:</span> Hubungi Admin Telp: +6285159932501</li>
+          </ul>
+      </div>
+
 
           <div id="logo">
             <div class="flex flex-row justify-center gap-3 lg:pt-0 pt-5">
-              <img src="{{asset('assets/images/banner-logo.png')}}" class="lg:w-32 w-40">
-              <img src="{{asset('assets/images/bpd.png')}}" class="lg:w-32 w-40">
+              <img src="{{asset('assets/images/banner-logo.png')}}" class="lg:w-md w-3xs">
+              <img src="{{asset('assets/images/bpd.png')}}" class="lg:w-[7rem] w-[7rem]">
             </div>
+            <p class="hover:text-[#FF66C4]">
+              Jurnalistik Program winnicode adalah program pengembangan sumber daya manusia yang ditujukan bagi pemuda pemudi yang berkarir di dunia report.
+            </p>
           </div>
 
         </div>
