@@ -13,9 +13,6 @@
     <!-- Fonts CSS -->
     <link href="https://fonts.googleapis.com/css2?family=Overpass:ital,wght@0,100;0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 
-    {{-- <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz@0,14..32;1,14..32&display=swap" rel="stylesheet"> --}}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
@@ -33,6 +30,17 @@
 <!-- App CSS -->
 <link rel="stylesheet" href="{{ asset('css/app-light.css') }}" id="lightTheme">
 <link rel="stylesheet" href="{{ asset('css/app-dark.css') }}" id="darkTheme" disabled>
+
+
+<link rel="stylesheet" type="text/css" href="https://unpkg.com/trix@2.0.8/dist/trix.css">
+<script type="text/javascript" src="https://unpkg.com/trix@2.0.8/dist/trix.umd.min.js"></script>
+    <style>
+      trix-toolbar [data-trix-button-group="file-tools"]{
+        display: none;
+      }
+    </style>
+</head>
+
 
     {{-- @livewireStyles --}}
   </head>
@@ -294,7 +302,6 @@
     previewImage('uploadGambarUtama', 'previewGambar');
     previewImage('uploadGambarTambahan', 'previewGambar2');
     </script>
-
   
     <script src="{{ asset('js/apps.js') }}"></script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-56159088-1"></script>

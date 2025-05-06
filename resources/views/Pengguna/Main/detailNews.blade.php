@@ -48,9 +48,10 @@
         </div>
 
         <div class="main-content pb-4">
-            <h1 class="text-3xl pb-3">{{$dataNews['judul_berita']}}</h1>
+            <h1 class="text-3xl pb-3 text-center  font-semibold">{{$dataNews['judul_berita']}}</h1>
             <span class="pb-3">{{$dataNews['kategori_berita']}} | {{$dataNews['updated_at']}}</span>
-            <p>{{$dataNews['deks_berita']}}</p>
+           
+            {!! $dataNews['deks_berita'] !!}
         </div>
 
         <div class="share-news flex flex-row justify-end gap-3">
@@ -60,7 +61,6 @@
                 @if ($dataNews['simpanBerita'])
                 @method('DELETE')    
                 @endif
-                <p>/profile/{{ $dataNews['simpanBerita'] ? 'deleteSaveNews' : 'saveNews' }}/{{ $dataNews['slug'] }}</p>
                 <div class="share text-white"> <button type="submit" class="bg-[#0E7CC9] p-2 rounded-md hover:opacity-95 transition duration-700">
                     <span><svg class="w-6 h-6 text-gray-800  dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="{{ $dataNews['simpanBerita'] ? 'currentColor' : 'none' }}" viewBox="0 0 14 20">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m13 19-6-5-6 5V2a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v17Z"/>

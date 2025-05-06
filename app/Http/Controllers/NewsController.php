@@ -57,10 +57,38 @@ class NewsController extends Controller
     }
 
     public function detailNews($kategori ,$slugBerita) {
+       $data =  $this->newsService->detailNews($kategori , $slugBerita);
+       $url = config('services.api_url');
+
+        $gambar1 = !empty($data['gambar'][0]['gambar_berita']) ? $url .'/storage/'. $data['gambar'][0]['gambar_berita'] : asset('assets/images/dummy.jpg');
+
+
+        $caption1 = $data['gambar'][0]['keterangan_gambar']?? '';
+
+        $gambar2 = !empty($data['gambar'][1]['gambar_berita']) ? $url .'/storage/'. $data['gambar'][1]['gambar_berita'] : asset('assets/images/dummy.jpg');
+
+        $caption2 = $data['gambar'][1]['keterangan_gambar']?? '';
+
+        $data['deks_berita'] = str_replace(
+            ['&lt;gambar1&gt;', '&lt;gambar2&gt;'],
+            [
+                '<figure class="my-4 text-center">
+                  <img src="' . $gambar1. '"class="rounded-lg w-full h-4/5">
+                <figcaption class="mt-2 text-sm text-center text-gray-500 ">'.htmlspecialchars($caption1). '</figcaption>
+                </figure>',
+                
+                '<figure class="my-4 text-center">
+                <img src="' . $gambar2. '"class="rounded-lg w-full h-4/5">
+              <figcaption class="mt-2 text-sm text-center text-gray-500 ">'.htmlspecialchars($caption2). '</figcaption>
+              </figure>'
+            ], 
+            $data['deks_berita'] 
+        );
+
         return view('Pengguna.Main.detailNews'
                 , [
             'auth' => $this->authUser,
-            'dataNews' => $this->newsService->detailNews($kategori , $slugBerita),
+            'dataNews' => $data,
             'sideNews' => collect($this->news2['data'])->skip(5)->take(3),
             'newNews' => collect($this->news2['data'])->skip(3)->take(4),
             'relatedNews' => collect($this->newsService->relatedNews($kategori)['data'])->take(8),
@@ -68,18 +96,4 @@ class NewsController extends Controller
         ]);
     }
 
-    public function shareNews(){
-        $shareComponent = ShareFacade::page(
-            'https://www.positronx.io/create-autocomplete-search-in-laravel-with-typeahead-js/',
-            'Your share text comes here',
-        )
-        ->facebook()
-        ->twitter()
-        ->linkedin()
-        ->telegram()
-        ->whatsapp()        
-        ->reddit();
-        
-        return view('Pengguna.Main.shareNews', compact('shareComponent'));
-    }
 }

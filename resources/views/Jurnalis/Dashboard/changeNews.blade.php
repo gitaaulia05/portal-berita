@@ -42,7 +42,7 @@
                                 <label for="keterangan_gambar" class="pt-3">Deskripsi Gambar Utama</label>
                                 <input
                                   type="text"
-                                  name="keterangan_gambar"
+                                  name="keterangan_gambar" 
                                   class="form-control @error('keterangan_gambar') is-invalid @enderror"
                                   value="{{ old('keterangan_gambar', $data['gambar'][0]['keterangan_gambar'] ?? '') }}"
                                   required
@@ -65,20 +65,21 @@
                                   @error('gambar2')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                   @enderror
-                            
+                                 
                                   <img src="{{ $gambar2 }}" id="previewGambar2" class="w-25">
-                            
-                                  <input type="hidden" name="gambar_lama2" value="{{ $gambar2 }}"  id="gambar2">
+                              
+                                  <input type="hidden" name="gambar_lama2" value="{{ $data['gambar'][1]['gambar_berita'] }}"  id="gambar2">
                             
                                   <label for="keterangan_gambar2" class="pt-3">Deskripsi Gambar Tambahan</label>
-                                  {{-- <input
-                                    type="text"
-                                    name="keterangan_gambar2"
-                                    class="form-control @error('keterangan_gambar2') is-invalid @enderror"
-                                    id="deks_gambar2"
-                                    value="{{  $data['gambar'][1]['keterangan_gambar'] ?? '' }}"
+                                  <input
+                                  type="text"
+                                   id="deks_gambar2"
+                                  name="keterangan_gambar2"
+                                  class="form-control @error('keterangan_gambar2') is-invalid @enderror"
+                                  value="{{ old('keterangan_gambar2', $data['gambar'][1]['keterangan_gambar'] ?? '') }}"
                                  
-                                  > --}}
+                                >
+
                                   @error('keterangan_gambar2')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                   @enderror
@@ -108,17 +109,12 @@
                             </div>
                             
                             <div class="form-group">
-                              <label for="inputAddress6">Deskripsi Berita</label>
-                              <textarea
-                                name="deks_berita"
-                                class="form-control @error('deks_berita') is-invalid @enderror"
-                                id="inputAddress6"
-                                rows="7"
-                                required
-                              >{{ old('deks_berita', $data['deks_berita'] ?? '') }}</textarea>
+                              <label for="deks_berita" >Deksripsi Berita</label>
+                              <input id="deks_berita" type="hidden" value="{{old('deks_berita' ,  $data['deks_berita']  ?? '') }}" name="deks_berita" required>
+                              <trix-editor input="deks_berita" class="@error('deks_berita') is-invalid @enderror"></trix-editor>
                               @error('deks_berita')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                              @enderror
+                              <div class="invalid-feedback">{{ $message }}</div>
+                          @enderror
                             </div>
                             
                             <div class="form-group">
@@ -158,10 +154,14 @@
           const imagePreview = document.getElementById('previewGambar2');
           const imageHidden = document.getElementById('gambar2');
           imagePreview.src='';
-          keterangan.value ='';
+          imagePreview.value='';
+          keterangan.src='';
           if(imageHidden) {
-            imageHidden.remove();
+            imageHidden.value='';
           }
+          if (keterangan) {
+          keterangan.value = ''; // Kosongkan deskripsi juga
+        }
          
         }
    </script>

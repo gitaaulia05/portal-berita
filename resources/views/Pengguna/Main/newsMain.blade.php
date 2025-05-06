@@ -20,7 +20,7 @@
                                     <a href="#">
                                         <h5 class="mb-2 lg:text-lg text-2xs font-bold tracking-tight text-gray-900 ">{{$hn['judul_berita']}}</h5>
                                     </a>
-                                    <p class="mb-3 font-normal text-gray-700 lg:text-sm text-[0.50rem]"> {{ \Illuminate\Support\Str::words($hn['deks_berita'], 10) }} <span class="text-[#B03440]">{{$hn['updated_at']}}</span></p>
+                                    <p class="mb-3 font-normal text-gray-700 lg:text-sm text-[0.50rem]"> {!! Illuminate\Support\Str::words($hn['deks_berita'], 10)  !!} <span class="text-[#B03440]">{{$hn['updated_at']}}</span></p>
                                     <a href="/berita/{{$hn['kategori_berita']}}/{{$hn['slug']}}" class="inline-flex items-center px-3 py-2 lg:text-sm text-[0.60rem] font-medium text-center text-white bg-[#C95C66] rounded-lg hover:bg-opacity-25 focus:ring-4 focus:outline-none focus:ring-blue-30">
                                         Baca Selengkapnya
                                     </a>

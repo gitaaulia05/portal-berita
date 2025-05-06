@@ -12,14 +12,14 @@
                     <div class="card-body">
                       <form action="/simpan-berita" method="POST" enctype="multipart/form-data">
                       @csrf
-                          @if(session()->has('message-error')) 
-           <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            <strong>{{session('message-error')}}</strong> 
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-          @endif  
+              @if(session()->has('message-error')) 
+                  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong>{{session('message-error')}}</strong> 
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+              @endif  
           
           <div class="form-row">
             <div class="form-group col-md-6">
@@ -28,8 +28,7 @@
                 type="file"
                 name="gambar"
                 class="form-control @error('gambar') is-invalid @enderror"
-                id="gambar_utama"
-              >
+                id="gambar_utama">
               @error('gambar')
                 <div class="invalid-feedback">{{ $message }}</div>
               @enderror
@@ -41,8 +40,7 @@
                 class="form-control @error('keterangan_gambar') is-invalid @enderror"
                 id="deks_gambar"
                 value="{{ old('keterangan_gambar') }}"
-                required
-              >
+                required>
               @error('keterangan_gambar')
                 <div class="invalid-feedback">{{ $message }}</div>
               @enderror
@@ -67,7 +65,7 @@
                 class="form-control @error('keterangan_gambar2') is-invalid @enderror"
                 id="deks_gambar2"
                 value="{{ old('keterangan_gambar2') }}"
-                required
+                
               >
               @error('keterangan_gambar2')
                 <div class="invalid-feedback">{{ $message }}</div>
@@ -91,17 +89,12 @@
           </div>
           
           <div class="form-group">
-            <label for="inputAddress6">Deskripsi Berita</label>
-            <textarea
-              name="deks_berita"
-              class="form-control @error('deks_berita') is-invalid @enderror"
-              id="inputAddress6"
-              rows="7"
-              required
-            >{{ old('deks_berita') }}</textarea>
-            @error('deks_berita')
+              <label for="deks_berita" >Deksripsi Berita</label>
+              <input id="deks_berita" type="hidden" value="{{ old('deks_berita') }}" name="deks_berita" required>
+              <trix-editor input="deks_berita" class="@error('deks_berita') is-invalid @enderror"></trix-editor>
+              @error('deks_berita')
               <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
+          @enderror
           </div>
           
           <div class="form-group">
@@ -130,3 +123,11 @@
               </div> <!-- /. end-section -->
 
    @endsection
+
+    {{-- @section('script')
+              <script>
+                document.addEventListener('trix-file-accept' , function(e){
+                  e.preventDefault();
+                })
+              </script>
+    @endsection --}}

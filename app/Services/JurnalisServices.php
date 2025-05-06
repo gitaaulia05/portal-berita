@@ -85,13 +85,16 @@ class JurnalisServices
     public function storeNews(Request $request) {
         $response = Http::withHeaders([
             'Authorization' => 'Bearer ' . $this->token
-        ])->asMultipart()->attach(
-            'gambar', // Nama field di request
-            file_get_contents($request->file('gambar')->getRealPath()), // Isi file
-            $request->file('gambar')->getClientOriginalName() // Nama file
-        );
+        ]);
 
-        if($request->hasFile('gambar2')){
+        if($request->hasFile('gambar') && $request->hasFile('gambar') !== null){
+            $response->attach(
+                'gambar', // Nama field di request
+                file_get_contents($request->file('gambar')->getRealPath()), // Isi file
+                $request->file('gambar')->getClientOriginalName());
+        }
+
+        if($request->hasFile('gambar2') && $request->hasFile('gambar2') !== null){
             $response->attach(
                 'gambar2', // Nama field di request
                 file_get_contents($request->file('gambar2')->getRealPath()), // Isi file
@@ -110,33 +113,49 @@ class JurnalisServices
 
     public function updateNews(Request $request , $slugBerita)
     {
-     
        $httpRequest = Http::withHeaders([
         'Authorization' => 'Bearer ' . $this->token
     ])->asMultipart();
 
-        if($request->hasFile('gambar')) {
+        if($request->hasFile('gambar') && $request->hasFile('gambar') !== null ){
           $httpRequest->attach(
             'gambar', 
             file_get_contents($request->file('gambar')->getRealPath()), 
             $request->file('gambar')->getClientOriginalName()
           );
-        } 
-        if($request->hasFile('gambar2')) {
-            $httpRequest->attach(
-              'gambar2', 
-              file_get_contents($request->file('gambar2')->getRealPath()), 
-              $request->file('gambar2')->getClientOriginalName()
-            );
+          $payload['keterangan_gambar'] = $request->keterangan_gambar;
+        } elseif( $request->filled('keterangan_gambar')) {
+            $payload['gambar_lama'] = $request->gambar_lama;
+             $payload['keterangan_gambar'] = $request->keterangan_gambar;
+      }
+
+        if($request->hasFile('gambar2') &&  $request->hasFile('gambar2') !== null)  {
+            if($request->hasFile('gambar2')){
+                $httpRequest->attach(
+                    'gambar2', 
+                    file_get_contents($request->file('gambar2')->getRealPath()), 
+                    $request->file('gambar2')->getClientOriginalName()
+                  );
+             
+                  $payload['keterangan_gambar2'] = $request->keterangan_gambar2;
+            }
+          } elseif( $request->filled('keterangan_gambar2')) {
+            
+        if ($request->filled('gambar_lama2')) {
+            $payload['gambar_lama2'] = $request->gambar_lama2;
+        }
+            $payload['keterangan_gambar2'] = $request->keterangan_gambar2;
           }
-        $response = $httpRequest->post($this->baseUrl . '/jurnalis/updateNews/'.$slugBerita, [
-        'judul_berita' => $request->judul_berita,
-        'deks_berita' => $request->deks_berita,
-        'kategori' => $request->kategori,     
-        'keterangan_gambar' => $request->keterangan_gambar,
-        'keterangan_gambar2' => $request->keterangan_gambar2,
-    ]);
-   // dd($response->json());
+
+          $payload = ($payload ?? []) +[
+            'judul_berita' => $request->judul_berita,
+            'deks_berita' => $request->deks_berita,
+            'kategori' => $request->kategori,    
+              ];
+
+
+     $response = $httpRequest->post($this->baseUrl . '/jurnalis/updateNews/'.$slugBerita, $payload);
+         
    return $response->successful() ? $response->json('data') : $response->json('errors');
       
     }

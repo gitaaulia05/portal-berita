@@ -85,11 +85,11 @@
 
     <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-user">
       <ul class="flex flex-col text-white font-medium p-4 md:p-0 mt-4 border border-gray-700 rounded-lg bg-black md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-black">
-        <li><a href="/berita/Politik" class="block py-2 px-3 md:p-0 hover:text-[#FF66C4]">Politik</a></li>
-        <li><a href="/berita/Teknologi" class="block py-2 px-3 md:p-0 hover:text-[#FF66C4]">Teknologi</a></li>
-        <li><a href="/berita/Ekonomi" class="block py-2 px-3 md:p-0 hover:text-[#FF66C4]">Ekonomi</a></li>
-        <li><a href="/berita/Olahraga" class="block py-2 px-3 md:p-0 hover:text-[#FF66C4]">Olahraga</a></li>
-        <li><a href="/berita/Hiburan" class="block py-2 px-3 md:p-0 hover:text-[#FF66C4]">Hiburan</a></li>
+        <li><a href="/berita/Politik" class="block py-2 px-3 md:p-0 {{ Request::is('/berita/Politik*') ? 'text-[#FF66C4]' : '' }} hover:text-[#FF66C4]">Politik</a></li>
+        <li><a href="/berita/Teknologi" class="block py-2 px-3 md:p-0 {{ Request::is('/berita/Teknologim*') ? 'text-[#FF66C4]' : '' }} hover:text-[#FF66C4]">Teknologi</a></li>
+        <li><a href="/berita/Ekonomi" class="block py-2 px-3 md:p-0 {{ Request::is('/berita/Ekonomi*') ? 'text-[#FF66C4]' : '' }} hover:text-[#FF66C4]">Ekonomi</a></li>
+        <li><a href="/berita/Olahraga" class="block py-2 px-3 md:p-0 {{ Request::is('/berita/Olahraga*') ? 'text-[#FF66C4]' : '' }} hover:text-[#FF66C4]">Olahraga</a></li>
+        <li><a href="/berita/Hiburan" class="block py-2 px-3 md:p-0 {{ Request::is('/berita/Hiburan*') ? 'text-[#FF66C4]' : '' }} hover:text-[#FF66C4]">Hiburan</a></li>
       </ul>
     </div>
   </div>
