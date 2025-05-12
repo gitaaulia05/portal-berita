@@ -15,22 +15,7 @@ class NewsController extends Controller
         $this->newsService = $newsService;
        
         $this->authUser = $this->penggunaService->currentUser();
-        $newest=date('Y-m-d');
-    
-        $this->newsResult = $this->newsService->allNewsPopularAndTopics($newest);
-     
-        //  $this->popularNews2 = $this->newsResult['popularNews'];
-        
-        $this->news2 = [
-            'data' => $this->newsResult['allNews']
-        ];
-       
-        $this->selectedTopics2 = collect($this->newsResult['selectedTopics']['data'])
-        ->filter(function ($item) {
-            return isset($item['kategori_berita']) && trim($item['kategori_berita']) !== '';
-        })
-        ->groupBy('kategori_berita')
-        ->toArray();    
+
     }
 
     public function header($kategori){
@@ -45,6 +30,23 @@ class NewsController extends Controller
 
     public function index()
     {
+
+        $newest=date('Y-m-d');
+    
+        $this->newsResult = $this->newsService->allNewsPopularAndTopics($newest);
+     
+      
+        $this->news2 = [
+            'data' => $this->newsResult['allNews']
+        ];
+       
+        $this->selectedTopics2 = collect($this->newsResult['selectedTopics']['data'])
+        ->filter(function ($item) {
+            return isset($item['kategori_berita']) && trim($item['kategori_berita']) !== '';
+        })
+        ->groupBy('kategori_berita')
+        ->toArray();    
+
         return view('Pengguna.Main.newsMain', [
                 'headerNews' => collect($this->news2['data'])->take(5),
                 'sideNews' => collect($this->news2['data'])->skip(5)->take(3),
@@ -61,8 +63,7 @@ class NewsController extends Controller
        $url = config('services.api_url');
 
         $gambar1 = !empty($data['gambar'][0]['gambar_berita']) ? $url .'/storage/'. $data['gambar'][0]['gambar_berita'] : asset('assets/images/dummy.jpg');
-
-
+        
         $caption1 = $data['gambar'][0]['keterangan_gambar']?? '';
 
         $gambar2 = !empty($data['gambar'][1]['gambar_berita']) ? $url .'/storage/'. $data['gambar'][1]['gambar_berita'] : asset('assets/images/dummy.jpg');

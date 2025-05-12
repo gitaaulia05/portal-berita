@@ -16,17 +16,7 @@
                       <div class="toolbar">
                         <form class="form">
                           <div class="form-row">
-                            <div class="form-group col-auto mr-auto">
-                              <label class="my-1 mr-2 sr-only" for="inlineFormCustomSelectPref1">Show</label>
-                              <select class="custom-select mr-sm-2" id="inlineFormCustomSelectPref1">
-                                <option value="">...</option>
-                                <option value="1">12</option>
-                                <option value="2" selected>32</option>
-                                <option value="3">64</option>
-                                <option value="3">128</option>
-                              </select>
-                            </div>
-
+                        
                             <div class="form-group col-auto">
                               <label for="search" class="sr-only" >Cari Nama Jurnalis</label>
                               <input type="text" class="form-control" wire:model.live="search"  placeholder="Cari Nama Jurnalis">
@@ -51,7 +41,9 @@
                           <tr>
 
                            <td>
-                          <span>1</span>
+                          <span> 
+                            {{ $loop->iteration }}
+                          </span>
                             </td>
 
                             <td>
@@ -73,15 +65,17 @@
                         @endforeach
                         </tbody>
                       </table>
+
                       <nav aria-label="Table Paging" class="mb-0 text-muted">
-                        <ul class="pagination justify-content-center mb-0">
-                          <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                          <li class="page-item"><a class="page-link" href="#">1</a></li>
-                          <li class="page-item active"><a class="page-link" href="#">2</a></li>
-                          <li class="page-item"><a class="page-link" href="#">3</a></li>
-                          <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                        </ul>
+                        <ul class="pagination justify-content-center mb-0" style="cursor:pointer;">
+                          @foreach ($meta['links'] as $link)
+                              @if ($link['url'])
+                               <li class="page-item {{ $link['label'] == $currentPage ? 'active' : '' }}"><a class="page-link " wire:click="goToPage({{ is_numeric($link['label']) ? $link['label'] : ($link['label'] == 'pagination.previous' ? $currentPage-1 : $currentPage+1  )  }})">{{is_numeric($link['label']) ? $link['label'] : ($link['label'] == 'pagination.previous' ? 'Halaman sebelumnya' : 'Halaman Selanjutnya') }}</a></li>
+                          @endif
+                          @endforeach
+                          </ul>   
                       </nav>
+
                     </div>
                   </div>
                 </div> <!-- customized table -->

@@ -15,8 +15,7 @@ class AdministratorController extends Controller
         $this->jurnalisService = $jurnalisService;
 
         $this->currentPetugas = $this->adminService->currentAdmin();
-            $newest = date('Y-m-d');
-        $this->newsData = $this->newsService->allNews($newest);
+      
         $this->url = config('services.api_url');
     }
 
@@ -61,6 +60,8 @@ class AdministratorController extends Controller
             return redirect()->back()->with('message-error' , $response['message'][0]);
         }
     }
+
+
 
     public function register(){
         return view('Pengguna.Auth.register' , [
@@ -112,11 +113,11 @@ class AdministratorController extends Controller
          }
     }
 
+
     public function kelolaBerita() {
         return view('Administrator.Dashboard.kelolaBerita' , [
             "title" => 'Data Jurnalis | Portal Berita WinniCode', 
             "admin" => $this->currentPetugas,
-            "dataBerita" => $this->newsData['data'],
             "url" => $this->url,
         ]);
     }

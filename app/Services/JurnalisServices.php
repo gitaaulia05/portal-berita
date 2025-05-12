@@ -42,8 +42,6 @@ class JurnalisServices
      }
 
      public function currentJurnalis() {
-
-        //dd($this->token);
         $response = Http::withHeaders([
         'Authorization' => $this->token
         ])->get($this->baseUrl . '/jurnalis');
@@ -160,7 +158,7 @@ class JurnalisServices
       
     }
 
-    public function searchNews($judul_berita = null, $is_tayang = null , $is_trash = null) {
+    public function searchNews($judul_berita = null, $is_tayang = null , $is_trash = null, $page = null) {
        
         $params = [];
         if(!empty($judul_berita)) {
@@ -173,14 +171,17 @@ class JurnalisServices
 
         if(!empty($is_trash)) {
             $params['is_tayang'] = $is_trash;
-           // dd($this->baseUrl.'/berita' , $params);
+        }
+
+            if(!empty($page)) {
+            $params['page'] = $page;
         }
        // dd($params);
         $response = Http::withHeaders([
             'Authorization' => 'Bearer ' . $this->token
         ])->get($this->baseUrl.'/berita' , $params);
-       
-        return $response->successful() ? $response->json('data') : null;
+      
+        return $response->successful() ? $response->json() : null;
     }
 
     public function showNews($slugBerita) {

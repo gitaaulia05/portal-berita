@@ -47,19 +47,23 @@ class AdminServices
 
 
     // MAIN FEATURE
-    public function searchJurnalis($namaJurnalis = null) {
-        
+    public function searchJurnalis($namaJurnalis = null , $page=null) {
+        // dd($namaJurnalis);
         $params = [];
         if(!empty($namaJurnalis)) {
             $params['nama'] = $namaJurnalis;
+        }
+
+         if(!empty($page)) {
+            $params['page'] = $page;
         }
 
         $response = Http::withHeaders([
             'Authorization' => 'Bearer ' . $this->token
         ])->get($this->baseUrl.'/admin/jurnalis/search' , $params);
        
-        return $response->successful() ? $response->json('data') : null;
-
+       
+        return $response->successful() ? $response->json() : dd($this->baseUrl.'/admin/jurnalis/search' , $params);
     }
 
     public function dataJurnalis($slugJurnalis) {

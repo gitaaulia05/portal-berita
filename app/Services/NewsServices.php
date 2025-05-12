@@ -32,23 +32,21 @@ class NewsServices
         if ($response->status() === 200 ) {
             // Ambil nilai ETag dari header response
             $etagHeader = $response->header('ETag');
-            $newsData = $response->json('data');
+            $newsData = $response->json();
           
                 cache()->forget($buildCache);
                 cache()->forget($buildCache .'_data');
 
-                cache([
-                    $buildCache => $etagHeader,
-                    $buildCache.'_data' => $newsData
-            ]);
+            //     cache([
+            //         $buildCache => $etagHeader,
+            //         $buildCache.'_data' => $newsData
+            // ]);
             cache([$buildCache => $etagHeader]);
             cache([$buildCache.'_data'=> $newsData]);
-           
-            return[
-                'data' => $newsData,
-                'url' => $this->url,
-                'etag_test' => $etagHeader
-            ];   
+
+            return $newsData +[
+                'url' =>$this->url,
+            ];
         }
         // dd($response->status());
         if($response->status() === 304) {
@@ -61,11 +59,23 @@ class NewsServices
                 ];
             }
         }
+       
     return $response->json('errors');
  }
 
-    public function allNews($kategori) {
-        $url = $this->baseUrl.'/berita/pengguna?' . http_build_query(['kategori' => $kategori]);
+    public function allNews($kategori=null , $page = null , $judulBerita = null) {
+        $params=[];
+        if(!empty($kategori)){
+            $params['kategori'] = $kategori;
+        }
+        if(!empty($page)){
+            $params['page'] = $page;
+        }
+        if(!empty($judulBerita)){
+            $params['judul_berita'] = $judulBerita;
+        }
+        $url = $this->baseUrl.'/berita/pengguna?'. http_build_query($params);
+// dd($url);
         return $this->fetchWithETag('etag_kategori' , $url);
     }
 
