@@ -10,6 +10,10 @@ use App\Services\PenggunaServices;
 class NewsController extends Controller
 {
  
+    protected $news2; 
+    protected $newsResult; 
+    protected $selectedTopics2; 
+
     public function __construct(PenggunaServices $penggunaService, NewsServices $newsService) {
         $this->penggunaService = $penggunaService;
         $this->newsService = $newsService;
@@ -30,15 +34,13 @@ class NewsController extends Controller
 
     public function index()
     {
-
         $newest=date('Y-m-d');
-    
         $this->newsResult = $this->newsService->allNewsPopularAndTopics($newest);
-     
-      
+
         $this->news2 = [
             'data' => $this->newsResult['allNews']
         ];
+    
        
         $this->selectedTopics2 = collect($this->newsResult['selectedTopics']['data'])
         ->filter(function ($item) {
@@ -51,7 +53,8 @@ class NewsController extends Controller
                 'headerNews' => collect($this->news2['data'])->take(5),
                 'sideNews' => collect($this->news2['data'])->skip(5)->take(3),
                 'newNews' => collect($this->news2['data'])->skip(3)->take(4),
-               // 'popularNews' => collect($this->newsResult['popularNews']),
+                'auth' =>  $this->authUser,
+               'popularNews' => collect($this->newsResult['popularNews']),
                 'topicSelected' => collect( $this->selectedTopics2),
                 'url' => config('services.api_url'),
         ]);
@@ -86,6 +89,14 @@ class NewsController extends Controller
             $data['deks_berita'] 
         );
 
+
+        $newest=date('Y-m-d');
+        $this->newsResult = $this->newsService->allNewsPopularAndTopics($newest);
+
+        $this->news2 = [
+            'data' => $this->newsResult['allNews']
+        ];
+        
         return view('Pengguna.Main.detailNews'
                 , [
             'auth' => $this->authUser,

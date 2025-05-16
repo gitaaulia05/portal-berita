@@ -42,10 +42,10 @@ class JurnalisServices
      }
 
      public function currentJurnalis() {
-        $response = Http::withHeaders([
+                $response = Http::withHeaders([
         'Authorization' => $this->token
         ])->get($this->baseUrl . '/jurnalis');
-    
+
         return $response->successful() ? $response->json('data') : NULL;
     }
 

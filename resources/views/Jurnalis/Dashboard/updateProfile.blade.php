@@ -7,7 +7,6 @@
   @csrf
 
 <h1 class="text-center pb-2">Update Data Akun</h1>
-
        
       <div class="row">
                         <div class="form-group col-md-6">

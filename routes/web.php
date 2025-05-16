@@ -26,7 +26,7 @@ Route::get('/bagikanTautan' , [NewsController::class, 'shareNews']);
         Route::get('/login' , [AuthController::class , 'login']);    
         Route::post('/authLogin' ,[AuthController::class , 'authLogin']);
 
-                // AUTH ADMINISTRATOR 
+                // AUTH ADMINISTRATOR   
         Route::get('/login-administrator' , [AdministratorController::class , 'login']);
         Route::post('/authAdmin' , [AdministratorController::class , 'authLogin']);
 
@@ -94,6 +94,12 @@ Route::get('/bagikanTautan' , [NewsController::class, 'shareNews']);
         Route::get('/akun-jurnalis/{slugJurnalis}' , [AdministratorController::class , 'detailJurnalis']);
         Route::post('/aktif-akun/{slugJurnalis}' , [AdministratorController::class , 'activeJurnalis']);
         Route::get('/kelola-berita' , [AdministratorController::class , 'kelolaBerita']);
+
+        Route::get('/kategori-berita' , [AdministratorController::class , 'kategoriBerita'] );
+        Route::get('/kategori-berita/{idKb}' , [AdministratorController::class , 'ubahKB'] );
+        Route::post('/kategori-berita' , [AdministratorController::class , 'storeKb']);
+        Route::patch('/kategori-berita/{idKb}' , [AdministratorController::class , 'updateKb']);
+        Route::delete('/kategori-berita/{idKb}' , [AdministratorController::class , 'deleteKb']);
 
     });
 

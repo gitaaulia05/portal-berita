@@ -22,4 +22,21 @@
                                     </div>
                                     @endforeach
                             </div>
+
+            <nav aria-label="Page navigation example">
+                <ul class="inline-flex -space-x-px text-sm">
+                   @foreach ($meta['links'] as $link)
+                
+                       @if ($link['url'])
+                        <li>
+
+                        <a href="#"    class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500  {{ (int)$link['label'] == $currentPage ? 'bg-gray-100' : 'bg-white' }} bg-white border border-gray-300 hover:bg-gray-100" wire:click="goToPage({{ is_numeric($link['label']) ? (int)$link['label'] : ($link['label'] == 'pagination.previous' ? $currentPage-1 : $currentPage+1  )  }})">
+                            {{is_numeric($link['label']) ? $link['label'] : ($link['label'] == 'pagination.previous' ? 'Halaman sebelumnya' : 'Halaman Selanjutnya') }}
+                        </a>
+                        </li>
+                   @endif
+              @endforeach
+                </ul>
+            </nav>
+          
 </div>

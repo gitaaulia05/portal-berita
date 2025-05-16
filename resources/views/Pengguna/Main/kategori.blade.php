@@ -1,4 +1,4 @@
-@extends('Pengguna.Main.main')
+ @extends('Template.aside')
 
 @section('container-main')
     <div class="Berita Terbaru pt-8 mb-20" id="berita-terbaru">

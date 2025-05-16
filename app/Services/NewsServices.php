@@ -229,5 +229,60 @@ class NewsServices
         
         return $results;
     }
+
+    
+    public function dataKategori($search = null, $page = null){
+        $params= [];
+        if(!empty($page)){
+        $params['page'] = $page;
+        }
+
+         if(!empty($search)){
+        $params['kategori'] = $search;
+        }
+     
+            $response = Http::withHeaders([
+                'Authorization' => "Bearer ". $this->token,
+            ])->get($this->baseUrl."/kategoriBerita?" .http_build_query($params));
+
+            return $response->successful() ? $response->json() : null;
+     }
+
+     public function detailKategori($idKb){
+            $response = Http::withHeaders([
+                'Authorization' => "Bearer ". $this->token,
+            ])->get($this->baseUrl."/kategoriBerita/".$idKb);
+            return $response->successful() ? $response->json('data') : null;
+        }
+
+    public function updatedKategori(Request $request, $idKb){
+            $response = Http::withHeaders([
+                'Authorization' => "Bearer ". $this->token,
+            ])->patch($this->baseUrl."/kategoriBerita/".$idKb , [
+                'kategori' => $request->kategori
+            ]);
+
+            return $response->successful() ? $response->json('data') : null;
+        }
+
+
+          public function storeKategori(Request $request){
+            $response = Http::withHeaders([
+                'Authorization' => "Bearer ". $this->token,
+            ])->post($this->baseUrl."/kategoriBerita" , [
+                'kategori' => $request->kategori
+            ]);
+
+            return $response->successful() ? $response->json('data') : null;
+        }
+
+
+         public function deleteKategori($idKb){
+            $response = Http::withHeaders([
+        'Authorization' => "Bearer ". $this->token,
+        ])->delete($this->baseUrl."/kategoriBerita/".$idKb);
+
+            return $response->successful() ? $response->json('data') : null;
+        }
     
 }

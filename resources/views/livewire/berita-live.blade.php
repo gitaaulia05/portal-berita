@@ -151,9 +151,6 @@
                         @endforeach
                         </tbody>
                       </table>
-                         {{-- <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                           <li class="page-item"><a class="page-link" href="#">Next</a></li> --}}
-                   
                                 <nav aria-label="Table Paging" class="mb-0 text-muted">
                                   <ul class="pagination justify-content-center mb-0">
                                         @foreach ($meta['links'] as $link)
@@ -169,17 +166,5 @@
                   </div>
                 </div> <!-- customized table -->
 
-                <div class="pagination">
-    @foreach ($meta['links'] as $link)
-        @if ($link['url'])
-            <button 
-                wire:click="goToPage({{ \Illuminate\Support\Str::after($link['url'], 'page=') }})"
-                class="{{ $link['active'] ? 'bg-blue-500 text-white' : 'bg-white text-black' }}">
-                {{ is_numeric($link['label']) ? $link['label'] : __('translation.' . $link['label']) }}
-            </button>
-        @endif
-    @endforeach
-</div>
-  
-
+            
 </div>

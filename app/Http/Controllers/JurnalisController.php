@@ -57,7 +57,6 @@ class JurnalisController extends Controller
      }
     
     public function authLogin(Request $request){
-        // dd($request->all());
          $response = $this->jurnalisService->login($request);
       
          if($response) {

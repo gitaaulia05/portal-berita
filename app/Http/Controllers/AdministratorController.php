@@ -126,7 +126,6 @@ class AdministratorController extends Controller
     public function detailNews($kategori, $slugBerita){
         $response = $this->newsService->detailNews($kategori, $slugBerita);
         $url = config('services.api_url');
-        
         return view('Administrator.Dashboard.detailNews' , [
             "title" => 'Data Jurnalis | Portal Berita WinniCode', 
             "admin" => $this->currentPetugas,
@@ -136,5 +135,46 @@ class AdministratorController extends Controller
             'gambar2' =>!empty($response['gambar'][0]['gambar_berita']) ? $url."/storage/" .$response['gambar'][0]['gambar_berita'] : null
         ]);
 
+    }
+
+    public function kategoriBerita(){
+        return view('Administrator.Dashboard.kategoriBerita' , [
+                "title" => 'Kategori Berita | Portal Berita WinniCode', 
+            ]);
+    }
+
+    public function ubahKb($idKb){
+        $response = $this->newsService->detailKategori($idKb);
+           return view('Administrator.Dashboard.ubahKB' , [
+                "title" => 'Update Kategori Berita | Portal Berita WinniCode', 
+                "data" => $response
+            ]);
+    }
+
+    public function storeKb(Request $request ){
+         $response = $this->newsService->storeKategori($request,);
+         if($response){
+            return redirect('/kategori-berita')->with('message-success' , 'Sukses Tambah  Data Kategori Berita');
+         }else {
+            return redirect()->back()->withInput()->with('message-error' , 'Gagal Tambah Data Kategori Berita');
+         }
+    }
+
+    public function updateKb(Request $request , $idKb){
+         $response = $this->newsService->updatedKategori($request, $idKb);
+         if($response){
+            return redirect('/kategori-berita')->with('message-success' , 'Sukses Update  Data Kategori Berita');
+         }else {
+            return redirect()->back()->withInput()->with('message-error' , 'Gagal Update Data Kategori Berita');
+         }
+    }
+
+        public function deleteKb($idKb){
+         $response = $this->newsService->deleteKategori($idKb);
+         if($response){
+            return redirect('/kategori-berita')->with('message-success' , 'Sukses Hapus  Data Kategori Berita');
+         }else {
+            return redirect()->back()->with('message-error' , 'Gagal Hapus Data Kategori Berita');
+         }
     }
 }

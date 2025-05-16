@@ -23,7 +23,9 @@
 <link rel="stylesheet" href="{{ asset('css/daterangepicker.css') }}">
 <!-- App CSS -->
 <link rel="stylesheet" href="{{ asset('css/app-light.css') }}" id="lightTheme">
-<link rel="stylesheet" href="{{ asset('css/app-dark.css') }}" id="darkTheme" disabled>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
   </head>
   <body class="vertical  light  ">
@@ -60,11 +62,12 @@
         <nav class="vertnav navbar navbar-light">
           <!-- nav bar -->
           <div class="w-100 mb-4 d-flex">
-            <a class="navbar-brand mx-auto mt-2 flex-fill text-center" href="./index.html">
+            <a class="navbar-brand mx-auto mt-2 flex-fill text-center">
               <img src="{{ asset('assets/images/logo.png') }}" class="h-50" alt="Winni Code Logo"/>
             </a>
             
           </div>
+
           <ul class="navbar-nav flex-fill w-100 mb-2">
             <li class="nav-item ">
               <a href="/dashboard"class=" nav-link">
@@ -73,6 +76,7 @@
               </a>
             </li>
           </ul>
+
           <p class="text-muted nav-heading mt-4 mb-1">
             <span>Manajemen Berita</span>
           </p>
@@ -85,10 +89,18 @@
               </a>
             </li>
 
+               <li class="nav-item w-100">
+              <a class="nav-link" href="/kategori-berita">
+               <i class="fa-solid fa-table-list"></i>
+                <span class="ml-3 item-text">Kategori Berita</span>
+              </a>
+            </li>
+
           </ul>
           <p class="text-muted nav-heading mt-4 mb-1">
             <span>Manajemen Akun </span>
           </p>
+
           <ul class="navbar-nav flex-fill w-100 mb-2">
             <li class="nav-item w-100">
               <a class="nav-link" href="/akun-jurnalis">
@@ -97,6 +109,7 @@
               </a>
             </li>
           </ul>
+
           <p class="text-muted nav-heading mt-4 mb-1">
             <span>Kelola Akun Personal</span>
              <ul class="navbar-nav flex-fill w-100 mb-2">

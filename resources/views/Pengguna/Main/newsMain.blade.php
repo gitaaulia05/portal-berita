@@ -100,7 +100,7 @@
                     <img src="{{$url . '/storage/' . $nn['gambar'][0]['gambar_berita']}}" class="rounded-lg hover:opacity-50 transition duration-700">
                     <p>{{$sn['judul_berita']}} <a href="/berita/{{$nn['kategori_berita']}}/{{$nn['slug']}}" class="text-[#C95C66] hover:text-[#B03440]">Baca Selengkapnya</a></p>
                     <div class="text-footer">
-                        <p class="font-semibold text-[#C95C66] pt-1">{{$sn['kategori_berita']}}</p>
+                        <p class="font-semibold text-[#C95C66] pt-1">{{$nn['kategori_berita']}}</p>
                     </div>
                 </div> 
             @endforeach
@@ -112,17 +112,17 @@
 
     <div class="pt-8 mb-20" id="berita-pilihan">
         <h1 class="text-2xl font-semibold mb-7">TOPIK PILIHAN</h1>
-             <div class="grid lg:grid-cols-5 grid-cols-1 lg:gap-5 gap-3">
+             <div class="grid lg:grid-cols-5 grid-cols-1 lg:gap-5 gap-3 ">
                 @foreach ($topicSelected as $kategori => $beritaList)
                  @php
                      $beritaUtama  = $beritaList[0] ?? null;
                      $sisaBerita = array_slice($beritaList, 1);
                  @endphp
-                    <div class="card-topik-pilihan">
+                    <div class="card-topik-pilihan pb-5">
                         @if($beritaUtama)
                             <figure class="relative max-w-sm cursor-pointer">
                             <a href="#">
-                                {{-- <img class="rounded-lg" src="{{$url . '/storage/' . $beritaUtama['gambar'][0]['gambar_berita'] }}" alt="image description"> --}}
+                                <img class="rounded-lg" src="{{  $beritaUtama['gambar'][0]['gambar_berita']? $url . '/storage/' . $beritaUtama['gambar'][0]['gambar_berita'] :asset('assets/images/dummy.jpg') }}" alt="image description">
                             </a>
                             <figcaption class="absolute px-4 text-lg text-white bottom-0 bg-black opacity-70">
                                 <p class="text-xs">{{$beritaUtama['judul_berita']}}</p>
@@ -132,7 +132,7 @@
                         @endif
                         <ul>
                         @foreach ($sisaBerita as $sb)
-                            <li class="cursor-pointer"><a class="hover:text-slate-950 font-semibold">{{$sb['judul_berita']}}</a></li>
+                            <li class="cursor-pointer"><a class="hover:text-slate-950 font-semibold" href="/berita/{{$sb['kategori_berita']}}/{{$sb['slug']}}">{{$sb['judul_berita']}}</a></li>
                             <hr class="mb-3">
                         @endforeach
                         </ul>
@@ -144,8 +144,8 @@
     </div>
 
 
-
-    {{-- <div class=" pt-8 mb-20" id="berita-terpopuler-weeks">
+    @if (!empty($popularNews))
+    <div class=" pt-8 mb-20" id="berita-terpopuler-weeks">
         <h1 class="pb-3 font-bold text-3xl">BERITA TERPOPLER MINGGU INI</h1>
 
             <div class="card-new-news grid lg:grid-cols-4 grid-cols-2 gap-2 pt-2">
@@ -161,6 +161,7 @@
                     </div> 
                  @endforeach
             </div>
+     @endif
         
-    </div> --}}
+    </div>
 @endsection

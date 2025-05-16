@@ -151,9 +151,12 @@ class PenggunaServices
         ] : null;
     }
 
-    public function searchSaveNews($judul_berita =null){
+    public function searchSaveNews($judul_berita =null , $page = null){
             $params=[];
 
+            if(!empty($page)){
+                $params['page'] = $page;
+            }
             if(!empty($judul_berita)){
                 $params['judul_berita'] = $judul_berita;
             }
@@ -162,7 +165,7 @@ class PenggunaServices
                 'Authorization' => 'Bearer ' . $this->token
             ])->get($this->baseUrl.'/pengguna/simpanBerita', $params);
 
-            return $response->successful() ? $response->json('data') : null;
+            return $response->successful() ? $response->json() : null;
     }
 
 

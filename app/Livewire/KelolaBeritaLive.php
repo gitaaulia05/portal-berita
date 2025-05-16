@@ -23,10 +23,7 @@ class KelolaBeritaLive extends Component
             $this->currentPage = 1;
        
     }
-    //  public function mount (){
-       
-    //         $this->dataBerita = $this->newsService->allNews();
-    //     }
+
 
         public function updatedSearch($page = 1){
             $search = trim($this->search);
