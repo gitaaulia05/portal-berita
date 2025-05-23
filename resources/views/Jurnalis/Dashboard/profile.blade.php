@@ -33,8 +33,8 @@
 
            @if(session()->has('message-success') || session()->has('message-error')) 
 
-                                <div class="alert {{session('message-success') ? 'alert-success' : 'alert-danger'}} alert-dismissible fade show" role="alert">
-                                  <strong>{{session('message-success') || session('message-error')}}</strong> 
+                                <div class="alert {{session('message-success') ?? 'alert-success' : 'alert-danger'}} alert-dismissible fade show" role="alert">
+                                  <strong>{{session('message-success') ?? session('message-error')}}</strong> 
                                   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                   </button>

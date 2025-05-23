@@ -62,9 +62,13 @@ class NewsServices
        
     return $response->json('errors');
  }
-
-    public function allNews($kategori=null , $page = null , $judulBerita = null) {
+    public function allNews($kategori=null , $page = null , $judulBerita = null, $is_trash = null ) {
         $params=[];
+        
+        if(!empty($is_tayang)) {    
+            $params['is_tayang'] = $is_tayang;
+        }
+
         if(!empty($kategori)){
             $params['kategori'] = $kategori;
         }
@@ -74,8 +78,8 @@ class NewsServices
         if(!empty($judulBerita)){
             $params['judul_berita'] = $judulBerita;
         }
-        $url = $this->baseUrl.'/berita/pengguna?'. http_build_query($params);
-// dd($url);
+        $url = $this->baseUrl.'/berita?'. http_build_query($params);
+
         return $this->fetchWithETag('etag_kategori' , $url);
     }
 

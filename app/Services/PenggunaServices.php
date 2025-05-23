@@ -47,6 +47,7 @@ class PenggunaServices
 
 
     public function updateData(Request $request, $slugPengguna) {
+       // dd($request->all());
         $httpRequest = Http::withHeaders([
             'Authorization' => 'Bearer ' . $this->token
         ])->asMultipart();
@@ -64,7 +65,6 @@ class PenggunaServices
             'pendidikan_terakhir' => $request->pendidikan_terakhir,
             'pekerjaan' => $request->pekerjaan,
         ]);
-        dd($response->json());
         return $response->successful() ? $response->json('data') : $response->json('errors');
     }
 

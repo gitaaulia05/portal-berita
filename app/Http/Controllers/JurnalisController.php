@@ -4,13 +4,15 @@ namespace App\Http\Controllers;
 
 use services;
 use Illuminate\Http\Request;
+use App\Services\NewsServices;
 use App\Services\JurnalisServices;
 
 class JurnalisController extends Controller
 {
 
-    public function __construct(JurnalisServices $jurnalisService) {
+    public function __construct(JurnalisServices $jurnalisService , NewsServices $newsService) {
         $this->jurnalisService = $jurnalisService;
+        $this->newsService = $newsService;
         $this->currentPetugas = $this->jurnalisService->currentjurnalis();
         $this->url = config('services.api_url');
     }
@@ -83,19 +85,23 @@ class JurnalisController extends Controller
     }
 
     public function updateProfile() {
+         //dd($this->currentPetugas['gambar'] );
         return view('Jurnalis.Dashboard.updateProfile' , [
             'title' => "Update Profile | Portal berita" , 
-            'jurnalis' => $this->currentPetugas,
-            'gambar' => !empty($this->currentPetugas['gambar']) ? $this->currentPetugas['gambar'] : asset('assets/avatars/face-1.jpg') ,
+            'layout' => ($this->currentPetugas['role'] == 1) ? 'Template.aside' : 'Template.asideJ',
+            'data' => $this->currentPetugas,
+            'url' => config('services.api_url'),
+            'gambar' => !empty($this->currentPetugas['gambar']) ? $this->currentPetugas['gambar'] : asset('') ,
         ]);
     }
 
     public function storeProfile(Request $request, $slugAdmin) {
         $response = $this->jurnalisService->updateProfile($request , $slugAdmin);
         if($response){
-            return redirect('/jurnalis/profile')->with('message-success' , 'Data Profile Berhasil Di Update !');
+            $path = ($this->currentPetugas['role'] == 1) ? '/profile' : '/jurnalis/profile';
+            return redirect($path)->with('message-success' , 'Data Profile Berhasil Di Update !');
         } else {
-            return redirect()->back();
+            return redirect()->back()->withInput()->withErrors($response)->with('message-error' , 'Data Profile Gagal Di Update !');
         }
     }
 
@@ -105,6 +111,7 @@ class JurnalisController extends Controller
     public function tambahBerita() {
         return view('Jurnalis.Dashboard.addNews' , [
             'title' => "Tambah Berita | Portal berita" , 
+            'kategori' => $this->newsService->dataKategori(),
             'jurnalis' => $this->currentPetugas,
         ]);
     }

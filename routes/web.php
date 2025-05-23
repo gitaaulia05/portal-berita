@@ -50,6 +50,9 @@ Route::get('/bagikanTautan' , [NewsController::class, 'shareNews']);
     Route::patch('/simpan-password/{token}' ,  [AuthController::class , 'storePassword']);
 
     Route::middleware(UniversalMiddleware::class)->group(function () {
+         Route::get('/administrator/update-profile/{slugAdmin}' , [JurnalisController::class, 'updateProfile'])->name('jurnalis-update');
+         Route::post('/administrator/simpan-update-profile/{slugAdmin}' ,  [JurnalisController::class, 'storeProfile'])->name('jurnalis-update');
+         
             //View Password forget
             Route::get('/lupa-passwordAuth' , [AuthController::class , 'forgetPassword']);
 
@@ -68,7 +71,8 @@ Route::get('/bagikanTautan' , [NewsController::class, 'shareNews']);
             dd(phpinfo());
         });
         Route::get('/profile/pengguna' , [PenggunaController::class, 'index']);
-        
+
+         
         // ubah data dasar pengguna
         Route::get('/profile/ubah-data/{slugPengguna}' ,[PenggunaController::class, 'update']);
         Route::post('/profile/storeUpdate/{slugPengguna}' ,[PenggunaController::class, 'updateStore']);
@@ -87,6 +91,7 @@ Route::get('/bagikanTautan' , [NewsController::class, 'shareNews']);
     Route::middleware(AdministratorMiddleware::class)->group(function() {
         Route::get('/dashboard' , [AdministratorController::class , 'index']);
         Route::get('/profile' , [AdministratorController::class , 'profile']);
+      
         Route::delete('/logout-admin' , [AdministratorController::class , 'logout']);
 
         // MAIN FEATURE
@@ -110,11 +115,7 @@ Route::get('/bagikanTautan' , [NewsController::class, 'shareNews']);
         Route::get('/dashboard-jurnalis' , [JurnalisController::class , 'index'])->name('dashboard-jurnalis');
         Route::delete('/logout-jurnalis' , [JurnalisController::class, 'logout'])->name('logout-jurnalis');
         Route::get('/jurnalis/profile' , [JurnalisController::class, 'profile'])->name('jurnalis-profile');
-        Route::get('/jurnalis/update-profile/{slugAdmin}' , [JurnalisController::class, 'updateProfile'])->name('jurnalis-update');
-        Route::post('/jurnalis/simpan-update-profile/{slugAdmin}' , [JurnalisController::class, 'storeProfile'])->name('jurnalis-update');
-
 });
-
     Route::middleware(ActiveJurnalisMiddleware::class)->group(function () {
         Route::get('/tambah-berita',  [JurnalisController::class, 'tambahBerita']);
         Route::post('/simpan-berita' ,  [JurnalisController::class, 'storeNews']);

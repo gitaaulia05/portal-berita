@@ -31,7 +31,7 @@ class JurnalisServices
      }
 
      public function register(Request $request) {
-        $response =  Http::post($this->baseUrl.'/jurnalis' , [
+        $response =  Http::post($this->baseUrl.'/jurnalis/register' , [
             'nama' => $request->nama ,
             'email' => $request->email ,
             'password' => $request->password,
@@ -43,8 +43,8 @@ class JurnalisServices
 
      public function currentJurnalis() {
                 $response = Http::withHeaders([
-        'Authorization' => $this->token
-        ])->get($this->baseUrl . '/jurnalis');
+        'Authorization' =>'Bearer '. $this->token
+        ])->get($this->baseUrl . '/administrator');
 
         return $response->successful() ? $response->json('data') : NULL;
     }
@@ -71,9 +71,10 @@ class JurnalisServices
               );
         }
         
-       $response=  $httpRequest->post($this->baseUrl.'/jurnalis/update/'.$slugAdmin , [
+       $response=  $httpRequest->post($this->baseUrl.'/administrator/update/'.$slugAdmin , [
             'nama' => $request->nama
         ]);
+      
        return $response->successful() ? $response->json('data') : $response->json('errors');
     }
 
@@ -180,7 +181,6 @@ class JurnalisServices
         $response = Http::withHeaders([
             'Authorization' => 'Bearer ' . $this->token
         ])->get($this->baseUrl.'/berita' , $params);
-      
         return $response->successful() ? $response->json() : null;
     }
 

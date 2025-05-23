@@ -24,7 +24,7 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-6 col-12  d-flex justify-content-center">
-                            <img src="{{ !empty($data['gambar']) ? $url . '/storage/' . $data['gambar'] : asset('assets/avatars/face-1.jpg') }}" class="rounded-lg w-75">
+                            <img src="{{ ($data['gambar']) ? $url . '/storage/' . $data['gambar'] : asset('assets/avatars/face-1.png') }}" class="rounded-lg w-75">
 
                             </div>
                             <div class="col-md-6 col-12">

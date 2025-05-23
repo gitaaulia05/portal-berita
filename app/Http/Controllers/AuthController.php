@@ -67,7 +67,7 @@ class AuthController extends Controller
         return view('Pengguna.Auth.lupaPassword' , [
               "title" => 'Lupa Password | Portal Berita WinniCode' , 
               'auth' => $this->authUser || $this->authAdmin,
-              'layout' => isset($this->authUser) ? 'Pengguna.Main.main' : (isset($this->authAdmin) ? 'Template.asideJ' : 'Template.nav'),
+              'layout' => isset($this->authUser) ? 'Pengguna.Main.main' : (isset($this->authAdmin['role']) && $this->authAdmin['role'] === 1 ? 'Template.aside' : (isset($this->authAdmin['role']) && $this->authAdmin['role'] === 2 ? 'Template.aside' :'Template.nav' )),
         ]);
     }
 
@@ -81,7 +81,7 @@ class AuthController extends Controller
                  'message1' => $response['data']['message'] ,
                  'email' => $response['data']['email'],
                  'message2' => $response['data']['message2'],
-                'layout' => isset($this->authUser) ? 'Pengguna.Main.main' : (isset($this->authAdmin) ? 'Template.asideJ' : 'Template.nav'),
+               'layout' => isset($this->authUser) ? 'Pengguna.Main.main' : (isset($this->authAdmin['role']) && $this->authAdmin['role'] === 1 ? 'Template.aside' : (isset($this->authAdmin['role']) && $this->authAdmin['role'] === 2 ? 'Template.aside' :'Template.nav' )),
                 'auth' => $this->authUser ,
 
             ]);
@@ -107,15 +107,13 @@ class AuthController extends Controller
     public function storePassword(Request $request , $token) 
     {
         $response = $this->penggunaService->updatePassword($request , $token);
-      dd($response);
+       
         if($response['status'] === 200) {
-            switch($response['role']) {
+            switch($response['data']['role']) {
                 case 1 :
                     return redirect('/login-administrator')->with('message-success' , 'Password Berhasil Diganti!');
                 case 2 :
                     return redirect('/login-jurnalis')->with('message-success' , 'Password Berhasil Diganti!');
-                case 'user' :
-                    return redirect('/login')->with('message-success' , 'Password Berhasil Diganti!');
                 default :
                 return redirect('/login')->with('message-success' , 'Password Berhasil Diganti!');
             }
@@ -132,7 +130,6 @@ class AuthController extends Controller
     public function sendEmailAuth(Request $request){
         $response = $this->penggunaService->sendAuthEmail($request);
         $authCheck = $this->authUser ?? $this->authAdmin;
-       // dd($authCheck);
         if(isset($response['data'])){
             $viewData = [
                 'title' => 'Password Reset | Portal Berita WinniCode',
@@ -189,9 +186,10 @@ class AuthController extends Controller
             $path = isset($this->authUser) ? '/profile/pengguna' : ((isset($this->authAdmin) && $this->authAdmin === 2) ? '/jurnalis/profile' :'/dashboard') ;
           return redirect($path)->with('message-success' , 'Password Berhasil Diganti!');
         } elseif($response->status() == 404) {
-            return redirect()->back()->with('message-error' , $response['errors']['message'][0]);
+            return redirect()->back()->withInput()->with('message-error', 'Password Gagal Diubah')->withErrors($response['errors']);
         } else {
-            return redirect()->back()->with('message-error' , $response['errors']['message'][0]);
+            //dd($response->json());
+            return redirect()->back()->withInput()->with('message-error', 'Password Gagal Diubah')->withErrors($response['errors']);
         }
     }
 

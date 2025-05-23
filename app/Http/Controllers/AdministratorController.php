@@ -20,9 +20,12 @@ class AdministratorController extends Controller
     }
 
     public function index() {
+      //  dd($this->newsService->allNews());
         return view('Administrator.Dashboard.index' , [
             'title' => 'Dashboard | Portal Berita WinniCode' , 
             'admin' => $this->currentPetugas,
+            'jurnalis' => $this->adminService->searchJurnalis()['total_jurnalis_aktif'],
+            'berita' =>  $this->jurnalisService->searchNews(),
         ]);
     }
 
@@ -33,6 +36,8 @@ class AdministratorController extends Controller
         ]);
     }
 
+
+
     public function profile (){
         $hour  = now()->format('H');
         $greetings  = $hour < 12 ? 'Good Morning' : ($hour > 17 ? 'Good Afternoon' : ($hour > 20 ? 'Good Evening' : 'Good Night'));
@@ -40,7 +45,8 @@ class AdministratorController extends Controller
         return view('Administrator.Dashboard.profile' , [
             "title" => 'Profile | Portal Berita WinniCode', 
             "admin" => $this->currentPetugas,
-            "greetings" => $greetings
+            "greetings" => $greetings,
+            "Url" => $this->url
         ]);
     }
 
@@ -107,7 +113,7 @@ class AdministratorController extends Controller
          // dd($request->all());
          $response = $this->adminService->activeJurnalis($request , $slugJurnalis);
          if($response) {
-            return redirect('/akun-jurnalis/'. $slugJurnalis)->with('message-success' , 'Aktivasi Akun Berhasil !');
+            return redirect('/akun-jurnalis/'. $slugJurnalis)->with('message-success' , 'Perubahan Status AKun Berhasil !');
          } else {
              return redirect()->back()->with('message-error' , $response['message'][0]);
          }

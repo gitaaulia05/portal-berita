@@ -56,7 +56,11 @@
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle text-muted pr-0" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               <span class="avatar avatar-sm mt-2">
-                <img src="{{asset('/assets/avatars/face-1.jpg')}}" alt="..." class="avatar-img rounded-circle">
+                 @if (!empty($jurnalis))
+                  <img src="{{($jurnalis['gambar']) ? config('services.api_url') . '/storage/' . $jurnalis['gambar']  : asset('assets/avatars/face-1.png')  }}" alt="..." class="avatar-img rounded-lg">
+                  @elseif (!empty($data))
+                    <img src="{{($data['gambar']) ? config('services.api_url') . '/storage/' . $data['gambar']  : asset('assets/avatars/face-1.png')  }}" alt="..." class="avatar-img rounded-lg">
+              @endif
               </span>
             </a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">

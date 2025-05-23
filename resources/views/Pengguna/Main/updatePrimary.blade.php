@@ -29,36 +29,57 @@
         </div>
     @endif
 
-         <div class="header-change-password grid lg:grid-cols-3 grid-cols-1 gap-3 mb-3">
-            <div class="bg-amber-100">
-            <img src={{!empty($auth['gambar']) ? $url . '/storage/' . $auth['gambar'] : asset('assets/avatars/face-2.jpg')}}>
-            <p class="font-semibold capitalize">{{$auth['nama']}}</p>
+         <div class="header-change-password grid lg:grid-cols-3  md:grid-cols-3 grid-cols-1 gap-3 mb-3">
+            <div class="mx-auto my-auto">
+            <img src="{{!empty($auth['gambar']) ? $url . '/storage/' . $auth['gambar'] : asset('assets/avatars/face-1.png')}}" class="w-2xs ">
+            <p class="font-semibold capitalize">{{$auth['data']['nama']}}</p>
             </div>
       
-            <div class="col-span-2 bg-amber-300">
-              <form method="POST" Action="/profile/storeUpdate/{{$auth['slug']}}" enctype="multipart/form-data">
+            <div class="col-span-2 lg:w-md  md:w-md w-xs mx-5 py-7">
+              <form method="POST" Action="/profile/storeUpdate/{{$auth['data']['slug']}}" enctype="multipart/form-data">
                 @csrf
 
-                <label for="nama" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama</label>
-                <input type="text" id="nama" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" name="nama" value="{{$auth['nama']}}" required />
+             <label for="alamat" class="block mb-2 text-sm font-medium text-gray-900 ">Nama</label>
+            <input type="text" id="nama" name="nama" value="{{ old('nama', $auth['data']['nama']) }}"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('nama') border-red-500 @enderror" required />
+            @error('nama')
+                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+            @enderror
 
-                <label for="alamat" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Alamat</label>
-                <input type="text" id="alamat" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" name="email"  />
+            <label for="alamat" class="block mb-2 text-sm font-medium text-gray-900 my-5">Alamat</label>
+                    <input type="text" id="alamat" name="alamat" value="{{ old('alamat', $auth['data']['alamat'] )}}" placeholder="{{$auth['data']['alamat']}}"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('alamat') border-red-500 @enderror" required />
 
-                <label for="pendidikan_terakhir" class="block mb-2 text-sm font-medium text-gray-900 ">Pendidikan Terakhir</label>
-                <input type="text" id="pendidikan_terakhir" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" name="pendidikan_terakhir" />
+                    @error('alamat')
+                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
 
-                <label for="pekerjaan" class="block mb-2 text-sm font-medium">Pekerjaan</label>
-                <input type="text" id="pekerjaan" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" name="pekerjaan"  />
-                                      
+                    <label for="pendidikan_terakhir" class="block mb-2 text-sm font-medium text-gray-900 my-5">Pendidikan Terakhir</label>
+                    <input type="text" id="pendidikan_terakhir" name="pendidikan_terakhir" value="{{ old('pendidikan_terakhir', $auth['data']['pendidikan_terakhir'] )}}"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('pendidikan_terakhir') border-red-500 @enderror" required />
 
-                <label for="gambar" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Gambar</label>
-                <input type="file" id="gambar" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" name="gambar" />
+                    @error('pendidikan_terakhir')
+                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
 
-               <button >Hapus Foto Profile</button>
+                    <label for="pekerjaan" class="block mb-2 text-sm font-medium my-5">Pekerjaan</label>
+                    <input type="text" id="pekerjaan" name="pekerjaan" value="{{ old('pekerjaan', $auth['data']['pekerjaan'] ?? '') }}"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('pekerjaan') border-red-500 @enderror" required />
+                    @error('pekerjaan')
+                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
 
-                <div class="button-password m-3">
-                    <button type="submit" class="bg-[#0E7CC9] p-1 text-white">SIMPAN</button>
+                    <label for="gambar" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white ">Gambar</label>
+                    <input type="file" id="gambar" name="gambar"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('gambar') border-red-500 @enderror" />
+                    @error('gambar')
+                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+
+               <button class="text-red-500 underline underline-offset-1 mt-3" >Hapus Foto Profile</button>
+
+                <div class="button-password my-5 flex justify-center">
+                    <button type="submit" class="bg-[#0E7CC9] px-17 py-1 mx-auto hover:opacity-75 transition duration-700 text-white rounded-md p">SIMPAN</button>
                 </div>
              </form>
             </div>

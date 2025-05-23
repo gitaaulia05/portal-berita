@@ -48,7 +48,7 @@
               </div>
           </div>
             <button class="btn btn-lg btn-primary btn-block" type="submit">Simpan</button>
-            <p class="mt-5 mb-3 text-muted text-center">© 2025</p>
+            <p class="mt-5 mb-3 text-muted text-center mx-auto">© 2025</p>
 
     </div>
         </form>

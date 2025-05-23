@@ -40,7 +40,12 @@
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle text-muted pr-0" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               <span class="avatar avatar-sm mt-2">
-                <img src="{{!empty($admin['gambar']) ? config('services.api_url') . '/storage/' . $data['gambar']  : asset('assets/avatars/face-1.jpg')  }}" alt="..." class="avatar-img rounded-lg">
+              @if (!empty($admin))
+                  <img src="{{($admin['gambar']) ? config('services.api_url') . '/storage/' . $admin['gambar']  : asset('assets/avatars/face-1.png')  }}" alt="..." class="avatar-img rounded-lg">
+                  @elseif (!empty($data))
+                    <img src="{{($data['gambar']) ? config('services.api_url') . '/storage/' . $data['gambar']  : asset('assets/avatars/face-1.png')  }}" alt="..." class="avatar-img rounded-lg">
+              @endif
+                
               </span>
             </a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">

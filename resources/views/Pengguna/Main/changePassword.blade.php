@@ -8,7 +8,7 @@
         <div class="flex flex-row gap-2" id="content-profile-notif">
             <p class="text-[#C95C66] ">Profile</p>
             <i class="fa-solid fa-circle text-xs text-[#96CBFE] my-auto "></i>
-            <p class="text-[#868686] ">Ganti Password Anda Dengan Ketentuan Dibawah</p>
+            <p class="text-[#868686] ">GANTI PASSWORD</p>
         </div>
     </div>
 
@@ -30,10 +30,10 @@
         </div>
     @endif
 
-       <div class="header-change-password grid lg:grid-cols-2 grid-cols-1 lg:gap-0 gap-3 mb-3 px-12">
-            <div class="lg:block hidden">
-            <img src={{!empty($auth['gambar']) ? $url . '/storage/' . $auth['gambar'] : asset('assets/avatars/face-2.jpg')}} class="rounded-md w-1/2">
-            <p class="font-semibold capitalize pt-2">{{$auth['nama']}}</p>
+       <div class="header-change-password grid lg:grid-cols-2 md:grid-cols-2 grid-cols-1 lg:gap-0 gap-3 mb-3 px-12">
+            <div class="lg:block md:block hidden mx-auto py-auto">
+            <img src="{{ $auth['data']['gambar'] ? $url .'/storage/'.$auth['data']['gambar']  : asset('assets/avatars/face-1.png') }}" class="rounded-md lg:w-[10rem] md:w-[9rem]">
+            <p class="font-semibold capitalize pt-2 lg:ms-15 md:ms-13">{{$auth['data']['nama']}}</p>
             </div>
       
             <div class=" ">

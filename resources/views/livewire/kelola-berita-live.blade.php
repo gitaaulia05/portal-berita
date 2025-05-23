@@ -15,6 +15,19 @@
             <label for="search" class="sr-only" >Cari Judul Berita</label>
             <input type="text" class="form-control" wire:model.live="search"  placeholder="Cari Judul Berita">
           </div>
+
+   <div class="form-group col-auto">
+                                <div class="bg-primary opacity-50 text-white h-75 rounded-sm" wire:click="toogleTayang" style="cursor: pointer; background-color: {{ $is_trash === 1 ? '#3D7EFF' : '#1b68ff' }};">
+                                  <p class="mx-2 pt-2">Berita Tayang</p>
+                                </div>
+                            </div>
+                            
+         <div class="form-group col-auto">
+                                  <div class=" text-white h-75 rounded-sm" wire:click="toogleSoftDelete" style="cursor: pointer;    background-color: {{ $is_trash === 2 ? '#ED6370' : '#dc3545' }};">
+                                    <p class="mx-2 pt-2">Berita Dihapus</p>
+                                  </div>
+                              </div>
+
         </div>
       </form>
     </div>

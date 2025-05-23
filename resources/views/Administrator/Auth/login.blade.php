@@ -25,10 +25,14 @@
           </div>
           <button class="btn btn-lg btn-primary btn-block" type="submit">Masuk</button>
         </form>
-      </div>
 
-           
-        
+          <div class="pt-3">
+            <a href="/lupa-password" class="text-danger font-weight-bold text-decoration-none">LUPA PASSWORD</a>
+            <p class="mt-2 mb-3 text-muted">© 2025</p>
+        </div>
+
+      </div>
+    
       </div>
     </div>
   @endsection

@@ -29,10 +29,9 @@ class AdminServices
 
     public function currentAdmin() {
         $response = Http::withHeaders([
-        'Authorization' => $this->token
-        ])->get($this->baseUrl . '/admin');
-        
-
+        'Authorization' => 'Bearer '.$this->token
+        ])->get($this->baseUrl . '/administrator');
+     
         return $response->successful() ? $response->json('data') : null;
     }
 
@@ -47,8 +46,8 @@ class AdminServices
 
 
     // MAIN FEATURE
-    public function searchJurnalis($namaJurnalis = null , $page=null) {
-        // dd($namaJurnalis);
+    public function searchJurnalis($namaJurnalis = null , $page=null, $is_active = null) {
+      
         $params = [];
         if(!empty($namaJurnalis)) {
             $params['nama'] = $namaJurnalis;
@@ -62,8 +61,8 @@ class AdminServices
             'Authorization' => 'Bearer ' . $this->token
         ])->get($this->baseUrl.'/admin/jurnalis/search' , $params);
        
-       
-        return $response->successful() ? $response->json() : dd($this->baseUrl.'/admin/jurnalis/search' , $params);
+     // dd($this->baseUrl.'/admin/jurnalis/search' , $params);
+        return $response->successful() ? $response->json() : $response->json('error');
     }
 
     public function dataJurnalis($slugJurnalis) {

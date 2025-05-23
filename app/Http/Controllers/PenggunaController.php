@@ -14,6 +14,7 @@ class PenggunaController extends Controller
     }
 
     public function index() {
+      //  dd($this->authUser['data']['alamat']);
             return view('Pengguna.Main.profile' , [
                 'auth' => $this->authUser,
                 'url' => config('services.api_url'),
@@ -21,6 +22,7 @@ class PenggunaController extends Controller
     }
 
     public function update($slugPengguna) {
+        //dd($this->authUser['data']);
         $pendidikan = ['SD' , 'SMP' , 'SMA/Sederajat' , 'S1' , 'S2' , 'S3'];
         return view('Pengguna.Main.UpdatePrimary' , [
             'auth' => $this->authUser,
@@ -32,14 +34,15 @@ class PenggunaController extends Controller
     public function updateStore(Request $request, $slugPengguna) {
         $response = $this->penggunaService->updateData($request, $slugPengguna);
 
-        if($response->successful()){
-            return redirect('/pengguna/')->with('message-sucess' , 'Berhasil Update Informasi Akun!');
+        if($response){
+            return redirect('/profile/pengguna')->with('message-success' , 'Berhasil Update Informasi Akun!');
         } else {
-            return redirect()->back()->withInput()->withErrors($response->json['errors'])->with('message-erorr' , 'Update Informasi Akun Gagal!');
+            return redirect()->back()->withInput()->withErrors($response->json['errors'])->with('message-error' , 'Update Informasi Akun Gagal!');
         }
     }
 
-    public function updatePassword() {
+    public function updatePassword() {  
+       
         return view('Pengguna.Main.changePassword' , [
             'auth' => $this->authUser,
             'url' => config('services.api_url'),

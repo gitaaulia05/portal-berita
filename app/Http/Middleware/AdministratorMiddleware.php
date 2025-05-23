@@ -20,7 +20,7 @@ class AdministratorMiddleware
        
         
         $pengguna = Administrator::where('token', $token)->where('role' , 1)->first();
-        
+
         if($pengguna) {
             $request->headers->set('Authorization' , 'Bearer '.$token);
             return $next($request);

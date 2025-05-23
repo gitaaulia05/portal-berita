@@ -21,6 +21,7 @@
                               <label for="search" class="sr-only" >Cari Nama Jurnalis</label>
                               <input type="text" class="form-control" wire:model.live="search"  placeholder="Cari Nama Jurnalis">
                             </div>
+
                           </div>
                         </form>
                       </div>
@@ -48,14 +49,14 @@
 
                             <td>
                               <div class="avatar avatar-md">
-                                <img src="{{!empty($d['gambar']) ? $url.'/storage/'.$d['gambar'] : asset('assets/avatars/face-1.jpg') }}" alt="..." class="avatar-img rounded-lg">
+                                <img src="{{($d['gambar']) ? $url.'/storage/'.$d['gambar'] : asset('assets/avatars/face-1.png') }}" alt="..." class="avatar-img rounded-lg">
                               </div>
                             </td>
                             <td class="w-25">
                              <small class="text-muted">{{$d['nama']}}</small>
                             </td>
                             <td>
-                             <p>{{$d['active']}}</p>
+                             <p>{{$d['active'] == 1 ? 'Aktif' : 'Non-Aktif'}}</p>
                             </td>
                             <td>  
                               <a href="/akun-jurnalis/{{$d['slug']}}" class="badge badge-primary py-2 px-2">Detail Data</a>

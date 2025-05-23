@@ -51,7 +51,7 @@
             @if(!empty($auth['data']['gambar']))
           <img class="w-8 h-8 rounded-full" src="{{$url . '/storage/' . $auth['data']['gambar']}}" alt="user photo">
             @else
-              <img class="w-8 h-8 rounded-full" src="{{asset('assets/avatars/face-1.jpg')}}" alt="user photo">
+              <img class="w-8 h-8 rounded-full" src="{{asset('assets/avatars/face-1.png')}}" alt="user photo">
           @endif
         </button>
 
