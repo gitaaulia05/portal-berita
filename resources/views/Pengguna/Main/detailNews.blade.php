@@ -5,7 +5,7 @@
         <div class="grid lg:grid-cols-3 grid-cols-1 gap-5 pb-2">
             <div class="image-jumbotron col-span-2 flex justify-center">
             <div>
-              <img src="{{!empty($sn['gambar'][0]['gambar_berita']) ? $url . '/storage/' .$sn['gambar'][0]['gambar_berita'] : asset('assets/images/dummy.jpg') }}" class="rounded-lg w-full h-4/5">
+              <img src="{{($dataNews['gambar'][0]['gambar_berita']) ? $url . '/storage/' .$dataNews['gambar'][0]['gambar_berita'] : asset('assets/images/dummy.jpg') }}" class="rounded-lg w-full h-4/5">
                 @if(!empty($dataNews['gambar'][0]['keterangan_gambar']))
               <p class="text-slate-500 text-center">{{$dataNews['gambar'][0]['keterangan_gambar']}}</p>
               @endif
@@ -76,21 +76,23 @@
         <h1 class="pb-3 font-bold text-3xl">BERITA YANG RELEVAN DENGAN ARTIKEL INI</h1>
 
                 <div class="card-new-news grid lg:grid-cols-4 grid-cols-2 gap-2 pt-2">
-                    @foreach ($relatedNews as $rn)
-                        @if (isset($rn['slug']) && isset($rn['kategori_berita']) && isset($rn['judul_berita']))
+                    @foreach ($relateNews as $rn)
+
+
+                        {{-- @if (isset($rn['slug']) && isset($rn['kategori_berita']) && isset($rn['judul_berita'])) --}}
                             <div class="header-card-content hover:scale-105 transition duration-700">
-                                <a href="/berita/{{ $rn['kategori_berita'] }}/{{ $rn['slug'] }}">
+                                <a href="/berita/{{ $rn['kategori_berita'] ?? '' }}/{{ $rn['slug'] ??'' }}">
                                     <img src="{{ !empty($rn['gambar'][0]['gambar_berita']) ? $url . '/storage/' . $rn['gambar'][0]['gambar_berita'] : asset('assets/images/dummy.jpg')}}">
                                     <p>
-                                        {{ $rn['judul_berita'] }} 
-                                        <a href="/berita/{{ $rn['kategori_berita'] }}/{{ $rn['slug'] }}" class="text-[#C95C66] hover:text-[#B03440]">Baca Selengkapnya</a>
+                                        {{ $rn['judul_berita'] ??'' }} 
+                                        <a href="/berita/{{ $rn['kategori_berita'] ??''}}/{{ $rn['slug'] ??''}}" class="text-[#C95C66] hover:text-[#B03440]">Baca Selengkapnya</a>
                                     </p>
                                     <div class="text-footer">
-                                        <p class="font-semibold text-[#C95C66] pt-1">{{ $rn['kategori_berita'] }}</p>
+                                        {{-- <p class="font-semibold text-[#C95C66] pt-1">{{ $rn['kategori_berita'] ?? '' }}</p> --}}
                                     </div>
                                 </a>
                             </div>
-                        @endif
+                        {{-- @endif --}}
                     @endforeach
         </div>
 

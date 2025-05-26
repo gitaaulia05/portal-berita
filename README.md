@@ -9,7 +9,7 @@
   <h3 align="center">PORTAL BERITA</h3>
 
   <p align="center">
-   Wesbite sederhana yang menampilkan daftar berita terkini.
+   Wesbite yang menampilkan daftar berita terkini.
     <br />
   </p>
 </div>
@@ -78,6 +78,18 @@ _Ikuti langkah-langkah berikut untuk menginstal dan menjalankan aplikasi secara 
 
 _Website ini merupakan hasil implementasi dari proyek API-news maka diharapkan untuk clone terlebih dahulu repository tesebut
 <a href="https://github.com/gitaaulia05/api-news">API-News</a>_
+
+
+## Preview proyek 
+- Halaman Awal 
+<img src="public/assets/images/Screenshot 2025-05-26 225130.png">
+
+- Halaman Detail berita
+<img src="public/assets/images/Screenshot 2025-05-26 232755.png">
+
+- Halaman Profile
+<img src="public/assets/images/Screenshot 2025-05-26 233209.png">
+
 
 [Laravel.com]: https://img.shields.io/badge/Laravel-FF2D20?style=for-the-badge&logo=laravel&logoColor=white
 [Laravel-url]: https://laravel.com

@@ -56,12 +56,13 @@ class BeritaLive extends Component
 
     public function render()
     {
-    
+    // dd($this->dataBerita['data'][0]);
          return view('livewire.berita-live' , [
             'title' => "Dashboard Jurnalis | Portal berita" , 
             'jurnalis' => $this->jurnalisService->currentJurnalis(), 
             'berita' => $this->dataBerita['data'],
             'meta' => $this->dataBerita['meta'],
+            'url' =>  config('services.api_url')
         ]);
     }
 

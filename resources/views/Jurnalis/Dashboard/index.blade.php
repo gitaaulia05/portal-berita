@@ -9,9 +9,6 @@
             </button>
       </div>
       @endif
-      
-      <p>{{$jurnalis['nama']}}</p>
-      <p>{{$jurnalis['email']}}</p>
-      <p>{{$jurnalis['active']}}</p>
+   
       @livewire('berita-live')
    @endsection

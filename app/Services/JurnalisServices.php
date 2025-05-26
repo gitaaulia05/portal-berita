@@ -112,6 +112,7 @@ class JurnalisServices
 
     public function updateNews(Request $request , $slugBerita)
     {
+    
        $httpRequest = Http::withHeaders([
         'Authorization' => 'Bearer ' . $this->token
     ])->asMultipart();
@@ -143,7 +144,7 @@ class JurnalisServices
         if ($request->filled('gambar_lama2')) {
             $payload['gambar_lama2'] = $request->gambar_lama2;
         }
-            $payload['keterangan_gambar2'] = $request->keterangan_gambar2;
+            $payload['keterangan_gambar2'] = $request->keterangan_gambapr2;
           }
 
           $payload = ($payload ?? []) +[
@@ -154,6 +155,7 @@ class JurnalisServices
 
 
      $response = $httpRequest->post($this->baseUrl . '/jurnalis/updateNews/'.$slugBerita, $payload);
+
          
    return $response->successful() ? $response->json('data') : $response->json('errors');
       

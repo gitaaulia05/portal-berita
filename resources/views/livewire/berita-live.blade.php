@@ -54,7 +54,7 @@
 
                             <td>
                               <div class="avatar avatar-md">
-                                <img src="./assets/avatars/face-3.jpg" alt="..." class="avatar-img rounded-circle">
+                                <img src="{{($b['gambar']) ? $url . '/storage/'. $b['gambar'][0]['gambar_berita'] : asset('assets/images/image.png')}}" alt="..." class="avatar-img rounded-circle">
                               </div>
                             </td>
                             <td class="w-25">

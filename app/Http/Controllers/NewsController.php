@@ -96,6 +96,8 @@ class NewsController extends Controller
         $this->news2 = [
             'data' => $this->newsResult['allNews']
         ];
+   
+   //  dd(collect($this->newsService->relatedNews($kategori)['data']['data'])->take(8));
         
         return view('Pengguna.Main.detailNews'
                 , [
@@ -103,7 +105,7 @@ class NewsController extends Controller
             'dataNews' => $data,
             'sideNews' => collect($this->news2['data'])->skip(5)->take(3),
             'newNews' => collect($this->news2['data'])->skip(3)->take(4),
-            'relatedNews' => collect($this->newsService->relatedNews($kategori)['data'])->take(8),
+            'relateNews' => collect($this->newsService->relatedNews($kategori)['data']['data'])->take(8),
             'url' =>config('services.api_url'),
         ]);
     }
