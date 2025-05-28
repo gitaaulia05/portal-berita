@@ -1,4 +1,4 @@
-d@extends('Template.aside')
+@extends('Template.aside')
 
 @section('container-main')
 <div class="row">

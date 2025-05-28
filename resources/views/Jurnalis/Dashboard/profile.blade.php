@@ -8,7 +8,7 @@
               <div class="row mt-5 align-items-center">
                 <div class="col-md-3 text-center mb-5">
                   <div class="avatar avatar-xl">
-                    <img src="{{ empty($jurnalis['gambar']) ? asset('assets/avatars/face-1.jpg') : $Url . '/storage/' . $jurnalis['gambar']}}" alt="..." class="avatar-img rounded-sm">
+                    <img src="{{ ($jurnalis['gambar']) ? $Url . '/storage/' . $jurnalis['gambar'] :  asset('assets/avatars/face-1.png') }}"  class="avatar-img rounded-sm">
                   </div>
                 </div>
                 <div class="col">
@@ -20,12 +20,13 @@
                   </div>
                   <div class="row mb-4">
                     <div class="col-md-7">
-                      <p class="text-muted"> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris blandit nisl ullamcorper, rutrum metus in, congue lectus. In hac habitasse platea dictumst. Cras urna quam, malesuada vitae risus at, pretium blandit sapien. </p>
+                      <p class="text-muted"> {{$greeting}} </p>
                     </div>
                     <div class="col">
-                      <p class="small mb-0 text-muted">Nec Urna Suscipit Ltd</p>
-                      <p class="small mb-0 text-muted">P.O. Box 464, 5975 Eget Avenue</p>
-                      <p class="small mb-0 text-muted">(537) 315-1481</p>
+                      <p class="small mb-0 text-muted">Call Center</span> 6285159932501 (24 Jam)</p>
+                        <p class="small mb-0 text-muted">PAlamat (Cabang Bandung):</span> Jl. Asia Afrika No.158, Kb. Pisang, Kec. Sumur Bandung,
+                  Kota Bandung, Jawa Barat 40261</p>
+                      <p class="small mb-0 text-muted">Alamat (Cabang Yogyakarta):</span> Bantul, Yogyakarta</p>
                     </div>
                   </div>
                 </div>
@@ -33,7 +34,7 @@
 
            @if(session()->has('message-success') || session()->has('message-error')) 
 
-                                <div class="alert {{session('message-success') ?? 'alert-success' : 'alert-danger'}} alert-dismissible fade show" role="alert">
+                                <div class="alert {{session('message-success') ? 'alert-success' : 'alert-danger'}} alert-dismissible fade show" role="alert">
                                   <strong>{{session('message-success') ?? session('message-error')}}</strong> 
                                   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>

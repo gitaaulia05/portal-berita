@@ -67,7 +67,7 @@ class AuthController extends Controller
         return view('Pengguna.Auth.lupaPassword' , [
               "title" => 'Lupa Password | Portal Berita WinniCode' , 
               'auth' => $this->authUser || $this->authAdmin,
-              'layout' => isset($this->authUser) ? 'Pengguna.Main.main' : (isset($this->authAdmin['role']) && $this->authAdmin['role'] === 1 ? 'Template.aside' : (isset($this->authAdmin['role']) && $this->authAdmin['role'] === 2 ? 'Template.aside' :'Template.nav' )),
+              'layout' => isset($this->authUser) ? 'Pengguna.Main.main' : (isset($this->authAdmin['role']) && $this->authAdmin['role'] === 1 ? 'Template.aside' : (isset($this->authAdmin['role']) && $this->authAdmin['role'] === 2 ? 'Template.asideJ' :'Template.nav' )),
         ]);
     }
 

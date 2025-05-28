@@ -13,6 +13,9 @@ class NewsController extends Controller
     protected $news2; 
     protected $newsResult; 
     protected $selectedTopics2; 
+        protected PenggunaServices $penggunaService;
+    protected NewsServices $newsService;
+    protected $authUser;
 
     public function __construct(PenggunaServices $penggunaService, NewsServices $newsService) {
         $this->penggunaService = $penggunaService;
@@ -105,7 +108,7 @@ class NewsController extends Controller
             'dataNews' => $data,
             'sideNews' => collect($this->news2['data'])->skip(5)->take(3),
             'newNews' => collect($this->news2['data'])->skip(3)->take(4),
-            'relateNews' => collect($this->newsService->relatedNews($kategori)['data']['data'])->take(8),
+            'relateNews' => collect($this->newsService->relatedNews($kategori)['data']['data'])->take(8) ?? collect($this->newsService->relatedNews($kategori)['data'])->take(8),
             'url' =>config('services.api_url'),
         ]);
     }

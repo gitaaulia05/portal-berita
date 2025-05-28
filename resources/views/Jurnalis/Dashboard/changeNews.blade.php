@@ -116,7 +116,7 @@
                               <div class="invalid-feedback">{{ $message }}</div>
                           @enderror
                             </div>
-                            
+                          
                             <div class="form-group">
                               <label for="inputState">Kategori Berita</label>
                               <select
@@ -124,12 +124,12 @@
                                 name="kategori"
                                 class="form-control @error('kategori') is-invalid @enderror"
                               >
-                                @foreach(['Ekonomi','Politik','Teknologi','Olahraga','Hiburan'] as $kat)
+                                @foreach($kategori as $kat)                  
                                   <option
-                                    value="{{ $kat }}"
-                                    {{ old('kategori', $data['kategori_berita'][0]['kategori'] ?? '') === $kat ? 'selected' : '' }}
+                                    value="{{ $kat['kategori'] }}"
+                                    {{ old('kategori', $data['kategori_berita']) == $kat['kategori'] ? 'selected' : '' }}
                                   >
-                                    {{ $kat }}
+                                    {{ $kat['kategori'] }}
                                   </option>
                                 @endforeach
                               </select>

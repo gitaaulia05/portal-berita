@@ -61,14 +61,14 @@ class JurnalisServices
   
         $httpRequest = Http::withHeaders([
             'Authorization' => 'Bearer '.$this->token
-        ])->asMultipart();
+        ]);
 
-        if($request->hasFile('gambar')) {
-            $httpRequest->attach(
-                'gambar', 
-                file_get_contents($request->file('gambar')->getRealPath()), 
+        if($request->hasFile('gambar') && $request->hasFile('gambar') !== null) {
+           $httpRequest->attach(
+            'gambar',
+            file_get_contents($request->file('gambar')->getRealPath()),
                 $request->file('gambar')->getClientOriginalName()
-              );
+            );
         }
         
        $response=  $httpRequest->post($this->baseUrl.'/administrator/update/'.$slugAdmin , [
@@ -107,6 +107,7 @@ class JurnalisServices
             'keterangan_gambar' => $request->keterangan_gambar,
             'keterangan_gambar2' => $request->keterangan_gambar2,
         ]);
+        //dd($response->status(), $response->json());
        return $response->successful() ? $response->json('data') : $response->json();
     }
 

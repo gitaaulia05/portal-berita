@@ -115,6 +115,7 @@ Route::get('/bagikanTautan' , [NewsController::class, 'shareNews']);
         Route::get('/dashboard-jurnalis' , [JurnalisController::class , 'index'])->name('dashboard-jurnalis');
         Route::delete('/logout-jurnalis' , [JurnalisController::class, 'logout'])->name('logout-jurnalis');
         Route::get('/jurnalis/profile' , [JurnalisController::class, 'profile'])->name('jurnalis-profile');
+        Route::get('/jurnalis/update-profile/{slugPengguna}',  [JurnalisController::class, 'updateProfile']);
 });
     Route::middleware(ActiveJurnalisMiddleware::class)->group(function () {
         Route::get('/tambah-berita',  [JurnalisController::class, 'tambahBerita']);

@@ -57,9 +57,9 @@
             <a class="nav-link dropdown-toggle text-muted pr-0" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               <span class="avatar avatar-sm mt-2">
                  @if (!empty($jurnalis))
-                  <img src="{{($jurnalis['gambar']) ? config('services.api_url') . '/storage/' . $jurnalis['gambar']  : asset('assets/avatars/face-1.png')  }}" alt="..." class="avatar-img rounded-lg">
+                  <img src="{{($jurnalis['gambar']) ? config('services.api_url') . '/storage/' . $jurnalis['gambar']  : asset('assets/avatars/face-1.png')  }}" class="avatar-img rounded-lg">
                   @elseif (!empty($data))
-                    <img src="{{($data['gambar']) ? config('services.api_url') . '/storage/' . $data['gambar']  : asset('assets/avatars/face-1.png')  }}" alt="..." class="avatar-img rounded-lg">
+                    <img src="{{($data['gambar']) ? config('services.api_url') . '/storage/' . $data['gambar']  : asset('assets/avatars/face-1.png')  }}" class="avatar-img rounded-lg">
               @endif
               </span>
             </a>
@@ -82,19 +82,13 @@
         <nav class="vertnav navbar navbar-light">
           <!-- nav bar -->
           <div class="w-100 mb-4 d-flex">
-            <a class="navbar-brand mx-auto mt-2 flex-fill text-center" href="./index.html">
-              <svg version="1.1" id="logo" class="navbar-brand-img brand-sm" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 120 120" xml:space="preserve">
-                <g>
-                  <polygon class="st0" points="78,105 15,105 24,87 87,87 	" />
-                  <polygon class="st0" points="96,69 33,69 42,51 105,51 	" />
-                  <polygon class="st0" points="78,33 15,33 24,15 87,15 	" />
-                </g>
-              </svg>
+            <a class="navbar-brand mx-auto mt-2 flex-fill text-center" >
+               <img src="{{ asset('assets/images/logo.png') }}" class="h-50" alt="Winni Code Logo"/>
             </a>
           </div>
           <ul class="navbar-nav flex-fill w-100 mb-2">
             <li class="nav-item ">
-              <a href="/dashboard"class=" nav-link">
+              <a href="/dashboard" class=" {{  request()->is('dashboard*') ? 'text-primary' : ''}} nav-link">
                 <i class="fe fe-home fe-16"></i>
                 <span class="ml-3 item-text">Dashboard</span><span class="sr-only">(current)</span>
               </a>
@@ -106,7 +100,8 @@
           <ul class="navbar-nav flex-fill w-100 mb-2">
 
             <li class="nav-item w-100">
-              <a class="nav-link" href="/tambah-berita">
+
+              <a href="/tambah-berita" class="nav-link {{ request()->is('tambah-berita*') ? 'text-primary' : ''}}" >
                 <i class="fe fe-layers fe-16"></i>
                 <span class="ml-3 item-text">Tambah Berita</span>
               </a>
@@ -116,7 +111,7 @@
             <span>Kelola Akun Personal</span>
              <ul class="navbar-nav flex-fill w-100 mb-2">
             <li class="nav-item w-100">
-              <a class="nav-link" href="/jurnalis/profile">
+              <a class="nav-link {{ request()->is('jurnalis/profile*') || request()->is('lupa-passwordAuth*') ? 'text-primary' : ''}}" href="/jurnalis/profile">
                 <i class="fe fe-user fe-16"></i>
                 <span class="ml-3 item-text">Profile</span>
               </a>

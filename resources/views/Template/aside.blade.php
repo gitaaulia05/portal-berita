@@ -42,8 +42,6 @@
               <span class="avatar avatar-sm mt-2">
               @if (!empty($admin))
                   <img src="{{($admin['gambar']) ? config('services.api_url') . '/storage/' . $admin['gambar']  : asset('assets/avatars/face-1.png')  }}" alt="..." class="avatar-img rounded-lg">
-                  @elseif (!empty($data))
-                    <img src="{{($data['gambar']) ? config('services.api_url') . '/storage/' . $data['gambar']  : asset('assets/avatars/face-1.png')  }}" alt="..." class="avatar-img rounded-lg">
               @endif
                 
               </span>
@@ -75,7 +73,7 @@
 
           <ul class="navbar-nav flex-fill w-100 mb-2">
             <li class="nav-item ">
-              <a href="/dashboard"class=" nav-link">
+              <a href="/dashboard" class="  {{  request()->is('dashboard*') ? 'text-primary' : ''}} nav-link">
                 <i class="fe fe-home fe-16"></i>
                 <span class="ml-3 item-text">Dashboard</span><span class="sr-only">(current)</span>
               </a>
@@ -88,14 +86,14 @@
           <ul class="navbar-nav flex-fill w-100 mb-2">
 
             <li class="nav-item w-100">
-              <a class="nav-link" href="/kelola-berita">
+              <a class="nav-link {{ request()->is('kelola-berita*') || request()->is('beritaAdmin*') ? 'text-primary' : ''}}" href="/kelola-berita">
                 <i class="fe fe-layers fe-16"></i>
                 <span class="ml-3 item-text">Kelola Berita</span>
               </a>
             </li>
 
                <li class="nav-item w-100">
-              <a class="nav-link" href="/kategori-berita">
+              <a class="nav-link  {{  request()->is('kategori-berita*') ? 'text-primary' : ''}}" href="/kategori-berita">
                <i class="fa-solid fa-table-list"></i>
                 <span class="ml-3 item-text">Kategori Berita</span>
               </a>
@@ -108,7 +106,7 @@
 
           <ul class="navbar-nav flex-fill w-100 mb-2">
             <li class="nav-item w-100">
-              <a class="nav-link" href="/akun-jurnalis">
+              <a class="nav-link {{  request()->is('akun-jurnalis*') ? 'text-primary' : ''}}" href="/akun-jurnalis">
                 <i class="fe fe-user fe-16"></i>
                 <span class="ml-3 item-text">Akun Jurnalis</span>
               </a>
@@ -119,7 +117,7 @@
             <span>Kelola Akun Personal</span>
              <ul class="navbar-nav flex-fill w-100 mb-2">
             <li class="nav-item w-100">
-              <a class="nav-link" href="/profile">
+              <a class="nav-link {{  request()->is('profile*') || request()->is('lupa-passwordAuth*') || request()->is('administrator*')   ? 'text-primary' : ''}}" href="/profile">
                 <i class="fe fe-user fe-16"></i>
                 <span class="ml-3 item-text">Profile</span>
               </a>

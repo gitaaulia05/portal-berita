@@ -10,6 +10,11 @@ use App\Services\JurnalisServices;
 class JurnalisController extends Controller
 {
 
+     protected JurnalisServices $jurnalisService;
+     protected NewsServices $newsService;
+     protected $currentPetugas;
+     protected $url;
+
     public function __construct(JurnalisServices $jurnalisService , NewsServices $newsService) {
         $this->jurnalisService = $jurnalisService;
         $this->newsService = $newsService;
@@ -25,8 +30,11 @@ class JurnalisController extends Controller
     }
     
     public function profile(){
-       // dd($this->currentPetugas);
+        $hour  = now()->format('H');
+        $greetings  = $hour < 12 ? 'Good Morning' :  ($hour > 20 ? 'Good Evening ': ($hour > 17 ? 'Good Afternoon'  : 'Good Night'));
+
         return view('Jurnalis.Dashboard.profile' , [
+            'greeting' => $greetings,
             'title' => "Dashboard Jurnalis | Portal berita" , 
             'jurnalis' => $this->currentPetugas,
             'Url' => $this->url,
@@ -119,14 +127,14 @@ class JurnalisController extends Controller
     public function update($slugBerita) {
         $response = $this->jurnalisService->showNews($slugBerita);
         $url = config('services.api_url');
-        
         if($response) {
             return view('Jurnalis.Dashboard.changeNews' , [
                 'title' => "Tambah Berita | Portal berita" , 
                 'jurnalis' => $this->currentPetugas,
                 'data' => $response,
+                'kategori' => $this->newsService->dataKategori(),
                 'gambar' => $url."/storage/" . $response['gambar'][0]['gambar_berita'],
-                'gambar2' =>!empty($response['gambar'][1]['gambar_berita']) ? $url."/storage/" .$response['gambar'][1]['gambar_berita'] : null
+                'gambar2' => !empty($response['gambar'][1]['gambar_berita']) ? $url."/storage/" .$response['gambar'][1]['gambar_berita'] : null
             ]);
         } else {
             return redirect()->back()->with('message-error' , $response['message'][0]);
@@ -146,7 +154,6 @@ class JurnalisController extends Controller
 
     public function storeNews(Request $request) {
         $response = $this->jurnalisService->storeNews($request);
-       // dd(isset($response['errors']));
         if (isset($response['errors'])) {
             // gagal
             return redirect()->back()

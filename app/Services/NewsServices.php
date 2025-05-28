@@ -249,7 +249,7 @@ class NewsServices
                 'Authorization' => "Bearer ". $this->token,
             ])->get($this->baseUrl."/kategoriBerita?" .http_build_query($params));
 
-            return $response->successful() ? $response->json() : null;
+            return $response->successful() ? $response->json('data') : null;
      }
 
      public function detailKategori($idKb){
@@ -259,7 +259,7 @@ class NewsServices
             return $response->successful() ? $response->json('data') : null;
         }
 
-    public function updatedKategori(Request $request, $idKb){
+     public function updatedKategori(Request $request, $idKb){
             $response = Http::withHeaders([
                 'Authorization' => "Bearer ". $this->token,
             ])->patch($this->baseUrl."/kategoriBerita/".$idKb , [

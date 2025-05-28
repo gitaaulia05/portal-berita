@@ -3,7 +3,7 @@
    @section('container-main')
 
        <div class="row">
-           <a class="dropdown-item" href="/ubah-berita/lala">Edit</a>
+           <a class="dropdown-item" href="/tambah-berita">Tambah Berita</a>
                 <div class="col-md-12">
                   <div class="card shadow mb-4">
                     <div class="card-header">
@@ -96,6 +96,7 @@
               <div class="invalid-feedback">{{ $message }}</div>
           @enderror
           </div>
+
           
           <div class="form-group">
             <label for="inputState">Kategori Berita</label>
@@ -104,9 +105,9 @@
               name="kategori"
               class="form-control @error('kategori') is-invalid @enderror"
             >
-              @foreach(['Ekonomi','Politik','Teknologi','Olahraga','Hiburan'] as $kat)
-                <option value="{{ $kat }}" {{ old('kategori') === $kat ? 'selected' : '' }}>
-                  {{ $kat }}
+              @foreach($kategori as $kat)
+                <option value="{{ $kat['kategori'] }}" {{ old('kategori') === $kat['kategori']? 'selected' : '' }}>
+                  {{ $kat['kategori'] }}
                 </option>
               @endforeach
             </select>
@@ -123,11 +124,3 @@
               </div> <!-- /. end-section -->
 
    @endsection
-
-    {{-- @section('script')
-              <script>
-                document.addEventListener('trix-file-accept' , function(e){
-                  e.preventDefault();
-                })
-              </script>
-    @endsection --}}
