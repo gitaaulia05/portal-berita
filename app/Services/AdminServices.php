@@ -46,7 +46,7 @@ class AdminServices
 
 
     // MAIN FEATURE
-    public function searchJurnalis($namaJurnalis = null , $page=null, $is_active = null) {
+    public function searchJurnalis($namaJurnalis = null , $page=null, $is_active = null , $nonActive = null) {
       
         $params = [];
         if(!empty($namaJurnalis)) {
@@ -55,6 +55,9 @@ class AdminServices
 
          if(!empty($page)) {
             $params['page'] = $page;
+        }
+         if(!empty($nonActive)) {
+            $params['nonActive'] = $nonActive;
         }
 
         $response = Http::withHeaders([

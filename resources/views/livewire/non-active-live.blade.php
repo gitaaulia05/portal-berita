@@ -13,8 +13,8 @@
 
                     <div class="card shadow">
                     <div class="card-body">
-                      <div class="toolbar">
-                        <form class="form">
+                      <div class="toolbar row items-align-center">
+                        <form class="form col-6">
                           <div class="form-row">
                         
                             <div class="form-group col-auto">
@@ -24,6 +24,9 @@
 
                           </div>
                         </form>
+                        <div class="col-6">
+                        <p class="text-danger"> Total Belum Aktif {{$total}}</p>
+                        </div>
                       </div>
                       <!-- table -->
                       <table class="table table-borderless table-hover">
@@ -32,6 +35,7 @@
                             <th>NO</th>
                             <th class="w-25">Foto</th>
                             <th class="w-25">Nama jurnalis</th>
+                            <th>Tanggal Daftar Akun</th>
                             <th>Status Aktif</th>
                             <th>Action</th>
                           </tr>
@@ -52,9 +56,15 @@
                                 <img src="{{($d['gambar']) ? $url.'/storage/'.$d['gambar'] : asset('assets/avatars/face-1.png') }}" alt="..." class="avatar-img rounded-lg">
                               </div>
                             </td>
+
                             <td class="w-25">
                              <small class="text-muted">{{$d['nama']}}</small>
                             </td>
+
+                            <td class="w-25">
+                             <small class="text-muted">{{$d['created_at']}}</small>
+                            </td>
+
                             <td>
                              <p>{{$d['active'] == 1 ? 'Aktif' : 'Non-Aktif'}}</p>
                             </td>
