@@ -52,7 +52,7 @@
                                 @enderror
                               </div>
                             
-                              @if(! empty($data['gambar'][1]))
+                              @if(!empty($data['gambar'][1]))
                                 <div class="form-group col-md-6 mt-md-0 mt-5">
                                   <label for="uploadGambarTambahan">Gambar Tambahan</label>
                                   <input

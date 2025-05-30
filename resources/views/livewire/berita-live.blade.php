@@ -16,6 +16,8 @@
                       <div class="toolbar">
                         <form class="form">
                           <div class="form-row">
+
+                          {{$status}}
                           
                             <div class="form-group col-auto">
                                 <div class="bg-primary opacity-50 text-white h-75 rounded-sm" wire:click="toogleTayang" style="cursor: pointer; background-color: {{ $is_trash === 1 ? '#3D7EFF' : '#1b68ff' }};">

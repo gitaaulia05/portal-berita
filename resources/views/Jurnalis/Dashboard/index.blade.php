@@ -1,7 +1,8 @@
    @extends('Template.asideJ')
 
    @section('container-main')
-      @if ($jurnalis['active'] == '0')
+
+      @if ($jurnalis['active'] == 0)
            <div class="alert alert-warning alert-dismissible fade show" role="alert">
             <strong class="text-center">Akun Anda Belum Terverifikasi Admin !</strong> Belum Bisa Mengakses Menu Apapun.
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">

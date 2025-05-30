@@ -184,7 +184,12 @@ class JurnalisServices
         $response = Http::withHeaders([
             'Authorization' => 'Bearer ' . $this->token
         ])->get($this->baseUrl.'/berita' , $params);
-        return $response->successful() ? $response->json() : null;
+
+            return [
+               'status' => $response->status(),
+                'data'=>$response->json()
+            ];
+        // return $response->successful() ? $response->json() : $response->status();
     }
 
     public function showNews($slugBerita) {

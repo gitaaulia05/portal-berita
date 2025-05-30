@@ -47,7 +47,7 @@ class PenggunaServices
 
 
     public function updateData(Request $request, $slugPengguna) {
-        $httpRequest = Http::withHeaders(ap,[
+        $httpRequest = Http::withHeaders([
             'Authorization' => 'Bearer ' . $this->token
         ])->asMultipart();
 

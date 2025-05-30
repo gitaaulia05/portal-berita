@@ -76,8 +76,6 @@
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                     @enderror
 
-               <button class="text-red-500 underline underline-offset-1 mt-3" >Hapus Foto Profile</button>
-
                 <div class="button-password my-5 flex justify-center">
                     <button type="submit" class="bg-[#0E7CC9] px-17 py-1 mx-auto hover:opacity-75 transition duration-700 text-white rounded-md p">SIMPAN</button>
                 </div>

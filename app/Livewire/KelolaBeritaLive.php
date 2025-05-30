@@ -12,28 +12,25 @@ class KelolaBeritaLive extends Component
     public $currentPage = 1;
     public $apiBaseUrl;
     protected $dataBerita=[];
-   protected $jurnalisService;
+    protected $jurnalisService;
 
-   public $is_trash=0;
-   public $is_tayang=0;
+    public $is_trash=0;
+    public $is_tayang=0;
 
-     public function __construct()
-    {
-        // Initialize the newsService here
+    public function __construct() {
         $this->jurnalisService = app(JurnalisServices::class);
-          $this->apiBaseUrl = config('services.api_base_url');
-          $this->dataBerita = $this->jurnalisService->searchNews();
-            $this->currentPage = 1;
-       
+        $this->apiBaseUrl = config('services.api_base_url');
+        $this->dataBerita = $this->jurnalisService->searchNews();
+        $this->currentPage = 1;
     }
 
-        public function updatedSearch($page = 1){
+    public function updatedSearch($page = 1) {
             $search = trim($this->search);
             $is_tayangs = (int)$this->is_tayang;
             $is_trash= (int)$this->is_trash;
             $this->dataBerita = $this->jurnalisService->searchNews($search , $is_tayangs, $is_trash, $page);
    
-        }
+    }
 
      public function toogleTayang() {
         $this->is_tayang = !$this->is_tayang;
@@ -44,8 +41,6 @@ class KelolaBeritaLive extends Component
         $this->is_trash = $this->is_trash === 0 ? 2 : 0;
         $this->updatedSearch(); 
     }
-
-   
 
         public function goToPage($page){
             $this->currentPage = $page;

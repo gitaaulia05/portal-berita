@@ -45,7 +45,7 @@
                name="gambar" 
                class="form-control @error('gambar') is-invalid @enderror" 
                accept="image/*">
-        <img src="{{ $data && isset($data['gambar']) ? $url . '/storage/' . $data['gambar'] : asset('assets/avatars/face-1.png') }}" 
+        <img src="{{ ($data['gambar']) ? $url . '/storage/' . $data['gambar'] : asset('assets/avatars/face-1.png') }}" 
              id="previewGambarJurnalis" 
              class="w-25 pt-2">
         @error('gambar')

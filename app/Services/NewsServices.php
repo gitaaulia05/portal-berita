@@ -3,9 +3,10 @@ namespace App\Services;
 
 use Log;
 use GuzzleHttp\Client;
-use GuzzleHttp\Promise\Utils;
+use Illuminate\Support\Str;
 
 use Illuminate\Http\Request;
+use GuzzleHttp\Promise\Utils;
 use Illuminate\Support\Facades\Http;
 
 class NewsServices 
@@ -63,6 +64,7 @@ class NewsServices
     return $response->json('errors');
  }
     public function allNews($kategori=null , $page = null , $judulBerita = null, $is_trash = null ) {
+
         $params=[];
         
         if(!empty($is_tayang)) {    
@@ -78,15 +80,20 @@ class NewsServices
         if(!empty($judulBerita)){
             $params['judul_berita'] = $judulBerita;
         }
-        $url = $this->baseUrl.'/berita?'. http_build_query($params);
+        $url = $this->baseUrl.'/berita/pengguna?'. http_build_query($params);
 
-        return $this->fetchWithETag('etag_kategori' , $url);
+        $keySuffix = $kategori ? Str::slug($kategori) : 'all';
+
+        if($page){
+            $keySuffix .= '_page_'.$page;
+        }
+
+        return $this->fetchWithETag('etag_kategori' , $url, $keySuffix);
     }
 
 
     public function selectedNews($newest) {
         $url = $this->baseUrl.'/berita/pengguna?' . http_build_query(['selectedTopics' => 'true','newest' => $newest]);
-        //dd($url);
         return $this->fetchWithETag('etag_news' , $url);
     }
 
@@ -131,7 +138,7 @@ class NewsServices
         $urlAll = $this->baseUrl.'/berita/pengguna?' . http_build_query(['newest' => $newest]);
         $urlPopular = $this->baseUrl.'/berita/populer';
         $urlSelected = $this->baseUrl.'/berita/pengguna?' . http_build_query(['selectedTopics' => 'true']);
-    
+       
         // Ambil ETag dari cache
         $etagAll = cache('etag_news');
         $etagPopular = cache('etag_popular');
@@ -248,7 +255,6 @@ class NewsServices
             $response = Http::withHeaders([
                 'Authorization' => "Bearer ". $this->token,
             ])->get($this->baseUrl."/kategoriBerita?" .http_build_query($params));
-
             return $response->successful() ? $response->json('data') : null;
      }
 

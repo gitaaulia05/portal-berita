@@ -18,6 +18,8 @@ use App\Http\Middleware\ActiveJurnalisMiddleware;
 // TestTest1&
 Route::get('/',[NewsController::class , 'index']);
 Route::get('/berita/{kategori}/{slugberita}',[NewsController::class , 'detailNews']);
+Route::get('/beritaKategori/{kategori}/{page}',[NewsController::class , 'goToPage']);
+
 Route::get('/berita/{kategori}',[NewsController::class , 'header']);
 Route::get('/bagikanTautan' , [NewsController::class, 'shareNews']);
 

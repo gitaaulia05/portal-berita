@@ -84,13 +84,38 @@
       </div>
   @endif
 
+  
+
     <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-user">
       <ul class="flex flex-col text-white font-medium p-4 md:p-0 mt-4 border border-gray-700 rounded-lg bg-black md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-black">
-        <li><a href="/berita/Politik" class="block py-2 px-3 md:p-0 {{ Request::is('/berita/Politik*') ? 'text-[#FF66C4]' : '' }} hover:text-[#FF66C4]">Politik</a></li>
-        <li><a href="/berita/Teknologi" class="block py-2 px-3 md:p-0 {{ Request::is('/berita/Teknologim*') ? 'text-[#FF66C4]' : '' }} hover:text-[#FF66C4]">Teknologi</a></li>
-        <li><a href="/berita/Ekonomi" class="block py-2 px-3 md:p-0 {{ Request::is('/berita/Ekonomi*') ? 'text-[#FF66C4]' : '' }} hover:text-[#FF66C4]">Ekonomi</a></li>
-        <li><a href="/berita/Olahraga" class="block py-2 px-3 md:p-0 {{ Request::is('/berita/Olahraga*') ? 'text-[#FF66C4]' : '' }} hover:text-[#FF66C4]">Olahraga</a></li>
-        <li><a href="/berita/Hiburan" class="block py-2 px-3 md:p-0 {{ Request::is('/berita/Hiburan*') ? 'text-[#FF66C4]' : '' }} hover:text-[#FF66C4]">Hiburan</a></li>
+       <li><a href="/" class="block py-2 px-3 md:p-0 capitalize {{ request()->is('/')  ? 'text-[#FF66C4]' : '' }} hover:text-[#FF66C4]">Halaman Utama</a></li> 
+
+        @php
+        $kategoriArray = $kategori->toArray();
+      @endphp 
+
+        @if(!empty($kategoriArray))
+            @foreach (array_slice($kategoriArray, 0, 6) as $k)
+                <li><a href="/berita/{{$k['kategori']}}" class="block py-2 px-3 md:p-0 capitalize {{ request()->is('berita/'. $k['kategori'].'*') || request()->is('beritaKategori/'. $k['kategori'].'*')  ? 'text-[#FF66C4]' : '' }} hover:text-[#FF66C4]">{{$k['kategori']}}</a></li> 
+            @endforeach
+            @if(count($kategoriArray) > 6)
+              <li>
+                  <button id="dropdownNavbarLink" data-dropdown-toggle="dropdownNavbar" class="flex items-center justify-between w-full py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:w-auto dark:text-white md:dark:hover:text-blue-500 dark:focus:text-white dark:border-gray-700 dark:hover:bg-gray-700 md:dark:hover:bg-transparent">Selengkapnya <svg class="w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/></svg>
+                  </button>
+                  <!-- Dropdown menu -->
+                  <div id="dropdownNavbar" class="z-10 hidden font-normal bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700 dark:divide-gray-600">
+                      <ul class="py-2 text-sm text-gray-700 dark:text-gray-400" aria-labelledby="dropdownLargeButton">
+                        @foreach (array_slice($kategoriArray, 6) as $k)
+                        <li>
+                          <a href="/berita/{{$k['kategori']}}" class="block px-4 py-2 hover:bg-gray-100  {{ request()->is('berita/'. $k['kategori'].'*') || request()->is('beritaKategori/'. $k['kategori'].'*')  ? 'text-[#FF66C4]' : '' }} dark:text-white hover:text-[#FF66C4] dark:focus:text-white dark:border-gray-700 dark:hover:bg-gray-700 md:dark:hover:bg-transparent">{{$k['kategori']}}</a>
+                        </li>
+                        @endforeach
+                      </ul>
+                  </div>
+              </li>
+            @endif
+          @endif
       </ul>
     </div>
   </div>

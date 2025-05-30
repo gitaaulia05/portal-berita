@@ -44,7 +44,7 @@ class BeritaLive extends Component
         $search = trim($this->search);
         $is_tayangs = (int)$this->is_tayang;
         $is_trash= (int)$this->is_trash;
-        $this->dataBerita = $this->jurnalisService->searchNews($search , $is_tayangs, $is_trash, $page);
+        $this->dataBerita = $this->jurnalisService->searchNews($search , $is_tayangs, $is_trash, $page)['data'];
         $this->id_admin = Administrator::where('id_administrator');
       
     }
@@ -56,12 +56,13 @@ class BeritaLive extends Component
 
     public function render()
     {
-    // dd($this->dataBerita['data'][0]);
+
          return view('livewire.berita-live' , [
             'title' => "Dashboard Jurnalis | Portal berita" , 
             'jurnalis' => $this->jurnalisService->currentJurnalis(), 
             'berita' => $this->dataBerita['data'],
             'meta' => $this->dataBerita['meta'],
+            'status' =>$this->dataBerita['status'],
             'url' =>  config('services.api_url')
         ]);
     }

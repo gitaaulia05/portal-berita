@@ -13,25 +13,39 @@ class NewsController extends Controller
     protected $news2; 
     protected $newsResult; 
     protected $selectedTopics2; 
-        protected PenggunaServices $penggunaService;
+    protected PenggunaServices $penggunaService;
     protected NewsServices $newsService;
     protected $authUser;
 
     public function __construct(PenggunaServices $penggunaService, NewsServices $newsService) {
         $this->penggunaService = $penggunaService;
         $this->newsService = $newsService;
-       
         $this->authUser = $this->penggunaService->currentUser();
 
     }
 
     public function header($kategori){
-        $hasilLink =  $this->newsService->allNews($kategori)['data'];
-
+        $page = 1;
+        $hasilLink =  $this->newsService->allNews($kategori, $page , '' , '');
+      
         return view('Pengguna.Main.kategori', [
-            'kategori' => $hasilLink,
-            'relatedNews' => collect($this->newsService->relatedNews($kategori)['data'])->take(8),
-             'url' => config('services.api_url'),
+            'kategori' => $hasilLink['data']['data'] ?? $this->newsService->allNews($kategori)['data'],
+            'meta' => $hasilLink['meta'] ?? $hasilLink['data']['meta'],
+            'slug' => $kategori,
+            'page' => $page,
+            'url' => config('services.api_url'),
+        ]);
+    }
+
+    public function goToPage($kategori, $page){
+          $pagination = $this->newsService->allNews($kategori, $page, '' ,'');
+         // dd($pagination);
+            return view('Pengguna.Main.kategori', [
+            'kategori' => $pagination['data']['data'] ?? $this->newsService->allNews($kategori)['data'],
+            'meta' => $pagination['meta'] ?? $pagination['data']['meta'],
+            'slug' => $kategori,
+            'page' => $page,
+            'url' => config('services.api_url'),
         ]);
     }
 
@@ -44,7 +58,6 @@ class NewsController extends Controller
             'data' => $this->newsResult['allNews']
         ];
     
-       
         $this->selectedTopics2 = collect($this->newsResult['selectedTopics']['data'])
         ->filter(function ($item) {
             return isset($item['kategori_berita']) && trim($item['kategori_berita']) !== '';
@@ -52,12 +65,13 @@ class NewsController extends Controller
         ->groupBy('kategori_berita')
         ->toArray();    
 
+     
         return view('Pengguna.Main.newsMain', [
                 'headerNews' => collect($this->news2['data'])->take(5),
                 'sideNews' => collect($this->news2['data'])->skip(5)->take(3),
                 'newNews' => collect($this->news2['data'])->skip(3)->take(4),
                 'auth' =>  $this->authUser,
-               'popularNews' => collect($this->newsResult['popularNews']),
+                'popularNews' => collect($this->newsResult['popularNews']),
                 'topicSelected' => collect( $this->selectedTopics2),
                 'url' => config('services.api_url'),
         ]);

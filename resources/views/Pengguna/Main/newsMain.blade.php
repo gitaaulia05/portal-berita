@@ -2,11 +2,8 @@
 
 @section('container-main')
 
-{{-- @dd($headerNews) --}}
-
-    <div class="lg:grid lg:grid-cols-3 gap-4 lg:max-h-fit overflow-auto" id="header-top">
-
-        <div id="controls-carousel col-span-2 z-[-999]" class="relative w-full col-span-2" data-carousel="static">
+<div class="lg:grid lg:grid-cols-3 gap-4 lg:max-h-fit overflow-auto" id="header-top">
+      <div id="controls-carousel col-span-2 z-[-999]" class="relative w-full col-span-2" data-carousel="static">
             <!-- Carousel wrapper -->
             <div class="relative h-56 overflow-hidden rounded-lg md:h-96">
              @if (!empty($headerNews))
@@ -90,27 +87,9 @@
 
     </div>
 
-    <div class="Berita Terbaru pt-8 mb-20 font-roboto" id="berita-terbaru">
-        <h1 class="pb-3 font-medium text-3xl">Berita Terbaru</h1>
-
-        <div class="card-new-news grid lg:grid-cols-4 grid-cols-2 lg:gap-5 gap-2 pt-2">
-        @if (!empty($newNews))
-            @foreach ($newNews as $nn)
-                <div class="header-card-content cursor-pointer">
-                    <img src="{{$url . '/storage/' . $nn['gambar'][0]['gambar_berita']}}" class="rounded-lg hover:opacity-50 transition duration-700">
-                    <p>{{$sn['judul_berita']}} <a href="/berita/{{$nn['kategori_berita']}}/{{$nn['slug']}}" class="text-[#C95C66] hover:text-[#B03440]">Baca Selengkapnya</a></p>
-                    <div class="text-footer">
-                        <p class="font-semibold text-[#C95C66] pt-1">{{$nn['kategori_berita']}}</p>
-                    </div>
-                </div> 
-            @endforeach
-        @endif
-        </div>
-
-    </div>
 
 
-    <div class="pt-8 mb-20" id="berita-pilihan">
+    <div class="pt-8 mb-20 px-5" id="berita-pilihan">
         <h1 class="text-2xl font-semibold mb-7">TOPIK PILIHAN</h1>
              <div class="grid lg:grid-cols-5 grid-cols-1 lg:gap-5 gap-3 ">
                 @foreach ($topicSelected as $kategori => $beritaList)
@@ -150,7 +129,7 @@
 
             <div class="card-new-news grid lg:grid-cols-4 grid-cols-2 gap-2 pt-2">
               @foreach ($popularNews as $pn)
-                    <div class="header-card-content hover:scale-105 transition duration-700">
+                    <div class="header-card-content hover:scale-95 transition duration-700">
                     <a href="/berita/{{$pn['kategori_berita']}}/{{$pn['slug']}}">
                         <img src="{{$url . '/storage/' . $pn['gambar'][0]['gambar_berita']}}">
                         <p>{{$pn['judul_berita']}} <a href="/berita/{{$pn['kategori_berita']}}/{{$pn['slug']}}" class="text-[#C95C66] hover:text-[#B03440]">Baca Selengkapnya</a></p>
